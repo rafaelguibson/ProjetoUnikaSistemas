@@ -30,12 +30,10 @@ public class WicketApplication extends WebApplication
 	{
 		super.init();
 
-		// needed for the styling used by the quickstart
 		getCspSettings().blocking()
-			.add(CSPDirective.STYLE_SRC, CSPDirectiveSrcValue.SELF)
-			.add(CSPDirective.STYLE_SRC, "https://fonts.googleapis.com/css")
-			.add(CSPDirective.FONT_SRC, "https://fonts.gstatic.com");
+				.add(CSPDirective.STYLE_SRC, CSPDirectiveSrcValue.SELF)
+				.add(CSPDirective.STYLE_SRC, "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css")
+				.add(CSPDirective.FONT_SRC, "https://fonts.gstatic.com");
 
-		// add your configuration here
 	}
 }
