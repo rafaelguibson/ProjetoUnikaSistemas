@@ -1,45 +1,101 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org">
 <head>
-    <meta charset="utf-8"/>
-    <title>Apache Wicket Quickstart</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-            crossorigin="anonymous"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-            crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="style.css" />
-
+    <meta charset="UTF-8">
+    <title>Title</title>
 </head>
 <body>
-<header>
-    <nav>
-        <a class="logo" href="/"> <img src="espiao.png" width="50px" height="50px" alt="Wicket Logo" /> Monitorador LTDA.</a>
-        <div class="mobile-menu">
-            <div class="line1"></div>
-            <div class="line2"></div>
-            <div class="line3"></div>
+<wicket:extend>
+    <div class="text-center">
+        <div id="logo">
+            <img src="logo.png" width="50px" height="50px" alt="Wicket Logo" />
+            <h1 class="h1-perso">Lista Monitoradores</h1>
         </div>
-        <ul class="nav-list">
-            <li><a href="#">Início</a></li>
-            <li><a href="#">Cadastrar</a></li>
-            <li><a href="#">Pesquisar</a></li>
-            <li><a href="#">Contato</a></li>
-            <li><a href="#">Sobre</a></li>
-        </ul>
-    </nav>
-</header>
-<main>
-    <h1>Monitorador</h1>
+    </div>
 
-</main>
-<script src="mobile-navbar.js"></script>
+    <form wicket:id="form" >
+        <div class="toolbar-top" style="padding-top: 20px">
+            <button wicket:id="addItemLink" type="button" class="btn btn-secondary btn-sm">Cadastrar Monitorador</button>
+        </div>
+        <div wicket:id="formNew" style="padding: 5px; background-color: darkslategrey;">
+            <table cellpadding="5">
+                <tr>
+                    <td>Tipo</td>
+                    <td> <input wicket:id="tipoPessoa" class="form-control" type="text"/></td>
+                </tr>
+                <tr>
+                    <td>CPF/CNPJ</td>
+                    <td> <input wicket:id="cpfCnpj" class="form-control" type="text"/></td>
+                </tr>
+                <tr>
+                    <td>Nome/Razão Social</td>
+                    <td> <input wicket:id="nomeRazaoSocial" class="form-control" type="text"/></td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td> <input wicket:id="email" class="form-control" type="text"/></td>
+                </tr>
+                <tr>
+                    <td>Telefone</td>
+                    <td> <input wicket:id="telefone" class="form-control" type="text"/></td>
+                </tr>
+                <tr>
+                    <td>RG</td>
+                    <td> <input wicket:id="rg" class="form-control" type="text"/></td>
+                </tr>
+                <tr>
+                    <td>Orgao Expedidor</td>
+                    <td> <input wicket:id="orgaoExpedidor" class="form-control" type="text"/></td>
+                </tr>
+                <tr>
+                    <td>Inscrição Estadual</td>
+                    <td> <input wicket:id="inscricaoEstadual" class="form-control" type="text"/></td>
+                </tr>
+                <tr>
+                    <td>Data de Nascimento</td>
+                    <td> <input wicket:id="dataNascimento" class="form-control" type="text"/></td>
+                </tr>
+                <tr>
+                    <td>Ativo</td>
+                    <td> <input wicket:id="ativo" class="form-control" type="text"/></td>
+                </tr>
+            </table>
+            <button wicket:id="salvar" type="button" class="btn btn-success btn-sm">Salvar</button>
+        </div>
+    </form>
 
+
+
+    <div id="item">
+        <table class="table table-striped">
+            <tr>
+                <th>ID</th>
+                <th>Tipo</th>
+                <th>CPF/CNPJ</th>
+                <th>Nome/Razao Social</th>
+                <th>Email</th>
+                <th>Telefone</th>
+                <th>RG</th>
+                <th>Orgao Expedidor</th>
+                <th>Inscricao Estadual</th>
+                <th>Data Nascimento</th>
+                <th>Ativo</th>
+            </tr>
+            <tr wicket:id="monitoradorList">
+                <td wicket:id="id"></td>
+                <td wicket:id="tipoPessoa"></td>
+                <td wicket:id="cpfCnpj"></td>
+                <td wicket:id="nomeRazaoSocial"></td>
+                <td wicket:id="email"></td>
+                <td wicket:id="telefone"></td>
+                <td wicket:id="rg"></td>
+                <td wicket:id="orgaoExpedidor"></td>
+                <td wicket:id="inscricaoEstadual"></td>
+                <td wicket:id="dataNascimento"></td>
+                <td wicket:id="ativo"></td>
+            </tr>
+        </table>
+    </div>
+</wicket:extend>
 </body>
 </html>
