@@ -29,6 +29,7 @@ public class PesquisarPage extends BasePage implements Serializable {
                         "nome", "razaoSocial", "telefone", "email",
                         "rg", "inscricaoEstadual", "dataNascimento","ativo");
 
+
                 propertyNames.forEach(propertyName ->
                         listItem.add(new Label(propertyName, new PropertyModel<>(listItem.getModel(), propertyName)))
                 );

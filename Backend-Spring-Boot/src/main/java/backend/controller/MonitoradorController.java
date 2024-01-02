@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/monitoradores")
+@RequestMapping(value = "/api/monitoradores", produces = "application/json; charset=UTF-8")
 public class MonitoradorController {
 
     private final MonitoradorService monitoradorService;
@@ -23,11 +23,11 @@ public class MonitoradorController {
         this.monitoradorService = monitoradorService;
     }
 
-//    @PostMapping
-//    public ResponseEntity<Monitorador> createMonitorador(@RequestBody Monitorador monitorador) {
-//        Monitorador savedMonitorador = monitoradorService.salvarMonitoradorComEnderecos(monitorador);
-//        return ResponseEntity.ok(savedMonitorador);
-//    }
+    @PostMapping
+    public ResponseEntity<Monitorador> createMonitorador(@RequestBody Monitorador monitorador) {
+        Monitorador savedMonitorador = monitoradorService.saveMonitorador(monitorador);
+        return ResponseEntity.ok(savedMonitorador);
+    }
 
     @GetMapping
     public ResponseEntity<List<Monitorador>> getAllMonitoradores() {
@@ -74,12 +74,6 @@ public class MonitoradorController {
 
     // Outros endpoints podem ser adicionados aqui
 
-    @PostMapping
-    public ResponseEntity<Monitorador> createMonitoradorComEnderecos(@RequestBody MonitoradorDTO monitoradorDTO) {
-        Monitorador monitorador = convertToEntity(monitoradorDTO);
-        Monitorador savedMonitorador = monitoradorService.salvarMonitoradorComEnderecos(monitorador);
-        return ResponseEntity.ok(savedMonitorador);
-    }
 
     private Monitorador convertToEntity(MonitoradorDTO monitoradorDTO) {
         Monitorador monitorador = new Monitorador();

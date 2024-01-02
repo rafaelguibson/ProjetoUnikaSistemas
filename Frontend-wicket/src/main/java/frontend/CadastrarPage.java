@@ -1,5 +1,6 @@
 package frontend;
 
+import frontend.entities.Endereco;
 import frontend.entities.Monitorador;
 import frontend.httpClient.MonitoradorHttpClient;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -13,6 +14,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.CompoundPropertyModel;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 
@@ -57,6 +59,7 @@ public class CadastrarPage extends BasePage {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 Monitorador monitoradorSalvar = new Monitorador();
+                monitoradorSalvar.setTipoPessoa("Jurídica");
                 monitoradorSalvar.setNome(nome.getValue());
                 monitoradorSalvar.setCpf(cpf.getValue());
                 monitoradorSalvar.setTelefone(telefone.getValue());
@@ -64,6 +67,7 @@ public class CadastrarPage extends BasePage {
                 monitoradorSalvar.setRg(rg.getValue());
                 monitoradorSalvar.setDataNascimento(new Date());
                 monitoradorSalvar.setAtivo(true);
+                monitoradorSalvar.setEnderecos(new ArrayList<Endereco>());
                 monitoradorHttpClient.salvar(monitoradorSalvar);
 
                 formNewPF.setVisible(false);
