@@ -124,3 +124,16 @@ h2 {
 	justify-content: center;
 	align-items: center;
 }
+h11 {
+	color:red;
+}
+
+#logo {
+	width:50%;
+	height:50%;
+}
+
+.panel-heading{
+	font-size:150%;
+}
+

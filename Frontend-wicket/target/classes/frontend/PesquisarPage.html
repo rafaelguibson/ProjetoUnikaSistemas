@@ -1,45 +1,89 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
     <title>Title</title>
 </head>
 <body>
 <wicket:extend>
+
     <h1 wicket:id="label"></h1>
 
-    <div class="items">
-        <table class="table">
-            <tr>
-                <th>id</th>
-                <th>Tipo Pessoa</th>
-                <th>cpf</th>
-                <th>cnpj</th>
-                <th>nome</th>
-                <th>razaoSocial</th>
-                <th>telefone</th>
-                <th>email</th>
-                <th>rg</th>
-                <th>inscricaoEstadual</th>
-                <th>dataNascimento</th>
-                <th>ativo</th>
-            </tr>
-            <tr wicket:id="monitoradorList">
-                <td wicket:id="id"></td>
-                <td wicket:id="tipoPessoa"></td>
-                <td wicket:id="cpf"></td>
-                <td wicket:id="cnpj"></td>
-                <td wicket:id="nome"></td>
-                <td wicket:id="razaoSocial"></td>
-                <td wicket:id="telefone"></td>
-                <td wicket:id="email"></td>
-                <td wicket:id="rg"></td>
-                <td wicket:id="inscricaoEstadual"></td>
-                <td wicket:id="dataNascimento"></td>
-                <td wicket:id="ativo"></td>
-            </tr>
-        </table>
+    <div wicket:id="sectionForm" style="padding-top: 18px; padding-bottom: 10px; ">
+        <form wicket:id="form">
+            <div class="toolbar-top" style="padding-top: 20px">
+                <button class="btn btn-dark btn-lg" type="button" wicket:id="addItemLink">Pessoa Física</button>
+                <button class="btn btn-dark btn-lg" type="button">Pessoa Jurídica</button>
+            </div>
+            <div wicket:id="formNewPF" style="padding: 5px; background-color: #64bcec">
+                <table class="table table-borderless">
+                    <tr>
+                        <td>Nome:</td>
+                        <td><input wicket:id="nome" type="text" class="form-control"></td>
+                    </tr>
+                    <tr>
+                        <td>CPF:</td>
+                        <td><input wicket:id="cpf" type="text" class="form-control"></td>
+                    </tr>
+                    <tr>
+                        <td>Telefone:</td>
+                        <td><input wicket:id="telefone" type="text" class="form-control"></td>
+                    </tr>
+                    <tr>
+                        <td>Email:</td>
+                        <td><input wicket:id="email" type="text" class="form-control"></td>
+                    </tr>
+                    <tr>
+                        <td>RG:</td>
+                        <td><input wicket:id="rg" type="text" class="form-control"></td>
+                    </tr>
+                    <tr>
+                        <td>Data de Nascimento:</td>
+                        <td><input wicket:id="dataNascimento" style="display:table-cell;" type="date"
+                                   class="form-control"/></td>
+                    </tr>
+                    <tr>
+                        <td>Ativo:</td>
+                        <td><input wicket:id="ativo" type="checkbox" class="form-check-input" id="exampleCheck1"></td>
+                    </tr>
+
+                </table>
+                <button wicket:id="save" type="button" class="btn btn-success btn-sm">Salvar</button>
+            </div>
+            <table class="table">
+                <tr>
+                    <th>id</th>
+                    <th>Tipo Pessoa</th>
+                    <th>cpf</th>
+                    <th>cnpj</th>
+                    <th>nome</th>
+                    <th>razaoSocial</th>
+                    <th>telefone</th>
+                    <th>email</th>
+                    <th>rg</th>
+                    <th>inscricaoEstadual</th>
+                    <th>dataNascimento</th>
+                    <th>ativo</th>
+                </tr>
+                <tr wicket:id="monitoradorList">
+                    <td wicket:id="id"></td>
+                    <td wicket:id="tipoPessoa"></td>
+                    <td wicket:id="cpf"></td>
+                    <td wicket:id="cnpj"></td>
+                    <td wicket:id="nome"></td>
+                    <td wicket:id="razaoSocial"></td>
+                    <td wicket:id="telefone"></td>
+                    <td wicket:id="email"></td>
+                    <td wicket:id="rg"></td>
+                    <td wicket:id="inscricaoEstadual"></td>
+                    <td wicket:id="dataNascimento"></td>
+                    <td wicket:id="ativo"></td>
+                </tr>
+            </table>
+        </form>
     </div>
+
+    <div wicket:id="feedbackPanel"></div>
 </wicket:extend>
 </body>
 </html>
