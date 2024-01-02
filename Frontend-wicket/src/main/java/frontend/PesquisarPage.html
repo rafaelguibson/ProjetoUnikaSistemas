@@ -6,8 +6,40 @@
 </head>
 <body>
 <wicket:extend>
+    <h1 wicket:id="label"></h1>
 
-   <h1>Pesquisar Monitorador</h1>
+    <div class="items">
+        <table class="table">
+            <tr>
+                <th>id</th>
+                <th>Tipo Pessoa</th>
+                <th>cpf</th>
+                <th>cnpj</th>
+                <th>nome</th>
+                <th>razaoSocial</th>
+                <th>telefone</th>
+                <th>email</th>
+                <th>rg</th>
+                <th>inscricaoEstadual</th>
+                <th>dataNascimento</th>
+                <th>ativo</th>
+            </tr>
+            <tr wicket:id="monitoradorList">
+                <td wicket:id="id"></td>
+                <td wicket:id="tipoPessoa"></td>
+                <td wicket:id="cpf"></td>
+                <td wicket:id="cnpj"></td>
+                <td wicket:id="nome"></td>
+                <td wicket:id="razaoSocial"></td>
+                <td wicket:id="telefone"></td>
+                <td wicket:id="email"></td>
+                <td wicket:id="rg"></td>
+                <td wicket:id="inscricaoEstadual"></td>
+                <td wicket:id="dataNascimento"></td>
+                <td wicket:id="ativo"></td>
+            </tr>
+        </table>
+    </div>
 </wicket:extend>
 </body>
 </html>

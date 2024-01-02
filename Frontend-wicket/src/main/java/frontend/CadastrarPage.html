@@ -7,6 +7,50 @@
 <body>
 <wicket:extend>
     <h1 wicket:id="titulo">[Texto Aparecerá Aqui]</h1>
+    <h2>Por Favor, escolha sua modalidade .... </h2>
+    <div class="d-grid gap-2">
+        <form wicket:id="form" >
+            <div class="toolbar-top" style="padding-top: 20px">
+                <button class="btn btn-dark btn-lg" type="button" wicket:id="addItemLink">Pessoa Física</button>
+                <button class="btn btn-dark btn-lg" type="button">Pessoa Jurídica</button>
+            </div>
+            <div wicket:id="formNewPF" style="padding: 5px; background-color: #64bcec">
+                <table class="table table-borderless">
+                    <tr>
+                        <td>Nome: </td>
+                        <td><input wicket:id="nome" type="text" class="form-control"></td>
+                    </tr>
+                    <tr>
+                        <td>CPF: </td>
+                        <td><input wicket:id="cpf" type="text" class="form-control"></td>
+                    </tr>
+                    <tr>
+                        <td>Telefone: </td>
+                        <td><input wicket:id="telefone" type="text" class="form-control"></td>
+                    </tr>
+                    <tr>
+                        <td>Email: </td>
+                        <td><input wicket:id="email" type="text" class="form-control"></td>
+                    </tr>
+                    <tr>
+                        <td>RG: </td>
+                        <td><input wicket:id="rg" type="text" class="form-control"></td>
+                    </tr>
+                    <tr>
+                        <td>Data de Nascimento: </td>
+                        <td><input wicket:id="dataNascimento" style="display:table-cell;" type="date" class="form-control"/></td>
+                    </tr>
+                    <tr>
+                        <td>Ativo: </td>
+                        <td><input wicket:id="ativo" type="checkbox" class="form-check-input" id="exampleCheck1"></td>
+                    </tr>
+
+                </table>
+                <button wicket:id="save" type="button" class="btn btn-success btn-sm">Salvar</button>
+            </div>
+        </form>
+
+    </div>
 </wicket:extend>
 </body>
 </html>
