@@ -8,7 +8,7 @@
 <wicket:extend>
 
     <h1 wicket:id="label"></h1>
-
+    <div wicket:id="feedbackPanel"></div>
     <div wicket:id="sectionForm" style="padding-top: 18px; padding-bottom: 10px; ">
         <form wicket:id="form">
             <div class="toolbar-top" style="padding-top: 20px">
@@ -52,6 +52,7 @@
             </div>
             <table class="table">
                 <tr>
+                    <th></th>
                     <th>id</th>
                     <th>Tipo Pessoa</th>
                     <th>cpf</th>
@@ -66,6 +67,7 @@
                     <th>ativo</th>
                 </tr>
                 <tr wicket:id="monitoradorList">
+                    <td><input type="checkbox" wicket:id="selected"></td>
                     <td wicket:id="id"></td>
                     <td wicket:id="tipoPessoa"></td>
                     <td wicket:id="cpf"></td>
@@ -80,10 +82,11 @@
                     <td wicket:id="ativo"></td>
                 </tr>
             </table>
+
         </form>
     </div>
 
-    <div wicket:id="feedbackPanel"></div>
+
 </wicket:extend>
 </body>
 </html>

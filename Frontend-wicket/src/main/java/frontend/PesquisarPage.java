@@ -27,8 +27,9 @@ import java.util.List;
 public class PesquisarPage extends BasePage implements Serializable {
     MonitoradorHttpClient monitoradorHttpClient = new MonitoradorHttpClient("http://localhost:8080/api/monitoradores");
     FeedbackPanel fp;
+    List<Monitorador> mntList;
     public PesquisarPage() {
-        WebMarkupContainer formNewPF = new WebMarkupContainer("formNewPF");
+
 
 
         Label label = new Label("label", "Listar Monitoradores");
@@ -39,22 +40,22 @@ public class PesquisarPage extends BasePage implements Serializable {
         add(fp);
 
         WebMarkupContainer sectionForm = new WebMarkupContainer("sectionForm");
-        sectionForm.setOutputMarkupPlaceholderTag(true);
         sectionForm.setOutputMarkupId(true);
         add(sectionForm);
 
         Form<Void> form = new Form<>("form");
         sectionForm.add(form);
 
+        WebMarkupContainer formNewPF = new WebMarkupContainer("formNewPF");
 
-        AjaxLink<Void> cadastrarPF = new AjaxLink<>("addItemLink") {
+        AjaxLink<Void> btnAdd = new AjaxLink<>("addItemLink") {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 formNewPF.setVisible(!formNewPF.isVisible());
                 target.add(formNewPF);
             }
         };
-        form.add(cadastrarPF);
+        form.add(btnAdd);
 
 
         formNewPF.setOutputMarkupPlaceholderTag(true);
@@ -95,6 +96,9 @@ public class PesquisarPage extends BasePage implements Serializable {
 
                 formNewPF.setVisible(false);
 
+                mntList.clear();
+                mntList.addAll(monitoradorHttpClient.listarTodos());
+
                 showInfo(target, "Adicionado com Sucesso!!");
 
                 target.add(sectionForm);
@@ -103,23 +107,29 @@ public class PesquisarPage extends BasePage implements Serializable {
         btnSave.add(new AjaxFormSubmitBehavior(form,"click") {});
         formNewPF.add(nome,cpf,telefone,email,rg,dataNascimento, inputAtivo, btnSave);
 
-        List<Monitorador> mntList = monitoradorHttpClient.listarTodos();
+        mntList = monitoradorHttpClient.listarTodos();
 
         ListView<Monitorador> monitoradorList = new ListView<Monitorador>("monitoradorList", mntList) {
             @Override
-            protected void populateItem(ListItem<Monitorador> listItem) {
-                List<String> propertyNames = Arrays.asList("id", "tipoPessoa", "cpf", "cnpj",
-                        "nome", "razaoSocial", "telefone", "email",
-                        "rg", "inscricaoEstadual", "dataNascimento","ativo");
-
-
-                propertyNames.forEach(propertyName ->
-                        listItem.add(new Label(propertyName, new PropertyModel<>(listItem.getModel(), propertyName)))
-                );
+            protected void populateItem(ListItem<Monitorador> item) {
+//                List<String> propertyNames = Arrays.asList("id", "tipoPessoa", "cpf", "cnpj",
+//                        "nome", "razaoSocial", "telefone", "email",
+//                        "rg", "inscricaoEstadual", "dataNascimento","ativo");
+                item.add(new CheckBox("selected", new PropertyModel<>(item.getModel(), "selected")));
+                item.add(new Label("id", new PropertyModel<String>(item.getModel(),"id")));
+                item.add(new Label("tipoPessoa", new PropertyModel<String>(item.getModel(),"tipoPessoa")));
+                item.add(new Label("cpf", new PropertyModel<String>(item.getModel(),"cpf")));
+                item.add(new Label("cnpj", new PropertyModel<String>(item.getModel(),"cnpj")));
+                item.add(new Label("nome", new PropertyModel<String>(item.getModel(),"nome")));
+                item.add(new Label("razaoSocial", new PropertyModel<String>(item.getModel(),"razaoSocial")));
+                item.add(new Label("telefone", new PropertyModel<String>(item.getModel(),"telefone")));
+                item.add(new Label("email", new PropertyModel<String>(item.getModel(),"email")));
+                item.add(new Label("rg", new PropertyModel<String>(item.getModel(),"rg")));
+                item.add(new Label("inscricaoEstadual", new PropertyModel<String>(item.getModel(),"inscricaoEstadual")));
+                item.add(new Label("dataNascimento", new PropertyModel<String>(item.getModel(),"dataNascimento")));
+                item.add(new Label("ativo", new PropertyModel<String>(item.getModel(),"ativo")));
             }
         };
-        monitoradorList.setOutputMarkupPlaceholderTag(true);
-        monitoradorList.setOutputMarkupId(true);
         monitoradorList.setReuseItems(true);
         form.add(monitoradorList);
     }

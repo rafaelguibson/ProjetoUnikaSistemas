@@ -57,6 +57,8 @@ public class Monitorador {
     @OneToMany(mappedBy = "monitorador", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Endereco> enderecos;
 
+    @Transient
+    private boolean selected;
 }
 
 

@@ -1,5 +1,6 @@
 package frontend.entities;
 
+import java.beans.Transient;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -27,6 +28,8 @@ public class Monitorador implements Serializable {
     private Date dataNascimento;
     private Boolean ativo;
     private List<Endereco> enderecos;
+    private boolean selected;
+
 
     @Override
     public boolean equals(Object o) {
