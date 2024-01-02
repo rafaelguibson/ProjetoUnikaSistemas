@@ -59,6 +59,7 @@ public class MonitoradorService {
 
     public Monitorador updateMonitorador(Monitorador monitorador) {
         // Adicione lógica de validação ou negócios antes de atualizar
+
         return monitoradorRepository.save(monitorador);
     }
 
@@ -74,6 +75,9 @@ public class MonitoradorService {
         return monitoradorRepository.findByTipoPessoa("JURIDICA");
     }
 
+    public void deleteAllMonitoradores(List<Monitorador> list) {
+        monitoradorRepository.deleteAll(list);
+    }
     // Outros métodos relacionados ao negócio podem ser adicionados aqui
 }
 

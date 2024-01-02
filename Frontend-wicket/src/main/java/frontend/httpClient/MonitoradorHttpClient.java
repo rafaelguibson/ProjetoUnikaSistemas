@@ -1,5 +1,6 @@
 package frontend.httpClient;
 
+import com.amazonaws.services.dynamodbv2.xspec.M;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -106,6 +107,24 @@ public class MonitoradorHttpClient implements Serializable {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void deleteAllMonitoradores(List<Monitorador> monitoradores) {
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            HttpPost request = new HttpPost(baseUrl + "/deleteAll");
+            request.setHeader("Content-Type", "application/json; charset=UTF-8");
+
+            // Converte a lista de Monitorador para JSON
+            String requestBody = objectMapper.writeValueAsString(monitoradores);
+            request.setEntity(new StringEntity(requestBody, ContentType.APPLICATION_JSON));
+
+            try (CloseableHttpResponse response = httpClient.execute(request)) {
+                // adicionar lógica adicional aqui se necessário,
+                // por exemplo, para processar a resposta do servidor
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PesquisarPage extends BasePage implements Serializable {
     MonitoradorHttpClient monitoradorHttpClient = new MonitoradorHttpClient("http://localhost:8080/api/monitoradores");
@@ -55,7 +56,28 @@ public class PesquisarPage extends BasePage implements Serializable {
                 target.add(formNewPF);
             }
         };
-        form.add(btnAdd);
+
+        AjaxLink<Void> btnRemove = new AjaxLink<Void>("remove") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                List<Monitorador> monitoradorRemove = mntList.stream().
+                        filter(Monitorador::isSelected).collect(Collectors.toList());
+
+                monitoradorHttpClient.deleteAllMonitoradores(monitoradorRemove);
+
+                mntList.clear();
+                mntList.addAll(monitoradorHttpClient.listarTodos());
+
+               if(monitoradorRemove.isEmpty()) {
+                   showInfo(target, "Selecione algum item para remover...");
+               } else {
+                   showInfo(target, "Foram removidos ("+monitoradorRemove.size()+") monitoradores...");
+               }
+                target.add(sectionForm);
+            }
+        };
+        btnRemove.add(new AjaxFormSubmitBehavior(form, "click") {});
+        form.add(btnAdd, btnRemove);
 
 
         formNewPF.setOutputMarkupPlaceholderTag(true);
@@ -132,6 +154,28 @@ public class PesquisarPage extends BasePage implements Serializable {
         };
         monitoradorList.setReuseItems(true);
         form.add(monitoradorList);
+
+        AjaxLink<Void> btnSelectAll = new AjaxLink<>("btnSelectAll") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                for (Monitorador monitorador : mntList) {
+                    monitorador.setSelected(true);
+                    target.add(sectionForm);
+                }
+            }
+        };
+        AjaxLink<Void> btnDeSelectAll = new AjaxLink<>("btnDeSelectAll") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                for (Monitorador monitorador : mntList) {
+                    monitorador.setSelected(false);
+                    target.add(sectionForm);
+                }
+            }
+        };
+        btnDeSelectAll.add(new AjaxFormSubmitBehavior(form,"click") {});
+        btnSelectAll.add(new AjaxFormSubmitBehavior(form,"click") {});
+        form.add(btnSelectAll, btnDeSelectAll);
     }
 
     private void showInfo(AjaxRequestTarget target, String msg) {

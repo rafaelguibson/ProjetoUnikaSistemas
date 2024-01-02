@@ -72,6 +72,12 @@ public class MonitoradorController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/deleteAll")
+    public ResponseEntity<Void> deleteAllMonitoradores(@RequestBody List<Monitorador> monitorador) {
+        monitoradorService.deleteAllMonitoradores(monitorador);
+        return ResponseEntity.ok().build();
+    }
+
     // Outros endpoints podem ser adicionados aqui
 
 

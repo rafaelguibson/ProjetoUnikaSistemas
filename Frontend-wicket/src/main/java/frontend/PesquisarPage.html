@@ -14,6 +14,7 @@
             <div class="toolbar-top" style="padding-top: 20px">
                 <button class="btn btn-dark btn-lg" type="button" wicket:id="addItemLink">Pessoa Física</button>
                 <button class="btn btn-dark btn-lg" type="button">Pessoa Jurídica</button>
+                <button class="btn btn-dark btn-lg" type="button" wicket:id="remove">Remover Item</button>
             </div>
             <div wicket:id="formNewPF" style="padding: 5px; background-color: #64bcec">
                 <table class="table table-borderless">
@@ -82,7 +83,8 @@
                     <td wicket:id="ativo"></td>
                 </tr>
             </table>
-
+            <button class="btn btn-dark btn-sm" type="button" wicket:id="btnSelectAll">Marcar Tudo</button>
+            <button class="btn btn-dark btn-sm" type="button" wicket:id="btnDeSelectAll">Desmarcar Tudo</button>
         </form>
     </div>
 
