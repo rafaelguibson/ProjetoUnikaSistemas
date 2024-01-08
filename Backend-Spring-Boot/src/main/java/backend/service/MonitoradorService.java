@@ -27,6 +27,9 @@ public class MonitoradorService {
 
     public Monitorador saveMonitorador(Monitorador monitorador) {
         // Adicione aqui qualquer lógica de negócios antes de salvar
+
+        monitorador.setCpf(monitorador.getCpf().replaceAll("\\D", ""));
+        monitorador.setTelefone(monitorador.getTelefone().replaceAll("\\D", ""));
         return monitoradorRepository.save(monitorador);
     }
 

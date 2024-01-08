@@ -29,13 +29,9 @@ public class WicketApplication extends WebApplication
 	public void init()
 	{
 		super.init();
+		getCspSettings().blocking().disabled();
 		getRequestCycleSettings().setResponseRequestEncoding("UTF-8");
 		getMarkupSettings().setDefaultMarkupEncoding("UTF-8");
-
-		getCspSettings().blocking()
-				.add(CSPDirective.STYLE_SRC, CSPDirectiveSrcValue.SELF)
-				.add(CSPDirective.STYLE_SRC, "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css")
-				.add(CSPDirective.FONT_SRC, "https://fonts.gstatic.com");
 
 	}
 }

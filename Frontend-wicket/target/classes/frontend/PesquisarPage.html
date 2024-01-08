@@ -13,18 +13,20 @@
         <form wicket:id="form">
             <div class="toolbar-top" style="padding-top: 20px">
                 <button class="btn btn-dark btn-lg" type="button" wicket:id="addItemLink">Pessoa Física</button>
-                <button class="btn btn-dark btn-lg" type="button">Pessoa Jurídica</button>
+                <button class="btn btn-dark btn-lg" type="button" wicket:id="btnCadastrarPj">Pessoa Jurídica</button>
                 <button class="btn btn-dark btn-lg" type="button" wicket:id="remove">Remover Item</button>
+                <button class="btn btn-dark btn-lg" type="button" wicket:id="edit">Editar Item</button>
             </div>
-            <div wicket:id="formNewPF" style="padding: 5px; background-color: #64bcec">
+
+            <div wicket:id="formNewPF" style="padding: 5px; background-color: #000000">
                 <table class="table table-borderless">
                     <tr>
-                        <td>Nome:</td>
-                        <td><input wicket:id="nome" type="text" class="form-control"></td>
+                        <td>Razão Social:</td>
+                        <td><input wicket:id="razaoSocial" type="text" class="form-control"></td>
                     </tr>
                     <tr>
                         <td>CPF:</td>
-                        <td><input wicket:id="cpf" type="text" class="form-control"></td>
+                        <td><input wicket:id="cnpj" type="text" class="form-control" id="cnpj"></td>
                     </tr>
                     <tr>
                         <td>Telefone:</td>
@@ -49,11 +51,12 @@
                     </tr>
 
                 </table>
-                <button wicket:id="save" type="button" class="btn btn-success btn-sm">Salvar</button>
+                <button wicket:id="save" type="button" class="btn btn-dark btn-lg">Salvar</button>
             </div>
+            <div wicket:id="modal"></div>
             <table class="table">
                 <tr>
-                    <th></th>
+                    <th><i class="bi bi-trash"></i></th>
                     <th>id</th>
                     <th>Tipo Pessoa</th>
                     <th>cpf</th>

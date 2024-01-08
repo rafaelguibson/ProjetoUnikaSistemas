@@ -168,6 +168,27 @@
 			<version>${wicket.version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.webjars.bower</groupId>
+			<artifactId>jquery</artifactId>
+			<version>3.7.1</version>
+		</dependency>
+
+		<!-- jQuery Mask Plugin WebJar -->
+		<dependency>
+			<groupId>org.webjars.bower</groupId>
+			<artifactId>jQuery-Mask-Plugin</artifactId>
+			<version>1.14.10</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>4.0.1</version>
+			<scope>provided</scope>
+		</dependency>
+
+
 	</dependencies>
 	<build>
 		<resources>

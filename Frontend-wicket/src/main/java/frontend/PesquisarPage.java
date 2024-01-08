@@ -1,11 +1,13 @@
 package frontend;
 
+import frontend.Masks.MaskBehavior;
 import frontend.entities.Endereco;
 import frontend.entities.Monitorador;
 import frontend.httpClient.MonitoradorHttpClient;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -16,11 +18,11 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,6 +38,12 @@ public class PesquisarPage extends BasePage implements Serializable {
         Label label = new Label("label", "Listar Monitoradores");
         add(label);
 
+        final ModalWindow modal = new ModalWindow("modal");
+        modal.setInitialHeight(450);
+        modal.setInitialWidth(950);
+        modal.setTitle("Cadastro de Pessoa Jurídica");
+
+
         fp = new FeedbackPanel("feedbackPanel");
         fp.setOutputMarkupPlaceholderTag(true);
         add(fp);
@@ -48,12 +56,21 @@ public class PesquisarPage extends BasePage implements Serializable {
         sectionForm.add(form);
 
         WebMarkupContainer formNewPF = new WebMarkupContainer("formNewPF");
-
+        form.add(modal);
         AjaxLink<Void> btnAdd = new AjaxLink<>("addItemLink") {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 formNewPF.setVisible(!formNewPF.isVisible());
                 target.add(formNewPF);
+            }
+        };
+
+        AjaxLink<Void> btnCadastrarPJ = new AjaxLink<>("btnCadastrarPj") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                    CadastrarPJ cadastrarPJ = new CadastrarPJ(modal.getContentId());
+                    modal.setContent(cadastrarPJ);
+                    modal.show(target);
             }
         };
 
@@ -76,8 +93,14 @@ public class PesquisarPage extends BasePage implements Serializable {
                 target.add(sectionForm);
             }
         };
+        AjaxLink<Void> btnEdit = new AjaxLink<>("edit") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+
+            }
+        };
         btnRemove.add(new AjaxFormSubmitBehavior(form, "click") {});
-        form.add(btnAdd, btnRemove);
+        form.add(btnAdd,btnCadastrarPJ, btnRemove,btnEdit);
 
 
         formNewPF.setOutputMarkupPlaceholderTag(true);
@@ -88,7 +111,8 @@ public class PesquisarPage extends BasePage implements Serializable {
         form.setDefaultModel(new CompoundPropertyModel<>(monitorador));
 
         TextField<String> nome = new TextField<String>("nome");
-        TextField<String> cpf = new TextField<String>("cpf");
+        TextField<String> cpf = new TextField<String>("cpf", Model.of(""));
+        cpf.add(new MaskBehavior("000.000.000-00"));
         TextField<String> telefone = new TextField<String>("telefone");
         TextField<String> email = new TextField<String>("email");
         TextField<String> rg = new TextField<String>("rg");
