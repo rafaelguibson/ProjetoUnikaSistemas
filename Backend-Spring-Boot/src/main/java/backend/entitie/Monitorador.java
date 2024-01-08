@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.br.CNPJ;
+import org.hibernate.validator.constraints.br.CPF;
 
 import java.util.Date;
 import java.util.List;
@@ -23,9 +25,11 @@ public class Monitorador {
     @Column(name = "tipo_pessoa", nullable = false)
     private String tipoPessoa;
 
+    @CPF
     @Column(name = "cpf", unique = true, length = 11)
     private String cpf;
 
+    @CNPJ
     @Column(name = "cnpj", unique = true, length = 14)
     private String cnpj;
 

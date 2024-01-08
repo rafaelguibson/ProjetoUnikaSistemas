@@ -11,6 +11,7 @@
 <body>
 <wicket:panel xmlns:wicket="http://wicket.apache.org">
     <div >
+        <div wicket:id="feedbackPanel"></div>
         <form wicket:id="form" class="form-control">
             <table class="table table-borderless">
                 <tr>
@@ -46,6 +47,9 @@
             </table>
             <dv class="container">
                 <button wicket:id="save" type="button" class="btn btn-dark btn-sm">Salvar</button>
+                <a href="#" title="" class="btn btn-primary">
+                    <span class="icon">F</span> compartilhar
+                </a>
             </dv>
             
         </form>

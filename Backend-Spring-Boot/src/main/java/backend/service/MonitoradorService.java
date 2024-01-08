@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -28,9 +29,7 @@ public class MonitoradorService {
     public Monitorador saveMonitorador(Monitorador monitorador) {
         // Adicione aqui qualquer lógica de negócios antes de salvar
 
-        monitorador.setCpf(monitorador.getCpf().replaceAll("\\D", ""));
-        monitorador.setTelefone(monitorador.getTelefone().replaceAll("\\D", ""));
-        return monitoradorRepository.save(monitorador);
+        return monitoradorRepository.save(removerMascaras(monitorador));
     }
 
     @Transactional
@@ -81,6 +80,15 @@ public class MonitoradorService {
     public void deleteAllMonitoradores(List<Monitorador> list) {
         monitoradorRepository.deleteAll(list);
     }
-    // Outros métodos relacionados ao negócio podem ser adicionados aqui
+    public Monitorador removerMascaras(Monitorador monitorador) {
+        if(monitorador.getTipoPessoa().equals("Física")) {
+            monitorador.setCpf(monitorador.getCpf().replaceAll("\\D", ""));
+        }
+        if(monitorador.getTipoPessoa().equals("Jurídica")) {
+            monitorador.setCnpj(monitorador.getCnpj().replaceAll("\\D", ""));
+        }
+        monitorador.setTelefone(monitorador.getTelefone().replaceAll("\\D", ""));
+        return monitorador;
+    }
 }
 

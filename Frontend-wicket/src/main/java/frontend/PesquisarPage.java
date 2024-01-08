@@ -69,6 +69,14 @@ public class PesquisarPage extends BasePage implements Serializable {
                 modal.setEscapeModelStrings(false);
                 modal.setContent(cadastrarPF);
                 modal.show(target);
+                modal.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
+                    @Override
+                    public void onClose(AjaxRequestTarget target) {
+                        mntList.clear();
+                        mntList.addAll(monitoradorHttpClient.listarTodos());
+                        target.add(sectionForm);
+                    }
+                });
                 target.add(formNewPF);
             }
         };
@@ -82,7 +90,14 @@ public class PesquisarPage extends BasePage implements Serializable {
                     System.out.println(modal.getCssClassName());
                     modal.setContent(cadastrarPJ);
                     modal.show(target);
-
+                modal.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
+                    @Override
+                    public void onClose(AjaxRequestTarget target) {
+                        mntList.clear();
+                        mntList.addAll(monitoradorHttpClient.listarTodos());
+                        target.add(sectionForm);
+                    }
+                });
             }
         };
 
