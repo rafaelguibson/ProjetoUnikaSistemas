@@ -18,6 +18,9 @@ public class MaskBehavior extends Behavior {
     @Override
     public void renderHead(Component component, IHeaderResponse response) {
         super.renderHead(component, response);
+        response.render(OnDomReadyHeaderItem.forScript(
+                "$('#" + component.getMarkupId() + "').mask('" + mask + "');"
+        ));
         response.render(JavaScriptHeaderItem.forUrl("mascaras.js"));
     }
 

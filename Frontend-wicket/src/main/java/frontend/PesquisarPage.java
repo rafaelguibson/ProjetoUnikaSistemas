@@ -9,6 +9,7 @@ import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
+import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
@@ -18,6 +19,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
@@ -41,7 +43,9 @@ public class PesquisarPage extends BasePage implements Serializable {
         final ModalWindow modal = new ModalWindow("modal");
         modal.setInitialHeight(450);
         modal.setInitialWidth(950);
-        modal.setTitle("Cadastro de Pessoa Jurídica");
+
+
+
 
 
         fp = new FeedbackPanel("feedbackPanel");
@@ -57,10 +61,14 @@ public class PesquisarPage extends BasePage implements Serializable {
 
         WebMarkupContainer formNewPF = new WebMarkupContainer("formNewPF");
         form.add(modal);
-        AjaxLink<Void> btnAdd = new AjaxLink<>("addItemLink") {
+        AjaxLink<Void> btnCadastrarPF = new AjaxLink<>("addItemLink") {
             @Override
             public void onClick(AjaxRequestTarget target) {
-                formNewPF.setVisible(!formNewPF.isVisible());
+                CadastrarPF cadastrarPF = new CadastrarPF(modal.getContentId());
+                modal.setTitle("Cadastro de Pessoa Física");
+                modal.setEscapeModelStrings(false);
+                modal.setContent(cadastrarPF);
+                modal.show(target);
                 target.add(formNewPF);
             }
         };
@@ -69,8 +77,12 @@ public class PesquisarPage extends BasePage implements Serializable {
             @Override
             public void onClick(AjaxRequestTarget target) {
                     CadastrarPJ cadastrarPJ = new CadastrarPJ(modal.getContentId());
+                    modal.setTitle("Cadastro de Pessoa Jurídica");
+                    modal.setEscapeModelStrings(true);
+                    System.out.println(modal.getCssClassName());
                     modal.setContent(cadastrarPJ);
                     modal.show(target);
+
             }
         };
 
@@ -100,7 +112,7 @@ public class PesquisarPage extends BasePage implements Serializable {
             }
         };
         btnRemove.add(new AjaxFormSubmitBehavior(form, "click") {});
-        form.add(btnAdd,btnCadastrarPJ, btnRemove,btnEdit);
+        form.add(btnCadastrarPF,btnCadastrarPJ, btnRemove,btnEdit);
 
 
         formNewPF.setOutputMarkupPlaceholderTag(true);
@@ -110,48 +122,40 @@ public class PesquisarPage extends BasePage implements Serializable {
         Monitorador monitorador = new Monitorador();
         form.setDefaultModel(new CompoundPropertyModel<>(monitorador));
 
-        TextField<String> nome = new TextField<String>("nome");
-        TextField<String> cpf = new TextField<String>("cpf", Model.of(""));
-        cpf.add(new MaskBehavior("000.000.000-00"));
-        TextField<String> telefone = new TextField<String>("telefone");
-        TextField<String> email = new TextField<String>("email");
-        TextField<String> rg = new TextField<String>("rg");
-        DateTextField dataNascimento = new DateTextField("dataNascimento", "yyyy-MM-dd");
-        CheckBox inputAtivo = new CheckBox("ativo");
 
         AjaxLink<Void> btnSave = new AjaxLink<>("save") {
             @Override
             public void onClick(AjaxRequestTarget target) {
-                Monitorador monitoradorSalvar = new Monitorador();
-                monitoradorSalvar.setTipoPessoa("Jurídica");
-                monitoradorSalvar.setNome(nome.getValue());
-                monitoradorSalvar.setCpf(cpf.getValue());
-                monitoradorSalvar.setTelefone(telefone.getValue());
-                monitoradorSalvar.setEmail(email.getValue());
-                monitoradorSalvar.setRg(rg.getValue());
-                monitoradorSalvar.setDataNascimento(new Date());
-                monitoradorSalvar.setAtivo(true);
-                monitoradorSalvar.setEnderecos(new ArrayList<Endereco>());
-                monitoradorHttpClient.salvar(monitoradorSalvar);
-
-                monitorador.setNome("");
-                monitorador.setCpf("");
-                monitorador.setTelefone("");
-                monitorador.setEmail("");
-                monitorador.setRg("");
-
-                formNewPF.setVisible(false);
-
-                mntList.clear();
-                mntList.addAll(monitoradorHttpClient.listarTodos());
-
-                showInfo(target, "Adicionado com Sucesso!!");
-
-                target.add(sectionForm);
+//                Monitorador monitoradorSalvar = new Monitorador();
+//                monitoradorSalvar.setTipoPessoa("Jurídica");
+//                monitoradorSalvar.setNome(nome.getValue());
+//                monitoradorSalvar.setCpf(cpf.getValue());
+//                monitoradorSalvar.setTelefone(telefone.getValue());
+//                monitoradorSalvar.setEmail(email.getValue());
+//                monitoradorSalvar.setRg(rg.getValue());
+//                monitoradorSalvar.setDataNascimento(new Date());
+//                monitoradorSalvar.setAtivo(true);
+//                monitoradorSalvar.setEnderecos(new ArrayList<Endereco>());
+//                monitoradorHttpClient.salvar(monitoradorSalvar);
+//
+//                monitorador.setNome("");
+//                monitorador.setCpf("");
+//                monitorador.setTelefone("");
+//                monitorador.setEmail("");
+//                monitorador.setRg("");
+//
+//                formNewPF.setVisible(false);
+//
+//                mntList.clear();
+//                mntList.addAll(monitoradorHttpClient.listarTodos());
+//
+//                showInfo(target, "Adicionado com Sucesso!!");
+//
+//                target.add(sectionForm);
             }
         };
         btnSave.add(new AjaxFormSubmitBehavior(form,"click") {});
-        formNewPF.add(nome,cpf,telefone,email,rg,dataNascimento, inputAtivo, btnSave);
+        formNewPF.add(btnSave);
 
         mntList = monitoradorHttpClient.listarTodos();
 

@@ -1,21 +1,25 @@
 <!DOCTYPE html>
-<html lang="pt" xmlns:wicket="http://wicket.apache.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title><!DOCTYPE html>
+        <html lang="pt" xmlns:wicket="http://wicket.apache.org">
+        <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
 </head>
 <body>
 <wicket:panel xmlns:wicket="http://wicket.apache.org">
-    <div style="margin: 1em; padding-top: 5px;">
+    <div >
         <form wicket:id="form" class="form-control">
             <table class="table table-borderless">
                 <tr>
-                    <td>Razão Social:</td>
-                    <td><input wicket:id="razaoSocial" type="text" class="form-control"></td>
+                    <td>Nome:</td>
+                    <td><input wicket:id="nome" type="text" class="form-control"></td>
                 </tr>
                 <tr>
-                    <td>CNPJ:</td>
-                    <td><input wicket:id="cnpj" type="text" class="form-control" id="cnpj"></td>
+                    <td>CPF:</td>
+                    <td><input wicket:id="cpf" type="text" class="form-control" id="cpf"></td>
                 </tr>
                 <tr>
                     <td>Telefone:</td>
@@ -26,8 +30,13 @@
                     <td><input wicket:id="email" type="text" class="form-control"></td>
                 </tr>
                 <tr>
-                    <td>Inscrição Estadual:</td>
-                    <td><input wicket:id="inscricaoEstadual" type="text" class="form-control"></td>
+                    <td>RG:</td>
+                    <td><input wicket:id="rg" type="text" class="form-control"></td>
+                </tr>
+                <tr>
+                    <td>Data de Nascimento:</td>
+                    <td><input wicket:id="dataNascimento" style="display:table-cell;" type="date"
+                               class="form-control"/></td>
                 </tr>
                 <tr>
                     <td>Ativo:</td>
@@ -36,11 +45,16 @@
 
             </table>
             <dv class="container">
-
+                <button wicket:id="save" type="button" class="btn btn-dark btn-sm">Salvar</button>
             </dv>
-            <button wicket:id="save" type="button" class="btn btn-dark btn-sm">Salvar</button>
+            
         </form>
     </div>
 </wicket:panel>
+</body>
+</html></title>
+</head>
+<body>
+
 </body>
 </html>

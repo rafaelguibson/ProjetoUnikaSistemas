@@ -136,3 +136,9 @@ h11 {
 	font-size:150%;
 }
 
+.modal-title {
+	font-family: Arial, sans-serif;
+	font-size: 12px;
+	text-align: center;
+	/* outros estilos */
+}
