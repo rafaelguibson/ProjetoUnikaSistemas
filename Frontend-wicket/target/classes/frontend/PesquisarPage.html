@@ -3,6 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
     <title>Title</title>
+    <link rel="stylesheet" href="../../webapp/style.css" />
 </head>
 <body>
 <wicket:extend>
@@ -18,8 +19,8 @@
                 <button class="btn btn-dark btn-sm" type="button" wicket:id="edit">Editar Item</button>
             </div>
 
-            <div wicket:id="formNewPF" style="padding: 5px; background-color: #000000">
-                <table class="table table-borderless">
+            <div wicket:id="formNewPF" style="align-items: center; text-align: center">
+                <table class="table table-sm" >
                     <tr>
                         <td>Razão Social:</td>
                         <td><input wicket:id="razaoSocial" type="text" class="form-control"></td>
@@ -56,19 +57,21 @@
             <div wicket:id="modal" class="modal-title"></div>
             <table class="table">
                 <tr>
-                    <th><i class="bi bi-trash"></i></th>
-                    <th>id</th>
+                    <th ><i class="bi bi-check2-square" wicket:id="checkBox" ></i></th>
+                    <th>ID</th>
                     <th>Tipo Pessoa</th>
-                    <th>cpf</th>
-                    <th>cnpj</th>
-                    <th>nome</th>
-                    <th>razaoSocial</th>
-                    <th>telefone</th>
-                    <th>email</th>
-                    <th>rg</th>
-                    <th>inscricaoEstadual</th>
-                    <th>dataNascimento</th>
-                    <th>ativo</th>
+                    <th>CPF</th>
+                    <th>CNPJ</th>
+                    <th>NOME</th>
+                    <th>RAZÃO SOCIAL</th>
+                    <th>TELEFONE</th>
+                    <th>EMAIL</th>
+                    <th>RG</th>
+                    <th>INSCRIÇÃO ESTADUAL</th>
+                    <th>DATA DE NASC.</th>
+                    <th>STATUS</th>
+                    <th>EDITAR</th>
+
                 </tr>
                 <tr wicket:id="monitoradorList">
                     <td><input type="checkbox" wicket:id="selected"></td>
@@ -84,6 +87,10 @@
                     <td wicket:id="inscricaoEstadual"></td>
                     <td wicket:id="dataNascimento"></td>
                     <td wicket:id="ativo"></td>
+                    <td style="width: 100px; align-items: center; justify-content: center; justify-items: center; text-align: center" id="icon">
+                        <a href="#" wicket:id="editarLink"></a>
+                        <i class="bi bi-pencil"></i>
+                    </td>
                 </tr>
             </table>
             <button class="btn btn-dark btn-sm" type="button" wicket:id="btnSelectAll">Marcar Tudo</button>

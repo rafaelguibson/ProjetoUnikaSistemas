@@ -142,3 +142,21 @@ h11 {
 	text-align: center;
 	/* outros estilos */
 }
+th {
+	align-items: center;
+	justify-content: center;
+	justify-items: center;
+	text-align: center;
+}
+td {
+	align-items: center;
+	justify-content: center;
+	justify-items: center;
+	text-align: center;
+}
+/*main {*/
+/*	background-image: url("background.jpg");*/
+/*	background-size: cover;*/
+/*	background-repeat: no-repeat;*/
+/*	background-attachment: fixed;*/
+/*}*/

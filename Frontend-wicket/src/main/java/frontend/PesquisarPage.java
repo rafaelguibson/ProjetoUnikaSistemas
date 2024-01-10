@@ -4,7 +4,9 @@ import frontend.Masks.MaskBehavior;
 import frontend.entities.Endereco;
 import frontend.entities.Monitorador;
 import frontend.httpClient.MonitoradorHttpClient;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -137,41 +139,6 @@ public class PesquisarPage extends BasePage implements Serializable {
         Monitorador monitorador = new Monitorador();
         form.setDefaultModel(new CompoundPropertyModel<>(monitorador));
 
-
-        AjaxLink<Void> btnSave = new AjaxLink<>("save") {
-            @Override
-            public void onClick(AjaxRequestTarget target) {
-//                Monitorador monitoradorSalvar = new Monitorador();
-//                monitoradorSalvar.setTipoPessoa("Jurídica");
-//                monitoradorSalvar.setNome(nome.getValue());
-//                monitoradorSalvar.setCpf(cpf.getValue());
-//                monitoradorSalvar.setTelefone(telefone.getValue());
-//                monitoradorSalvar.setEmail(email.getValue());
-//                monitoradorSalvar.setRg(rg.getValue());
-//                monitoradorSalvar.setDataNascimento(new Date());
-//                monitoradorSalvar.setAtivo(true);
-//                monitoradorSalvar.setEnderecos(new ArrayList<Endereco>());
-//                monitoradorHttpClient.salvar(monitoradorSalvar);
-//
-//                monitorador.setNome("");
-//                monitorador.setCpf("");
-//                monitorador.setTelefone("");
-//                monitorador.setEmail("");
-//                monitorador.setRg("");
-//
-//                formNewPF.setVisible(false);
-//
-//                mntList.clear();
-//                mntList.addAll(monitoradorHttpClient.listarTodos());
-//
-//                showInfo(target, "Adicionado com Sucesso!!");
-//
-//                target.add(sectionForm);
-            }
-        };
-        btnSave.add(new AjaxFormSubmitBehavior(form,"click") {});
-        formNewPF.add(btnSave);
-
         mntList = monitoradorHttpClient.listarTodos();
 
         ListView<Monitorador> monitoradorList = new ListView<Monitorador>("monitoradorList", mntList) {
@@ -193,10 +160,37 @@ public class PesquisarPage extends BasePage implements Serializable {
                 item.add(new Label("inscricaoEstadual", new PropertyModel<String>(item.getModel(),"inscricaoEstadual")));
                 item.add(new Label("dataNascimento", new PropertyModel<String>(item.getModel(),"dataNascimento")));
                 item.add(new Label("ativo", new PropertyModel<String>(item.getModel(),"ativo")));
+                item.add(new AjaxLink<Void>("editarLink") {
+                    @Override
+                    public void onClick(AjaxRequestTarget target) {
+
+                    }
+
+                });
+
             }
         };
+        AjaxLink<Void> checkBox = new AjaxLink<>("checkBox", new PropertyModel<>(new CompoundPropertyModel<>(monitorador), "selected")) {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                for (Monitorador monitorador : mntList) {
+                    if(!monitorador.isSelected()) {
+                        monitorador.setSelected(true);
+                        target.add(sectionForm);
+                    } else {
+                        monitorador.setSelected(false);
+                        target.add(sectionForm);
+                    }
+
+                }
+
+            }
+        };
+
+
+
         monitoradorList.setReuseItems(true);
-        form.add(monitoradorList);
+        form.add(monitoradorList,checkBox);
 
         AjaxLink<Void> btnSelectAll = new AjaxLink<>("btnSelectAll") {
             @Override
