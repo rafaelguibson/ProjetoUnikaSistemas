@@ -3,6 +3,7 @@ package wicket;
 import org.apache.wicket.util.tester.WicketTester;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import wicket.classes.HomePage;
 
 /**
  * Simple test using the WicketTester

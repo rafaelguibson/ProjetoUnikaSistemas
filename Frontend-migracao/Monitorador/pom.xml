@@ -109,15 +109,20 @@
 			<version>${jetty9.version}</version>
 			<scope>test</scope>
 		</dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>31.1-jre</version>
+        </dependency>
 
-		<!-- uncomment if WebSocket support is needed
-		<dependency>
-			<groupId>org.eclipse.jetty.websocket</groupId>
-			<artifactId>javax-websocket-server-impl</artifactId>
-			<version>${jetty9.version}</version>
-			<scope>test</scope>
-		</dependency>
-		-->
+        <!-- uncomment if WebSocket support is needed
+        <dependency>
+            <groupId>org.eclipse.jetty.websocket</groupId>
+            <artifactId>javax-websocket-server-impl</artifactId>
+            <version>${jetty9.version}</version>
+            <scope>test</scope>
+        </dependency>
+        -->
 	</dependencies>
 	<build>
 		<resources>

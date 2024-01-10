@@ -1,9 +1,13 @@
 package wicket;
 
+import org.apache.wicket.core.util.resource.ClassPathResourceFinder;
 import org.apache.wicket.csp.CSPDirective;
 import org.apache.wicket.csp.CSPDirectiveSrcValue;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.util.resource.IResourceStream;
+import com.google.common.collect.Lists;
+import wicket.classes.HomePage;
 
 /**
  * Application object for your web application.
@@ -37,5 +41,18 @@ public class WicketApplication extends WebApplication
 			.add(CSPDirective.FONT_SRC, "https://fonts.gstatic.com");
 
 		// add your configuration here
+		getResourceSettings().setResourceFinders(Lists.newArrayList(new ClassPathResourceFinder("") {
+			@Override
+			public IResourceStream find(Class<?> clazz, String path) {
+				// Modificar o caminho se ele começar com 'wicket/classes/'
+				if (path.startsWith("wicket/classes/")) {
+					// Redirecionar a busca para 'wicket/html/'
+					return super.find(clazz, path.replace("wicket/classes/", "wicket/html/"));
+				}
+
+				// Para outros caminhos, usar a busca padrão
+				return super.find(clazz, path);
+			}
+		}, new ClassPathResourceFinder("")));
 	}
 }
