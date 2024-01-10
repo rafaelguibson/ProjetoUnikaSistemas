@@ -14,13 +14,5 @@ public class HomePage extends WebPage {
 
 		add(new Label("version", getApplication().getFrameworkSettings().getVersion()));
 
-		// TODO Add your page's components here
-		add(new AjaxLink<Void>("link") {
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				// Redirecionar para PageTeste
-				setResponsePage(PageTeste.class);
-			}
-		});
 	}
 }
