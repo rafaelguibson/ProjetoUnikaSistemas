@@ -1,8 +1,6 @@
-package frontend;
+package wicket.classes;
 
 import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.html.basic.Label;
 
 public class BasePage extends WebPage {
 

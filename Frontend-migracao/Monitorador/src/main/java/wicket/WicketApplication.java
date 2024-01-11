@@ -8,6 +8,7 @@ import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.util.resource.IResourceStream;
 import com.google.common.collect.Lists;
 import wicket.classes.HomePage;
+import wicket.classes.Monitorador;
 
 /**
  * Application object for your web application.
@@ -23,7 +24,7 @@ public class WicketApplication extends WebApplication
 	@Override
 	public Class<? extends WebPage> getHomePage()
 	{
-		return HomePage.class;
+		return Monitorador.class;
 	}
 
 	/**
@@ -34,13 +35,9 @@ public class WicketApplication extends WebApplication
 	{
 		super.init();
 
-		// needed for the styling used by the quickstart
-		getCspSettings().blocking()
-			.add(CSPDirective.STYLE_SRC, CSPDirectiveSrcValue.SELF)
-			.add(CSPDirective.STYLE_SRC, "https://fonts.googleapis.com/css")
-			.add(CSPDirective.FONT_SRC, "https://fonts.gstatic.com");
+		//Desabilita o Bloqueio de segurança CSP Block
+		getCspSettings().blocking().disabled();
 
-		// add your configuration here
 		getResourceSettings().setResourceFinders(Lists.newArrayList(new ClassPathResourceFinder("") {
 			@Override
 			public IResourceStream find(Class<?> clazz, String path) {
