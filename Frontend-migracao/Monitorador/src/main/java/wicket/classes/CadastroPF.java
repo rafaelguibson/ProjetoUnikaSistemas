@@ -23,6 +23,7 @@ public class CadastroPF extends Panel implements Serializable {
 
     public CadastroPF(String id) {
         super(id);
+        setOutputMarkupId(true);
 
         Form<Void> form = new Form<>("form");
         add(form);

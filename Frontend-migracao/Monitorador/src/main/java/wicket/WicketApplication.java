@@ -35,7 +35,7 @@ public class WicketApplication extends WebApplication
 		//Desabilita o Bloqueio de segurança CSP Block
 		getCspSettings().blocking().disabled();
 
-		
+
 
 		getResourceSettings().setResourceFinders(Lists.newArrayList(new ClassPathResourceFinder("") {
 			@Override
@@ -50,5 +50,6 @@ public class WicketApplication extends WebApplication
 				return super.find(clazz, path);
 			}
 		}, new ClassPathResourceFinder("")));
+		
 	}
 }

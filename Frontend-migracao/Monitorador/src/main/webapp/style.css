@@ -272,3 +272,32 @@ table tr:first-child td {
     align-items: center;
     justify-content: space-between;
 }
+
+.wicket-modal {
+    background-color: #ECEBE9;
+    color: #212529;
+    border: 2px #3f4450 solid;
+    border-radius: 9px;
+
+}
+
+
+.w_content_container {
+    padding: 15px;
+    background-color: #ECEBE9;
+    border: 2px #3f4450 solid;
+    border-radius: 5px;
+
+}
+.w_content_1 {
+    background-color: #ECEBE9;
+}
+.w_captionText {
+    color: #212529;
+    position: relative;
+    text-align: center;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    font-size: 15pt;
+}
