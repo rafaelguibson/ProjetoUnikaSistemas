@@ -27,18 +27,28 @@ public class HomePage extends BasePage implements Serializable {
     List<Monitorador> mntList;
 
     public HomePage(final PageParameters parameters) {
-
+        Monitorador monitorador = new Monitorador();
+        /* declaração do feedback panel para notificações */
         FeedbackPanel feedbackPanel = new FeedbackPanel("feedbackPanel");
         feedbackPanel.setOutputMarkupPlaceholderTag(true);
         feedbackPanel.setVisible(false);
         add(feedbackPanel);
 
+        WebMarkupContainer sectionForm = new WebMarkupContainer("sectionForm");
+        sectionForm.setOutputMarkupId(true);
+        add(sectionForm);
+
+        /* Lista que é preenchida com os monitoradores do banco de dados */
         mntList = monitoradorHttpClient.listarTodos();
 
+        /* listview que preenche a table com os dados dos monitoradores*/
         ListView<Monitorador> monitoradorList = new ListView<Monitorador>("monitoradorList", mntList) {
             @Override
             protected void populateItem(ListItem<Monitorador> item) {
                 Monitorador monitorador = item.getModelObject();
+
+                // Coluna do chebox para selecionar os monitoradores para deletar
+                item.add(new CheckBox("selected", new PropertyModel<>(item.getModel(), "selected")));
 
                 item.add(new Label("id", new PropertyModel<String>(item.getModel(), "id")));
                 item.add(new Label("tipoPessoa", new PropertyModel<String>(item.getModel(), "tipoPessoa")));
@@ -63,7 +73,28 @@ public class HomePage extends BasePage implements Serializable {
                 item.add(new Label("ativo", status));
             }
         };
-        add(monitoradorList);
+        monitoradorList.setReuseItems(true);
+        sectionForm.add(monitoradorList);
+
+
+        /* Método que controla o selecionar/deselecionar do checkbox de excluisão */
+        AjaxLink<Void> checkBox = new AjaxLink<>("checkBox", new PropertyModel<>(new CompoundPropertyModel<>(monitorador), "selected")) {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                for (Monitorador monitorador : mntList) {
+                    if(!monitorador.isSelected()) {
+                        monitorador.setSelected(true);
+                        target.add(sectionForm);
+                    } else {
+                        monitorador.setSelected(false);
+                        target.add(sectionForm);
+                    }
+
+                }
+
+            }
+        };
+        sectionForm.add(checkBox);
 
     } //Fora do construtor
 }

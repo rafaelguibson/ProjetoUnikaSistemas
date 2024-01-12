@@ -171,6 +171,7 @@ header {
 .header-top h2 {
     margin: 0 10px;
     color: white;
+    border: 1px #6e6e6d;
 }
 
 .header-icon {
@@ -238,6 +239,7 @@ header {
     color: #ECEBE9;
     line-height: 500px;
     font-size: 20pt;
+    border: 3px #6e6e6d;
 }
 
 table { /* Faz a tabela ocupar toda a largura disponível */

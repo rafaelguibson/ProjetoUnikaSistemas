@@ -15,12 +15,13 @@
         </div>
 
 
-        <div class="content-panel">
+        <div class="content-panel" wicket:id="sectionForm">
             <table class="table table-striped">
                 <tr>
-                    <td colspan="13" style="background-color: #212429; color: #ECEBE9;">Dashboard Monitorador</td>
+                    <td colspan="14" style="background-color: #212429; color: #ECEBE9;">Dashboard Monitorador</td>
                 </tr>
                 <tr class="table-dark">
+                    <th ><i class="bi bi-check2-square" wicket:id="checkBox"></i></th>
                     <th scope="col">ID</th>
                     <th scope="col">Tipo Pessoa</th>
                     <th scope="col">CPF/CNPJ</th>
@@ -28,12 +29,13 @@
                     <th scope="col">TELEFONE</th>
                     <th scope="col">EMAIL</th>
                     <th scope="col">RG/I.E</th>
-                    <th scope="col">DATA DE NASC.</th>
+                    <th scope="col">DATA DE NASCIMENTO</th>
                     <th scope="col">STATUS</th>
                     <th scope="col">EDITAR</th>
                 </tr>
                 <!-- Repita as linhas abaixo conforme necessário -->
                 <tr wicket:id="monitoradorList">
+                    <td><input type="checkbox" wicket:id="selected"></td>
                     <td wicket:id="id"></td>
                     <td wicket:id="tipoPessoa"></td>
                     <td wicket:id="cpfOuCnpj"></td>
