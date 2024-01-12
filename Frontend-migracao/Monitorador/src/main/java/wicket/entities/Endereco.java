@@ -1,8 +1,19 @@
 package wicket.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.apache.flink.fs.shaded.hadoop3.com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.Objects;
-
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Endereco implements Serializable {
     private Long id;
     private Long monitoradorId;
@@ -10,8 +21,9 @@ public class Endereco implements Serializable {
     private String numero;
     private String cep;
     private String bairro;
-    private String cidade;
+    private String localidade;
     private String estado;
+
 
     @Override
     public boolean equals(Object o) {
@@ -35,7 +47,7 @@ public class Endereco implements Serializable {
                 ", numero='" + numero + '\'' +
                 ", cep='" + cep + '\'' +
                 ", bairro='" + bairro + '\'' +
-                ", cidade='" + cidade + '\'' +
+                ", cidade='" + localidade + '\'' +
                 ", estado='" + estado + '\'' +
                 '}';
     }

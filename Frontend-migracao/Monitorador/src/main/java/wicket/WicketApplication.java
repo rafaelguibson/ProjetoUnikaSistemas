@@ -35,6 +35,8 @@ public class WicketApplication extends WebApplication
 		//Desabilita o Bloqueio de segurança CSP Block
 		getCspSettings().blocking().disabled();
 
+		
+
 		getResourceSettings().setResourceFinders(Lists.newArrayList(new ClassPathResourceFinder("") {
 			@Override
 			public IResourceStream find(Class<?> clazz, String path) {

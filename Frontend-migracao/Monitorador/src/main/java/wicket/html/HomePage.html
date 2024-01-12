@@ -1,49 +1,54 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org">
 <head>
-	<meta charset="UTF-8">
-	<title>Title</title>
+    <meta charset="UTF-8">
+    <title>Title</title>
 </head>
 <body>
 <wicket:extend>
-			<table class="table table-striped " style="width: 100%">
-				<thead class="thead-dark">
-				<tr class="table-dark">
-					<th scope="col">ID</th>
-					<th scope="col">Tipo Pessoa</th>
-					<th scope="col">CPF</th>
-					<th scope="col">CNPJ</th>
-					<th scope="col">NOME</th>
-					<th scope="col">RAZÃO SOCIAL</th>
-					<th scope="col">TELEFONE</th>
-					<th scope="col">EMAIL</th>
-					<th scope="col">RG</th>
-					<th scope="col">INSCRIÇÃO ESTADUAL</th>
-					<th scope="col">DATA DE NASC.</th>
-					<th scope="col">STATUS</th>
-					<th></th>
-				</tr>
-				</thead>
+    <div>
 
-				<tr wicket:id="monitoradorList">
-					<td wicket:id="id"></td>
-					<td wicket:id="tipoPessoa"></td>
-					<td wicket:id="cpf"></td>
-					<td wicket:id="cnpj"></td>
-					<td wicket:id="nome"></td>
-					<td wicket:id="razaoSocial"></td>
-					<td wicket:id="telefone"></td>
-					<td wicket:id="email"></td>
-					<td wicket:id="rg"></td>
-					<td wicket:id="inscricaoEstadual"></td>
-					<td wicket:id="dataNascimento"></td>
-					<td wicket:id="ativo"></td>
-					<td style="width: 100px; align-items: center; justify-content: center; justify-items: center; text-align: center" id="icon">
-						<a href="#"><i class="bi bi-pencil" style="color: #0d0d11"></i></a>
+        <div class="header-title" wicket:id="feedbackPanel">
 
-					</td>
-				</tr>
-			</table>
+            <h2>IMPLEMENTAR FEEDCACK PANEL</h2>
+
+        </div>
+
+
+        <div class="content-panel">
+            <table class="table table-striped">
+                <tr>
+                    <td colspan="13" style="background-color: #212429; color: #ECEBE9;">Dashboard Monitorador</td>
+                </tr>
+                <tr class="table-dark">
+                    <th scope="col">ID</th>
+                    <th scope="col">Tipo Pessoa</th>
+                    <th scope="col">CPF/CNPJ</th>
+                    <th scope="col">NOME/RAZÃO SOCIAL</th>
+                    <th scope="col">TELEFONE</th>
+                    <th scope="col">EMAIL</th>
+                    <th scope="col">RG/I.E</th>
+                    <th scope="col">DATA DE NASC.</th>
+                    <th scope="col">STATUS</th>
+                    <th scope="col">EDITAR</th>
+                </tr>
+                <!-- Repita as linhas abaixo conforme necessário -->
+                <tr wicket:id="monitoradorList">
+                    <td wicket:id="id"></td>
+                    <td wicket:id="tipoPessoa"></td>
+                    <td wicket:id="cpfOuCnpj"></td>
+                    <td wicket:id="nomeOuRazaoSocial"></td>
+                    <td wicket:id="telefone"></td>
+                    <td wicket:id="email"></td>
+                    <td wicket:id="rgOuInscricaoEstadual"></td>
+                    <td wicket:id="dataNascimento"></td>
+                    <td wicket:id="ativo"></td>
+                    <td style="width: 100px; align-items: center; justify-content: center; justify-items: center; text-align: center"
+                        id="icon"><a href="#"><i class="bi bi-pencil" style="color: #0d0d11"></i></a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
 </wicket:extend>
 </body>
 </html>
