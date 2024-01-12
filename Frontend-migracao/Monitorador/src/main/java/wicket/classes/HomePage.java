@@ -25,17 +25,7 @@ public class HomePage extends BasePage implements Serializable {
 	List<Monitorador> mntList;
 
 	public HomePage(final PageParameters parameters) {
-		Monitorador monitorador = new Monitorador();
 
-		Form<Void> form = new Form<>("form");
-		form.setOutputMarkupId(true);
-		add(form);
-
-
-		WebMarkupContainer formNew = new WebMarkupContainer("formNew");
-		formNew.setOutputMarkupId(true);
-
-		form.add(formNew);
 
 		mntList = monitoradorHttpClient.listarTodos();
 
@@ -57,16 +47,7 @@ public class HomePage extends BasePage implements Serializable {
 				item.add(new Label("ativo", new PropertyModel<String>(item.getModel(),"ativo")));
 			}
 		};
-		formNew.add(monitoradorList);
-		formNew.setVisible(false);
-		//Botão que revela a table data de pessoa física
-		form.add(new AjaxLink<Void>("btnPessoaFisica") {
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				formNew.setVisible(true);
-				target.add(formNew);
-			}
-		});
+		add(monitoradorList);
 
 	} //Fora do construtor
 }

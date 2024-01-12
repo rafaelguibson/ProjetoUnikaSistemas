@@ -143,11 +143,11 @@ img {
 }
 
 header {
-    background: #33363a;
+    background: #212529;
 }
 
 .header-top {
-    background-color: #1b1a1b;
+    background-color: #212529;
     color: white;
     position: fixed;
     top: 10px;
