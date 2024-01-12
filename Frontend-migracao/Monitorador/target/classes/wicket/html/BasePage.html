@@ -1,51 +1,89 @@
 <!DOCTYPE html>
-<html xmlns:wicket="http://wicket.apache.org" lang="pt-br">
+<html xmlns:wicket="http://wicket.apache.org">
+
 <head>
-    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-    <title>Monitorador Unika Ltda.</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" >
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitorador Unika Sistemas</title>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
             crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" charset="utf-8"></script>
+    <script src="scripts.js"></script>
 
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" >
+
+
 
 </head>
+
 <body>
-<header>
-    <nav>
-        <a class="logo" href="/"> <img src="espiao.png" width="50px" height="50px" alt="Wicket Logo" /> Monitorador Unika</a>
-        <div class="mobile-menu">
-            <div class="line1"></div>
-            <div class="line2"></div>
-            <div class="line3"></div>
+<div class="side-bar">
+
+    <header>
+
+
+        <div class="close-btn">
+
+            <i class="fas fa-times"></i>
         </div>
-        <!--
-        <ul class="nav-list">
 
-            <li><wicket:link><a href="#" wicket:id="inicioLink">Início</a></wicket:link></li>
-            <li><wicket:link><a href="#" wicket:id="cadastrarLink">Cadastrar</a></wicket:link></li>
-            <li><wicket:link><a href="#" wicket:id="pesquisarLink">Pesquisar</a></wicket:link></li>
-            <li><wicket:link><a href="#" wicket:id="contatoLink">Perfil</a></wicket:link></li>
-            <li><wicket:link><a href="#" wicket:id="sobreLink">Sobre</a></wicket:link></li>
+        <img src="https://lh3.googleusercontent.com/a-/AOh14Gj99VObFyE8W_h8RrcwZO_aYiIHu5AAa_XpnOym=s600-k-no-rp-mo" alt="">
+        <h2>Gerenciamento Monitorador</h2>
+    </header>
+    <div class="menu">
+        <div class="item"><a href="#"><i class="fas fa-desktop"></i>Dashboard</a></div>
+        <div class="item">
+            <a class="sub-btn"><i class="bi bi-person-vcard-fill"></i>Pessoa Física<i class="fas fa-angle-right dropdown"></i></a>
+            <div class="sub-menu">
+                <a href="#" class="sub-item"><i class="bi bi-plus-square"></i> Cadastrar</a>
+                <a href="#" class="sub-item"><i class="bi bi-search"></i> Buscar</a>
+                <a href="#" class="sub-item"><i class="bi bi-pencil-square"></i> Alterar</a>
+            </div>
+        </div>
+        <div class="item">
+            <a class="sub-btn"><i class="bi bi-buildings-fill"></i>Pessoa Jurídica<i class="fas fa-angle-right dropdown"></i></a>
+            <div class="sub-menu">
+                <a href="#" class="sub-item"><i class="bi bi-plus-square"></i> Cadastrar</a>
+                <a href="#" class="sub-item"><i class="bi bi-search"></i> Buscar</a>
+                <a href="#" class="sub-item"><i class="bi bi-pencil-square"></i> Alterar</a>
+            </div>
+        </div>
+        <div class="item"><a href="#"><i class="fas fa-info-circle"></i>About</a></div>
+    </div>
+</div>
 
-        </ul>
-        -->
-    </nav>
-</header>
-<main>
-    <div class="central-div">
-        <!-- Conteúdo da div central -->
-        <wicket:child/>
+<div class="header-top">
+    <div class="menu-btn" style="color: aliceblue;">
+        <i class="fas fa-bars" style="color: aliceblue;"></i>
     </div>
 
-</main>
-<script src="mobile-navbar.js"></script>
-<script src="mascaras.js"></script>
+    <div class="header-content">
+        <img src="espiao.png" alt="Ícone Espião" class="header-icon">
+        <h2>Monitorador Unika</h2>
+        <img src="espiao.png" alt="Ícone Espião" class="header-icon">
+    </div>
+</div>
+<div class="content">
+    <main>
+        <div class="central-div">
+            <!-- Conteúdo da div central -->
+            <wicket:child/>
+        </div>
+
+    </main>
+</div>
+
+<script src="scripts.js"></script>
 </body>
+
 </html>

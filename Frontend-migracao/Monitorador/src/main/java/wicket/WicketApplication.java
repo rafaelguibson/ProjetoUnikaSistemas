@@ -1,14 +1,11 @@
 package wicket;
 
 import org.apache.wicket.core.util.resource.ClassPathResourceFinder;
-import org.apache.wicket.csp.CSPDirective;
-import org.apache.wicket.csp.CSPDirectiveSrcValue;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.util.resource.IResourceStream;
 import com.google.common.collect.Lists;
 import wicket.classes.HomePage;
-import wicket.classes.Monitorador;
 
 /**
  * Application object for your web application.
@@ -24,7 +21,7 @@ public class WicketApplication extends WebApplication
 	@Override
 	public Class<? extends WebPage> getHomePage()
 	{
-		return Monitorador.class;
+		return HomePage.class;
 	}
 
 	/**
