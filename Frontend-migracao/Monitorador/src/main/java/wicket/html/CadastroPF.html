@@ -80,7 +80,7 @@
                     <label for="CEP" style="margin-right: 5px;"><b>CEP: <h11>*</h11></b></label>
                     <input id="cep" name="cep" placeholder="Apenas números" class="form-control input-md" required="" type="text" maxlength="8"
                            pattern="[0-9]+$" style="margin-right: 5px; width: fit-content;" wicket:id="cep">
-                    <button type="button" class="btn btn-primary btn-dark" onclick="pesquisacep(cep.value)"><i class="bi bi-search"></i> Pesquisar</button>
+                    <button type="button" class="btn btn-primary btn-dark" wicket:id="searchCEP"><i class="bi bi-search"></i> Pesquisar</button>
                 </div>
 
                 <div class="form-group" style="display: flex; justify-content: space-between;">
@@ -105,7 +105,7 @@
                     </div>
                     <div style="flex-grow: 1;">
                         <label for="estado"><b>Estado:</b></label>
-                        <input id="estado" name="estado" class="form-control" required="" type="text" wicket:id="uf">
+                        <input id="estado" name="estado" class="form-control" required="" type="text" wicket:id="estado">
                     </div>
                 </div>
 

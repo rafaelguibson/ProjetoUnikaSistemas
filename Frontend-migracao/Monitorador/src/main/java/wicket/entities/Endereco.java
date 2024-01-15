@@ -1,6 +1,7 @@
 package wicket.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,9 +27,13 @@ public class Endereco implements Serializable {
     private String numero;
     private String cep;
     private String bairro;
-    private String cidade;
-    private String uf;
     private String complemento;
+
+    @JsonProperty("localidade")
+    private String cidade;
+
+    @JsonProperty("uf")
+    private String estado;
 
 
     @Override
@@ -54,7 +59,7 @@ public class Endereco implements Serializable {
                 ", cep='" + cep + '\'' +
                 ", bairro='" + bairro + '\'' +
                 ", cidade='" + cidade + '\'' +
-                ", estado='" + uf + '\'' +
+                ", estado='" + estado + '\'' +
                 '}';
     }
     public static Endereco buscarCep(String cep) {

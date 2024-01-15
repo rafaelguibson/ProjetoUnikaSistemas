@@ -37,6 +37,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import static wicket.entities.Endereco.buscarCep;
+
 
 public class CadastroPF extends Panel implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -102,7 +104,7 @@ public class CadastroPF extends Panel implements Serializable {
                 item.add(new Label("numero", Model.of(endereco.getNumero())));
                 item.add(new Label("bairro", Model.of(endereco.getBairro())));
                 item.add(new Label("cidade", Model.of(endereco.getCidade())));
-                item.add(new Label("estado", Model.of(endereco.getUf())));
+                item.add(new Label("estado", Model.of(endereco.getEstado())));
 
             }
         };
@@ -122,15 +124,37 @@ public class CadastroPF extends Panel implements Serializable {
         formAddress.setDefaultModel(new CompoundPropertyModel<>(endereco));
 
         TextField<String> cep = new TextField<String>("cep");
+        cep.setOutputMarkupId(true);
         TextField<String> logradouro = new TextField<String>("logradouro");
+        logradouro.setOutputMarkupId(true);
         TextField<String> numero = new TextField<String>("numero");
+        numero.setOutputMarkupId(true);
         TextField<String> bairro = new TextField<String>("bairro");
+        bairro.setOutputMarkupId(true);
         TextField<String> cidade = new TextField<String>("cidade");
-        TextField<String> uf = new TextField<String>("uf");
+        cidade.setOutputMarkupId(true);
+        TextField<String> estado = new TextField<String>("estado");
+        estado.setOutputMarkupId(true);
 
-        formAddress.add(cep,logradouro, numero, bairro, cidade, uf);
+        formAddress.add(cep,logradouro, numero, bairro, cidade, estado);
 
 
+        //Botão para pesquisar cep via correios
+        AjaxLink<Void> searchCEP  = new AjaxLink<Void>("searchCEP") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                String cepValue = cep.getValue();
+                Endereco endereco = buscarCep(cepValue);
+                logradouro.setModelObject(endereco.getLogradouro());
+                bairro.setModelObject(endereco.getBairro());
+                cidade.setModelObject(endereco.getCidade());
+                estado.setModelObject(endereco.getEstado());
+                target.add(logradouro, bairro, numero, cidade, estado);
+
+            }
+        };
+        searchCEP.add(new AjaxFormSubmitBehavior(form,"click") {});
+        formAddress.add(searchCEP);
         //Botão de salvar endereço adicionando ele a lista e atualizando a tableAddress
         AjaxLink<Void> saveAddress = new AjaxLink<Void>("saveAddress") {
             @Override
@@ -141,7 +165,7 @@ public class CadastroPF extends Panel implements Serializable {
                 endereco.setLogradouro(logradouro.getValue());
                 endereco.setCidade(cidade.getValue());
                 endereco.setBairro(bairro.getValue());
-                endereco.setUf(uf.getValue());
+                endereco.setEstado(estado.getValue());
                 listaDeEnderecos.add(endereco);
                 formAddress.setVisible(false);;
                 target.add(formAddress, tableAddress);

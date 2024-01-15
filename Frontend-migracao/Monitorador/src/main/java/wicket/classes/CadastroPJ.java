@@ -74,7 +74,7 @@ public class CadastroPJ  extends Panel implements Serializable {
         endereco1.setNumero("123");
         endereco1.setBairro("Bairro 1");
         endereco1.setCidade("Cidade 1");
-        endereco1.setUf("Estado 1");
+        endereco1.setEstado("Estado 1");
         listaDeEnderecos.add(endereco1);
 
         Endereco endereco2 = new Endereco();
@@ -83,7 +83,7 @@ public class CadastroPJ  extends Panel implements Serializable {
         endereco2.setNumero("456");
         endereco2.setBairro("Bairro 2");
         endereco2.setCidade("Cidade 2");
-        endereco2.setUf("Estado 2");
+        endereco2.setEstado("Estado 2");
         listaDeEnderecos.add(endereco2);
 
         ListView<Endereco> enderecoList = new ListView<Endereco>("enderecoList", listaDeEnderecos) {
@@ -97,7 +97,7 @@ public class CadastroPJ  extends Panel implements Serializable {
                 item.add(new Label("numero", Model.of(endereco.getNumero())));
                 item.add(new Label("bairro", Model.of(endereco.getBairro())));
                 item.add(new Label("cidade", Model.of(endereco.getCidade())));
-                item.add(new Label("estado", Model.of(endereco.getUf())));
+                item.add(new Label("estado", Model.of(endereco.getEstado())));
 
             }
         };
@@ -116,14 +116,36 @@ public class CadastroPJ  extends Panel implements Serializable {
         formAddress.setDefaultModel(new CompoundPropertyModel<>(endereco));
 
         TextField<String> cep = new TextField<String>("cep");
+        cep.setOutputMarkupId(true);
         TextField<String> logradouro = new TextField<String>("logradouro");
+        logradouro.setOutputMarkupId(true);
         TextField<String> numero = new TextField<String>("numero");
+        numero.setOutputMarkupId(true);
         TextField<String> bairro = new TextField<String>("bairro");
+        bairro.setOutputMarkupId(true);
         TextField<String> cidade = new TextField<String>("cidade");
-        TextField<String> uf = new TextField<String>("uf");
+        cidade.setOutputMarkupId(true);
+        TextField<String> estado = new TextField<String>("estado");
+        estado.setOutputMarkupId(true);
 
-        formAddress.add(cep,logradouro, numero, bairro, cidade, uf);
+        formAddress.add(cep,logradouro, numero, bairro, cidade, estado);
 
+        //Botão para pesquisar cep via correios
+        AjaxLink<Void> searchCEP  = new AjaxLink<Void>("searchCEP") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                String cepValue = cep.getValue();
+                Endereco endereco = buscarCep(cepValue);
+                logradouro.setModelObject(endereco.getLogradouro());
+                bairro.setModelObject(endereco.getBairro());
+                cidade.setModelObject(endereco.getCidade());
+                estado.setModelObject(endereco.getEstado());
+                target.add(logradouro, bairro, numero, cidade, estado);
+
+            }
+        };
+        searchCEP.add(new AjaxFormSubmitBehavior(form,"click") {});
+        formAddress.add(searchCEP);
 
         //Botão de salvar endereço adicionando ele a lista e atualizando a tableAddress
         AjaxLink<Void> saveAddress = new AjaxLink<Void>("saveAddress") {
@@ -134,7 +156,7 @@ public class CadastroPJ  extends Panel implements Serializable {
                 endereco.setLogradouro(logradouro.getValue());
                 endereco.setCidade(cidade.getValue());
                 endereco.setBairro(bairro.getValue());
-                endereco.setUf(uf.getValue());
+                endereco.setEstado(estado.getValue());
                 listaDeEnderecos.add(endereco);
                 formAddress.setVisible(false);;
                 target.add(formAddress, tableAddress);
