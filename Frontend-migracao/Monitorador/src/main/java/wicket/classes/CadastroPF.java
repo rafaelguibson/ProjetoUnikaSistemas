@@ -21,6 +21,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.resource.AbstractResource;
 import org.apache.wicket.request.resource.CssPackageResource;
+import wicket.configs.MaskBehavior;
 import wicket.entities.Endereco;
 import wicket.entities.Monitorador;
 import wicket.http.MonitoradorHttpClient;
@@ -34,19 +35,25 @@ import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 
 public class CadastroPF extends Panel implements Serializable {
     private static final long serialVersionUID = 1L;
+
     private String selectedEstadoCivil;
     private String selectedStatus;
-    List<Endereco> listaDeEnderecos = new ArrayList<>();
-    WebMarkupContainer formAddress = new WebMarkupContainer("formAddress");
-    WebMarkupContainer tableAddress = new WebMarkupContainer("tableAddress");
-    Endereco endereco = new Endereco();
-
     public CadastroPF(String id) {
         super(id);
+
+        MonitoradorHttpClient monitoradorHttpClient = new MonitoradorHttpClient("http://localhost:8080/api/monitoradores");
+
+        List<Endereco> listaDeEnderecos = new ArrayList<>();
+        WebMarkupContainer formAddress = new WebMarkupContainer("formAddress");
+        WebMarkupContainer tableAddress = new WebMarkupContainer("tableAddress");
+        Monitorador monitorador = new Monitorador();
+        Endereco endereco = new Endereco();
+
         setOutputMarkupId(true);
 
         //Formulário que contem os dados de cadastro monitorador, o botão de adicionar endereço e a tableAddress
@@ -59,11 +66,11 @@ public class CadastroPF extends Panel implements Serializable {
         tableAddress.setOutputMarkupPlaceholderTag(true);
         form.add(formAddress, tableAddress);
 
-        Monitorador monitorador = new Monitorador();
         form.setDefaultModel(new CompoundPropertyModel<>(monitorador));
 
         TextField<String> nome = new TextField<String>("nome");
         TextField<String> cpf = new TextField<String>("cpf");
+        //cpf.add(new MaskBehavior("999.999.999-99")); // Adiciona a máscara de CPF
         TextField<String> telefone = new TextField<String>("telefone");
         TextField<String> email = new TextField<String>("email");
         TextField<String> rg = new TextField<String>("rg");
@@ -82,25 +89,7 @@ public class CadastroPF extends Panel implements Serializable {
         // Cria o dropdown e o adiciona à página
         DropDownChoice<String> statusDropDown = new DropDownChoice<>("status", listaStatus, statusOptions);
 
-        // Crie um componente ListView para exibir a tabela
-
-        Endereco endereco1 = new Endereco();
-        endereco1.setCep("12345-678");
-        endereco1.setLogradouro("Rua A");
-        endereco1.setNumero("123");
-        endereco1.setBairro("Bairro 1");
-        endereco1.setCidade("Cidade 1");
-        endereco1.setUf("Estado 1");
-        listaDeEnderecos.add(endereco1);
-
-        Endereco endereco2 = new Endereco();
-        endereco2.setCep("98765-432");
-        endereco2.setLogradouro("Rua B");
-        endereco2.setNumero("456");
-        endereco2.setBairro("Bairro 2");
-        endereco2.setCidade("Cidade 2");
-        endereco2.setUf("Estado 2");
-        listaDeEnderecos.add(endereco2);
+        // Cria um componente ListView para exibir os dados na tabela
 
         ListView<Endereco> enderecoList = new ListView<Endereco>("enderecoList", listaDeEnderecos) {
             @Override
@@ -146,6 +135,7 @@ public class CadastroPF extends Panel implements Serializable {
         AjaxLink<Void> saveAddress = new AjaxLink<Void>("saveAddress") {
             @Override
             public void onClick(AjaxRequestTarget target) {
+                target.add(formAddress);
                 endereco.setCep(cep.getValue());
                 endereco.setNumero(numero.getValue());
                 endereco.setLogradouro(logradouro.getValue());
@@ -158,7 +148,38 @@ public class CadastroPF extends Panel implements Serializable {
             }
         };
         saveAddress.add(new AjaxFormSubmitBehavior(form,"click") {});
-        formAddress.add(saveAddress);
+        AjaxLink<Void> cancelAddress = new AjaxLink<Void>("cancelAddress") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                formAddress.setVisible(false);
+                target.add(formAddress, tableAddress);
+            }
+        };
+        cancelAddress.add(new AjaxFormSubmitBehavior(form,"click") {});
+        formAddress.add(saveAddress, cancelAddress);
+
+        //Botão de salvar monitorador
+
+        AjaxLink<Void> saveMonitorador = new AjaxLink<Void>("saveMonitorador") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                Monitorador monitoradorSalvar = new Monitorador();
+                monitoradorSalvar.setTipoPessoa("PF");
+                monitoradorSalvar.setNome(nome.getValue());
+                monitoradorSalvar.setCpf(cpf.getValue());
+                monitoradorSalvar.setTelefone(telefone.getValue());
+                monitoradorSalvar.setEmail(email.getValue());
+                monitoradorSalvar.setRg(rg.getValue());
+                monitoradorSalvar.setDataNascimento(dataNascimento.getModelObject());
+                monitoradorSalvar.setAtivo(true);
+                if(!listaDeEnderecos.isEmpty()) {
+                    monitorador.setEnderecos(listaDeEnderecos);
+                }
+                monitoradorHttpClient.salvar(monitorador);
+                ModalWindow.closeCurrent(target);
+
+            }
+        };
 
         //Botão que fecha o modal
         AjaxLink<Void> cancelButton = new AjaxLink<Void>("cancelButton") {
@@ -172,7 +193,7 @@ public class CadastroPF extends Panel implements Serializable {
             }
 
         };
-        form.add(cancelButton);
+        form.add(saveMonitorador,cancelButton);
 
     }
 
