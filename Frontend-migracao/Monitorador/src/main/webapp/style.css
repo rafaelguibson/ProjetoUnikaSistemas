@@ -44,6 +44,15 @@ h2 {
     font-family: sans-serif;
     letter-spacing: 2px;
 }
+h4 {
+    text-align: center;
+    color: #ECEBE9;
+    background-color: #0d0d11;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-top-left-radius: 9px;
+    border-top-right-radius: 9px;
+}
 
 .side-bar .menu {
     width: 100%;
@@ -301,4 +310,9 @@ table tr:first-child td {
     justify-items: center;
     align-items: center;
     font-size: 15pt;
+}
+.bordered-div {
+    border: 1px solid #000; /* Cor e estilo da borda */
+    padding: 10px; /* Espaçamento interno para dar espaço à borda */
+    border-radius: 10px; /* Borda arredondada (opcional) */
 }

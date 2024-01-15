@@ -14,36 +14,77 @@
     </div>
     <div wicket:id="modal"></div>
 
-    <table style="color: #0d0d11;" class="table table-striped">
-        <tr>
-            <td colspan="12" style="background-color: #212429; color: #ECEBE9;">Monitorador Pessoa Jurídica</td>
-        </tr>
-        <tr class="table-dark" style="font-size: 14pt">
-            <th scope="col">ID</th>
-            <th scope="col">Tipo Pessoa</th>
-            <th scope="col">CNPJ</th>
-            <th scope="col">RAZÃO SOCIAL</th>
-            <th scope="col">TELEFONE</th>
-            <th scope="col">EMAIL</th>
-            <th scope="col">I.E</th>
-            <th scope="col">STATUS</th>
-            <th scope="col">Edit</th>
-        </tr>
-        <!-- Repita as linhas abaixo conforme necessário -->
-        <tr wicket:id="monitoradorList">
-            <td wicket:id="id"></td>
-            <td wicket:id="tipoPessoa"></td>
-            <td wicket:id="razaoSocial"></td>
-            <td wicket:id="cnpj"></td>
-            <td wicket:id="telefone"></td>
-            <td wicket:id="email"></td>
-            <td wicket:id="inscricaoEstadual"></td>
-            <td wicket:id="ativo"></td>
-            <td style="width: 100px;">
-                <a href="#"><i class="bi bi-pencil" style="color: #0d0d11"></i></a>
-            </td>
-        </tr>
-    </table>
+
+
+    <form wicket:id="formSearch">
+        <table style="color: #0d0d11;" class="table table-striped">
+            <tr>
+                <td colspan="12" style="background-color: #212429; color: #ECEBE9;"><h3>Monitorador Pessoa Jurídica</h3></td>
+            </tr>
+            <tr class="table-dark">
+                <th scope="col">ID</th>
+                <th scope="col">Tipo Pessoa</th>
+                <th scope="col">CNPJ</th>
+                <th scope="col">RAZÃO SOCIAL</th>
+                <th scope="col">TELEFONE</th>
+                <th scope="col">EMAIL</th>
+                <th scope="col">I.E</th>
+                <th scope="col">STATUS</th>
+                <th scope="col">Edit</th>
+            </tr>
+            <!-- Repita as linhas abaixo conforme necessário -->
+            <tr wicket:id="monitoradorList">
+                <td wicket:id="id"></td>
+                <td wicket:id="tipoPessoa"></td>
+                <td wicket:id="razaoSocial"></td>
+                <td wicket:id="cnpj"></td>
+                <td wicket:id="telefone"></td>
+                <td wicket:id="email"></td>
+                <td wicket:id="inscricaoEstadual"></td>
+                <td wicket:id="ativo"></td>
+                <td style="width: 100px;">
+                    <a href="#"><i class="bi bi-pencil" style="color: #0d0d11"></i></a>
+                </td>
+            </tr>
+        </table>
+        <div wicket:id="sectionFilters" class="bordered-div">
+            <fieldset>
+                <h4> Buscar Monitorador Pessoa Jurídica</h4>
+                <div class="container container-sm" style="color: #0d0d11">
+                    <div class="form-group">
+                        <div style="flex-grow: 3; margin-right: 5px;">
+                            <label for="razaoSocialFilter" class="control-label"> <b>Razão Social:</b> </label>
+                            <input wicket:id="razaoSocialFilter" type="text" class="form-control">
+                        </div>
+                        <div style="flex-grow: 8; margin-right: 5px;"></div>
+                    </div>
+
+                    <!-- CPF e RG -->
+                    <div class="form-group" style="display: flex; justify-content: space-between;">
+                        <div style="flex-grow: 3; margin-right: 5px;">
+                            <label for="cnpjFilter" class="control-label"><b>CNPJ: </b></label>
+                            <input wicket:id="cnpjFilter" type="text" class="form-control cpf">
+                        </div>
+                        <div style="flex-grow: 1;">
+                            <label for="inscricaoEstadual" class="control-label"><b>Inscrição Estadual: </b></label>
+                            <input wicket:id="inscricaoEstadual" type="text" class="form-control">
+                        </div>
+
+                        <div style="flex-grow: 2; margin-right: 5px;">
+                            <label for="statusFilter" class="control-label"><b>Status: </b></label>
+                            <select wicket:id="statusFilter" class="form-select" id="statusFilter"></select>
+                        </div>
+                    </div>
+                    <div class="form-group" style="display: flex; justify-content: space-between;">
+                        <div style="flex-grow: 2; margin-right: 5px; padding-top: 15px;">
+                            <button type="button" class="btn btn-primary btn-dark"><i class="bi bi-search"></i> Pesquisar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </form>
 </wicket:extend>
 </body>
 </html>

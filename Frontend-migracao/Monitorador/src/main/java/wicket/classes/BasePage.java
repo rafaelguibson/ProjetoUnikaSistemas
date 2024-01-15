@@ -15,8 +15,10 @@ public class BasePage extends WebPage {
         add(new BookmarkablePageLink<>("homePage", HomePage.class));
         add(new BookmarkablePageLink<>("monitoradorPF", MonitoradorPF.class));
         add(new BookmarkablePageLink<>("cadastrarPF", MonitoradorPF.class, new PageParameters().add("openModal", "true")));
+        add(new BookmarkablePageLink<>("buscarPF", MonitoradorPF.class, new PageParameters().add("showFilter", "true")));
         add(new BookmarkablePageLink<>("monitoradorPJ", MonitoradorPJ.class));
         add(new BookmarkablePageLink<>("cadastrarPJ", MonitoradorPJ.class, new PageParameters().add("openModal", "true")));
+        add(new BookmarkablePageLink<>("buscarPJ", MonitoradorPJ.class, new PageParameters().add("showFilter", "true")));
 
     }
 }
