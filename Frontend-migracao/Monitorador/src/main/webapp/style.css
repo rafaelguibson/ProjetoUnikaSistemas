@@ -274,7 +274,8 @@ table tr:first-child td {
 }
 
 .wicket-modal {
-    background-color: #ECEBE9;
+    position: fixed;
+    background-color: #FFFFFF;
     color: #212529;
     border: 2px #3f4450 solid;
     border-radius: 9px;

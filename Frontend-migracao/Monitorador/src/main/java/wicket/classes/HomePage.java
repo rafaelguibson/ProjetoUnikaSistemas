@@ -2,19 +2,15 @@ package wicket.classes;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
-import org.apache.wicket.model.ComponentPropertyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.WebPage;
 import wicket.entities.Monitorador;
 import wicket.http.MonitoradorHttpClient;
 
@@ -27,6 +23,7 @@ public class HomePage extends BasePage implements Serializable {
     List<Monitorador> mntList;
 
     public HomePage(final PageParameters parameters) {
+        super(parameters);
         Monitorador monitorador = new Monitorador();
         /* declaração do feedback panel para notificações */
         FeedbackPanel feedbackPanel = new FeedbackPanel("feedbackPanel");
@@ -54,7 +51,7 @@ public class HomePage extends BasePage implements Serializable {
                 item.add(new Label("tipoPessoa", new PropertyModel<String>(item.getModel(), "tipoPessoa")));
 
                 // Combina Nome e Razão Social
-                String nomeOuRazaoSocial = monitorador.getTipoPessoa().equals("Física") ? monitorador.getNome() : monitorador.getRazaoSocial();
+                String nomeOuRazaoSocial = monitorador.getTipoPessoa().equals("PF") ? monitorador.getNome() : monitorador.getRazaoSocial();
                 item.add(new Label("nomeOuRazaoSocial", nomeOuRazaoSocial));
 
                 // Combina CPF e CNPJ

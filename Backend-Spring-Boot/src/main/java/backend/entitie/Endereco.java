@@ -24,6 +24,7 @@ public class Endereco implements Serializable {
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JsonIgnore
     @JoinColumn(name = "monitorador_id", nullable = false)
     private Monitorador monitorador;
 
@@ -42,9 +43,11 @@ public class Endereco implements Serializable {
     @Column(name = "cidade", nullable = false, length = 100)
     private String cidade;
 
-    @Column(name = "estado", nullable = false, length = 50)
-    private String estado;
+    @Column(name = "uf", nullable = false, length = 50)
+    private String uf;
 
+    @Transient
+    private String complemento;
     // Additional methods, if necessary...
 }
 

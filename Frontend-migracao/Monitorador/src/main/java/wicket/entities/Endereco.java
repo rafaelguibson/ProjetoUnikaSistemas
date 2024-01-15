@@ -1,13 +1,18 @@
 package wicket.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.apache.flink.fs.shaded.hadoop3.com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.Objects;
 @Getter
 @Setter
@@ -21,8 +26,9 @@ public class Endereco implements Serializable {
     private String numero;
     private String cep;
     private String bairro;
-    private String localidade;
-    private String estado;
+    private String cidade;
+    private String uf;
+    private String complemento;
 
 
     @Override
@@ -47,8 +53,36 @@ public class Endereco implements Serializable {
                 ", numero='" + numero + '\'' +
                 ", cep='" + cep + '\'' +
                 ", bairro='" + bairro + '\'' +
-                ", cidade='" + localidade + '\'' +
-                ", estado='" + estado + '\'' +
+                ", cidade='" + cidade + '\'' +
+                ", estado='" + uf + '\'' +
                 '}';
+    }
+    public static Endereco buscarCep(String cep) {
+        // Remove caracteres não numéricos
+        cep = cep.replaceAll("\\D", "");
+
+        // Verifica se o CEP possui 8 dígitos
+        if (cep.matches("\\d{8}")) {
+            // URL da API do ViaCEP
+            String url = "https://viacep.com.br/ws/" + cep + "/json/";
+
+            try {
+                // Realiza a requisição e processa a resposta
+                HttpClient client = HttpClient.newHttpClient();
+                HttpRequest request = HttpRequest.newBuilder()
+                        .uri(URI.create(url))
+                        .GET()
+                        .build();
+                HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+                // Converte a resposta para um objeto Endereco
+                ObjectMapper mapper = new ObjectMapper();
+                return mapper.readValue(response.body(), Endereco.class);
+
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        return null; // Retorna null em caso de erro ou CEP inválido
     }
 }

@@ -25,7 +25,7 @@ public class MonitoradorController {
 
     @PostMapping
     public ResponseEntity<Monitorador> createMonitorador(@RequestBody Monitorador monitorador) {
-        Monitorador savedMonitorador = monitoradorService.saveMonitorador(monitorador);
+        Monitorador savedMonitorador = monitoradorService.salvarMonitoradorComEnderecos(monitorador);
         return ResponseEntity.ok(savedMonitorador);
     }
 
@@ -114,7 +114,7 @@ public class MonitoradorController {
         endereco.setCep(enderecoDTO.getCep());
         endereco.setBairro(enderecoDTO.getBairro());
         endereco.setCidade(enderecoDTO.getCidade());
-        endereco.setEstado(enderecoDTO.getEstado());
+        endereco.setUf(enderecoDTO.getEstado());
         // O Monitorador será associado no serviço
 
         return endereco;

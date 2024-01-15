@@ -21,82 +21,136 @@
 </head>
 <body>
 <wicket:panel>
-    <form class="form-horizontal" wicket:id="form">
+    <div class="container central-div">
+        <form wicket:id="form">
+            <!-- Nome -->
+            <div class="form-group">
+                <label for="nome" class="control-label"> <b>Razão Social:</b> </label>
+                <input wicket:id="razaoSocial" type="text" class="form-control">
+            </div>
 
-        <div>
+            <!-- CPF e RG -->
+            <div class="form-group" style="display: flex; justify-content: space-between;">
+                <div style="flex-grow: 3; margin-right: 5px;">
+                    <label for="cpf" class="control-label"><b>CNPJ: </b></label>
+                    <input wicket:id="cnpj" type="text" class="form-control cpf">
+                </div>
+                <div style="flex-grow: 1;">
+                    <label for="rg" class="control-label"><b>Inscrição Estadual: </b></label>
+                    <input wicket:id="inscricaoEstadual" type="text" class="form-control">
+                </div>
+            </div>
 
-            <div class="panel-body">
-                <!-- Search input-->
-                <div class="form-group">
-                    <label class="col-md-2 control-label" for="CEP">CEP
-                        <h11>*</h11>
-                    </label>
-                    <div class="col-md-2">
-                        <input id="cep" wicket:id="cep" name="cep" placeholder="Apenas números"
-                               class="form-control input-md" required="" value="" type="text" maxlength="8"
-                               pattern="[0-9]+$">
-                    </div>
-                    <div class="col-md-2">
-                        <button type="button" wicket:id="pesquisarCepBtn" class="btn btn-primary">Pesquisar</button>
-                    </div>
+            <!-- Telefone e Email -->
+            <div class="form-group" style="display: flex; justify-content: space-between;">
+                <div style="flex-grow: 2; margin-right: 5px;">
+                    <label for="telefone" class="control-label"><b>Telefone: </b></label>
+                    <input wicket:id="telefone" type="text" class="form-control">
+                </div>
+                <div style="flex-grow: 7; margin-right: 5px;">
+                    <label for="email" class="control-label"><b>Email: </b></label>
+                    <input wicket:id="email" type="text" class="form-control">
                 </div>
 
-                <!-- Prepended text-->
-                <div class="form-group">
-                    <label class="col-md-2 control-label" for="prependedtext">Endereço</label>
-                    <div class="col-md-4">
-                        <div class="input-group">
-                            <span class="input-group-addon">Rua</span>
-                            <input id="rua" wicket:id="logradouro" name="rua" class="form-control" placeholder=""
-                                   required="" readonly="readonly" type="text">
-                        </div>
-
-                    </div>
-                    <div class="col-md-2">
-                        <div class="input-group">
-                            <span class="input-group-addon">Nº <h11>*</h11></span>
-                            <input id="numero" wicket:id="numero" name="numero" class="form-control" placeholder=""
-                                   required="" type="text">
-                        </div>
-
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="input-group">
-                            <span class="input-group-addon">Bairro</span>
-                            <input id="bairro" wicket:id="bairro" name="bairro" class="form-control" placeholder=""
-                                   required="" readonly="readonly" type="text">
-                        </div>
-
-                    </div>
+                <div style="flex-grow: 2; margin-right: 5px;">
+                    <label for="status" class="control-label"><b>Status: </b></label>
+                    <select wicket:id="status" class="form-select" id="status"></select>
                 </div>
-
-                <div class="form-group">
-                    <label class="col-md-2 control-label" for="prependedtext"></label>
-                    <div class="col-md-4">
-                        <div class="input-group">
-                            <span class="input-group-addon">Cidade</span>
-                            <input id="cidade" wicket:id="cidade" name="cidade" class="form-control" placeholder=""
-                                   required="" readonly="readonly" type="text">
-                        </div>
-
-                    </div>
-
-                    <div class="col-md-2">
-                        <div class="input-group">
-                            <span class="input-group-addon">Estado</span>
-                            <input id="estado" wicket:id="estado" name="estado" class="form-control" placeholder=""
-                                   required="" readonly="readonly" type="text">
-                        </div>
-
-                    </div>
+            </div>
+            <!-- Estado Civil e Status -->
+            <div class="form-group" style="display: flex; justify-content: space-between;">
+                <div style="flex-grow: 2; margin-right: 5px; padding-top: 25px;">
+                    <label for="status" class="control-label"><b></b></label>
+                    <button wicket:id="addAddress" type="button" class="btn btn-success btn-sm btn-dark" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                        <i class="bi bi-journal-plus" style="vertical-align: middle; font-size: 15px;"></i> Adicionar Endereço
+                    </button>
                 </div>
 
             </div>
-        </div>
 
+            <div wicket:id="formAddress" style="padding: 15px; background-color: #D1E7DD; border-radius: 9px;">
+                <div class="form-group" style="display: flex;">
+                    <label for="CEP" style="margin-right: 5px;"><b>CEP: <h11>*</h11></b></label>
+                    <input id="cep" name="cep" placeholder="Apenas números" class="form-control input-md" required="" type="text" maxlength="8"
+                           pattern="[0-9]+$" style="margin-right: 5px; width: fit-content;" wicket:id="cep">
+                    <button type="button" class="btn btn-primary btn-dark" onclick="pesquisacep(cep.value)"><i class="bi bi-search"></i> Pesquisar</button>
+                </div>
 
-    </form>
+                <div class="form-group" style="display: flex; justify-content: space-between;">
+                    <div style="flex-grow: 3; margin-right: 5px;">
+                        <label for="rua"><b>Rua: </b></label>
+                        <input id="rua" name="rua" class="form-control" required=""  type="text" wicket:id="logradouro">
+                    </div>
+                    <div style="flex-grow: 1;">
+                        <label for="numero"><b>Número:</b></label>
+                        <input id="numero" name="numero" class="form-control" required="" type="text" wicket:id="numero">
+                    </div>
+                </div>
+
+                <div class="form-group" style="display: flex; justify-content: space-between;">
+                    <div style="flex-grow: 10; margin-right: 5px;">
+                        <label for="bairro"><b>Bairro:</b></label>
+                        <input id="bairro" name="bairro" class="form-control" required=""  type="text" wicket:id="bairro">
+                    </div>
+                    <div style="flex-grow: 10; margin-right: 5px;">
+                        <label for="cidade"><b>Cidade:</b></label>
+                        <input id="cidade" name="cidade" class="form-control" required=""  type="text" wicket:id="cidade">
+                    </div>
+                    <div style="flex-grow: 1;">
+                        <label for="estado"><b>Estado:</b></label>
+                        <input id="estado" name="estado" class="form-control" required="" type="text" wicket:id="uf">
+                    </div>
+                </div>
+
+                <div class="form-group" style="display: flex; justify-content: space-between;">
+                    <div style="flex-grow: 1; margin-right: 5px;">
+                        <label for="saveAddress"><b><br></b></label>
+                        <button type="button" class="btn btn-sm btn-dark" style="margin-top: 10px;" wicket:id="saveAddress"><i class="bi bi-floppy"></i> Salvar</button>
+                        <label for="cancelAddress"><b><br></b></label>
+                        <button type="button" class="btn btn-sm btn-dark" style="margin-top: 10px;" wicket:id="cancelAddress"><i class="bi bi-floppy"></i> Cancelar</button>
+                    </div>
+                    <div style="flex-grow: 9; margin-right: 5px;"></div>
+                </div>
+            </div>
+            <div wicket:id="tableAddress" style="padding-top: 10px; border-radius: 9px;">
+                <div class="form-group" style="display: flex;">
+                    <table class="table table-success table-striped" >
+                        <tr>
+                            <th colspan="6" style="text-align: center;border-top-left-radius: 9px; border-top-right-radius: 9px;">
+                                Endereços
+                            </th>
+                        </tr>
+                        <tr class="table-dark">
+                            <th style="text-align: center;">CEP</th>
+                            <th style="text-align: center;">Rua</th>
+                            <th style="text-align: center;">Número</th>
+                            <th style="text-align: center;">Bairro</th>
+                            <th style="text-align: center;">Cidade</th>
+                            <th style="text-align: center;">Estado</th>
+                        </tr>
+                        <tr wicket:id="enderecoList">
+                            <td wicket:id="cep" style="text-align: center;"></td>
+                            <td wicket:id="logradouro" style="text-align: center;"></td>
+                            <td wicket:id="numero" style="text-align: center;"></td>
+                            <td wicket:id="bairro" style="text-align: center;"></td>
+                            <td wicket:id="cidade" style="text-align: center;"></td>
+                            <td wicket:id="estado" style="text-align: center;"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div style="padding-top: 10px;">
+                <div class="form-group" style="display: flex;  justify-content: center; align-items: center;">
+                    <div style="flex-grow: 1; margin-right: 5px;">
+                        <button type="button" class="btn btn-sm btn-dark" style="margin-top: 10px;"><i class="bi bi-floppy" style="padding-right: 3px;"></i> Cadastrar Monitorador</button>
+                        <button type="button" class="btn btn-sm btn-dark" style="margin-top: 10px;" wicket:id="cancelButton"><i class="bi bi-x-square"  style="padding-right: 3px;"></i>Cancelar</button>
+
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
 </wicket:panel>
 </body>
 </html>

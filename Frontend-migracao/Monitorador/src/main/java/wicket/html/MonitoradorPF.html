@@ -2,50 +2,56 @@
 <html xmlns:wicket="http://wicket.apache.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Monitorador Pessoa Física</title>
 </head>
 <body>
 <wicket:extend>
 
-    <div class="header-title">
+    <div class="header-title" wicket:id="feedbackPanel">
 
         <h2>IMPLEMENTAR FEEDCACK PANEL</h2>
 
     </div>
 
+    <div wicket:id="modal"></div>
+    <form wicket:id="formSearch">
+        <table style="color: #0d0d11;" class="table table-striped">
+            <tr>
+                <td colspan="12" style="background-color: #212429; color: #ECEBE9;">Monitorador Pessoa Física</td>
+            </tr>
+            <tr class="table-dark" style="font-size: 14pt">
+                <th scope="col">ID</th>
+                <th scope="col">Tipo Pessoa</th>
+                <th scope="col">CPF</th>
+                <th scope="col">NOME</th>
+                <th scope="col">TELEFONE</th>
+                <th scope="col">EMAIL</th>
+                <th scope="col">RG</th>
+                <th scope="col">DATA DE NASC.</th>
+                <th scope="col">STATUS</th>
+                <th scope="col">Edit</th>
+            </tr>
+            <!-- Repita as linhas abaixo conforme necessário -->
+            <tr wicket:id="monitoradorList">
+                <td wicket:id="id"></td>
+                <td wicket:id="tipoPessoa"></td>
+                <td wicket:id="nome"></td>
+                <td wicket:id="cpf"></td>
+                <td wicket:id="telefone"></td>
+                <td wicket:id="email"></td>
+                <td wicket:id="rg"></td>
+                <td wicket:id="dataNascimento"></td>
+                <td wicket:id="ativo"></td>
+                <td style="width: 100px;">
+                    <a href="#"><i class="bi bi-pencil" style="color: #0d0d11"></i></a>
+                </td>
+            </tr>
+        </table>
+    </form>
 
-    <table style="color: #0d0d11; font-size: 10pt;" class="table table-striped">
-        <tr>
-            <td colspan="12" style="background-color: #212429; color: #ECEBE9;">Dashboard Monitorador</td>
-        </tr>
-        <tr class="table-dark" style="font-size: 14pt">
-            <th scope="col">ID</th>
-            <th scope="col">Tipo Pessoa</th>
-            <th scope="col">NOME</th>
-            <th scope="col">CPF</th>
-            <th scope="col">TELEFONE</th>
-            <th scope="col">EMAIL</th>
-            <th scope="col">RG</th>
-            <th scope="col">DATA DE NASC.</th>
-            <th scope="col">STATUS</th>
-            <th scope="col">Edit</th>
-        </tr>
-        <!-- Repita as linhas abaixo conforme necessário -->
-        <tr wicket:id="monitoradorList">
-            <td wicket:id="id"></td>
-            <td wicket:id="tipoPessoa"></td>
-            <td wicket:id="nome"></td>
-            <td wicket:id="cpf"></td>
-            <td wicket:id="telefone"></td>
-            <td wicket:id="email"></td>
-            <td wicket:id="rg"></td>
-            <td wicket:id="dataNascimento"></td>
-            <td wicket:id="ativo"></td>
-            <td style="width: 100px;">
-                <a href="#"><i class="bi bi-pencil" style="color: #0d0d11"></i></a>
-            </td>
-        </tr>
-    </table>
+
+
+
 </wicket:extend>
 </body>
 </html>

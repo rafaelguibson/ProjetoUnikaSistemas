@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.br.CNPJ;
 import org.hibernate.validator.constraints.br.CPF;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "monitorador")
-public class Monitorador {
+public class Monitorador implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,7 +59,7 @@ public class Monitorador {
     @Column(name = "ativo", nullable = false)
     private Boolean ativo;
 
-    @OneToMany(mappedBy = "monitorador", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "monitorador", orphanRemoval = true)
     private List<Endereco> enderecos;
 
     @Transient
