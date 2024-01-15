@@ -75,6 +75,8 @@ public class MonitoradorPF extends BasePage implements Serializable {
         add(feedbackPanel);
 
         // Filtrar a lista para listar apenas os monitoradores com tipoPessoa igual a "PJ"
+
+        //TODO - ajustar lista para o backend chamando a lista já filtrada
         List<Monitorador> mntListPF = new ArrayList<>();
         for (Monitorador monitorador : mntList) {
             if ("PF".equals(monitorador.getTipoPessoa())) {
@@ -90,7 +92,8 @@ public class MonitoradorPF extends BasePage implements Serializable {
                 // Coluna do chebox para selecionar os monitoradores para deletar
 
                 item.add(new Label("id", new PropertyModel<String>(item.getModel(), "id")));
-                item.add(new Label("tipoPessoa", new PropertyModel<String>(item.getModel(), "tipoPessoa")));
+                String tipoPessoa = monitorador.getTipoPessoa().equals("PF") ? "Física" : "Jurídica";
+                item.add(new Label("tipoPessoa", tipoPessoa));
                 item.add(new Label("nome", new PropertyModel<String>(item.getModel(), "nome")));
                 item.add(new Label("cpf", new PropertyModel<String>(item.getModel(), "cpf")));
                 item.add(new Label("telefone", new PropertyModel<String>(item.getModel(), "telefone")));

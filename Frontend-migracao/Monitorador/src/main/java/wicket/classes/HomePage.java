@@ -48,7 +48,9 @@ public class HomePage extends BasePage implements Serializable {
                 item.add(new CheckBox("selected", new PropertyModel<>(item.getModel(), "selected")));
 
                 item.add(new Label("id", new PropertyModel<String>(item.getModel(), "id")));
-                item.add(new Label("tipoPessoa", new PropertyModel<String>(item.getModel(), "tipoPessoa")));
+
+                String tipoPessoa = monitorador.getTipoPessoa().equals("PF") ? "Física" : "Jurídica";
+                item.add(new Label("tipoPessoa", tipoPessoa));
 
                 // Combina Nome e Razão Social
                 String nomeOuRazaoSocial = monitorador.getTipoPessoa().equals("PF") ? monitorador.getNome() : monitorador.getRazaoSocial();

@@ -72,6 +72,7 @@ public class MonitoradorPJ extends BasePage implements Serializable {
         add(feedbackPanel);
 
         // Filtrar a lista para listar apenas os monitoradores com tipoPessoa igual a "PJ"
+        //TODO - ajustar lista para o backend chamando a lista já filtrada
         List<Monitorador> mntListPJ = new ArrayList<>();
         for (Monitorador monitorador : mntList) {
             if ("PJ".equals(monitorador.getTipoPessoa())) {
@@ -88,7 +89,8 @@ public class MonitoradorPJ extends BasePage implements Serializable {
                 // Coluna do chebox para selecionar os monitoradores para deletar
 
                 item.add(new org.apache.wicket.markup.html.basic.Label("id", new PropertyModel<String>(item.getModel(), "id")));
-                item.add(new org.apache.wicket.markup.html.basic.Label("tipoPessoa", new PropertyModel<String>(item.getModel(), "tipoPessoa")));
+                String tipoPessoa = monitorador.getTipoPessoa().equals("PF") ? "Física" : "Jurídica";
+                item.add(new Label("tipoPessoa", tipoPessoa));
                 item.add(new org.apache.wicket.markup.html.basic.Label("razaoSocial", new PropertyModel<String>(item.getModel(), "razaoSocial")));
                 item.add(new org.apache.wicket.markup.html.basic.Label("cnpj", new PropertyModel<String>(item.getModel(), "cnpj")));
                 item.add(new org.apache.wicket.markup.html.basic.Label("telefone", new PropertyModel<String>(item.getModel(), "telefone")));
