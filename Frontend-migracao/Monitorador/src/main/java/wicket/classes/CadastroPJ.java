@@ -134,7 +134,7 @@ public class CadastroPJ  extends Panel implements Serializable {
                 monitoradorSalvar.setAtivo(true);
                 if(!listaDeEnderecos.isEmpty()) {
                     monitorador.setEnderecos(listaDeEnderecos);
-                    monitoradorHttpClient.salvar(monitorador);
+                    monitoradorHttpClient.salvar(monitoradorSalvar);
                     ModalWindow.closeCurrent(target);
                 } else {
                     showInfo(target, "É obrigatório adicionar pelo menos um endereço !");

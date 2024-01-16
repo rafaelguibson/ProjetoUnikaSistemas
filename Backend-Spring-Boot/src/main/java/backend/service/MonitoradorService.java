@@ -70,11 +70,11 @@ public class MonitoradorService {
     }
 
     public List<Monitorador> buscarPF() {
-        return monitoradorRepository.findByTipoPessoa("FISICA");
+        return monitoradorRepository.findByTipoPessoa("PF");
     }
 
     public List<Monitorador> buscarPJ() {
-        return monitoradorRepository.findByTipoPessoa("JURIDICA");
+        return monitoradorRepository.findByTipoPessoa("PJ");
     }
 
     public void deleteAllMonitoradores(List<Monitorador> list) {
@@ -84,7 +84,7 @@ public class MonitoradorService {
         if(monitorador.getTipoPessoa().equals("PF")) {
             monitorador.setCpf(monitorador.getCpf().replaceAll("\\D", ""));
         }
-        if(monitorador.getTipoPessoa().equals("PF")) {
+        if(monitorador.getTipoPessoa().equals("PJ")) {
             monitorador.setCnpj(monitorador.getCnpj().replaceAll("\\D", ""));
         }
         monitorador.setTelefone(monitorador.getTelefone().replaceAll("\\D", ""));

@@ -1,0 +1,328 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background: #313131;
+    color: #ECEBE9;
+    background-size: cover;
+}
+
+.side-bar {
+    background: #1b1a1b;
+    backdrop-filter: blur(15px);
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left:  0px;
+    overflow-y: auto;
+    transition: 0.6s ease;
+    transition-property: left;
+}
+
+.side-bar::-webkit-scrollbar {
+    width: 0px;
+}
+
+.side-bar.active {
+    left: 0;
+}
+
+h2 {
+    color: white;
+    text-align: center;
+    font-weight: 500;
+    font-size: 25px;
+    padding-bottom: 13px;
+    font-family: sans-serif;
+    letter-spacing: 2px;
+}
+h4 {
+    text-align: center;
+    color: #ECEBE9;
+    background-color: #0d0d11;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-top-left-radius: 9px;
+    border-top-right-radius: 9px;
+}
+
+.side-bar .menu {
+    width: 100%;
+    margin-top: 30px;
+}
+
+.side-bar .menu .item {
+    position: relative;
+    cursor: pointer;
+
+}
+
+.side-bar .menu .item a {
+    color: #fff;
+    font-size: 16px;
+    text-decoration: none;
+    display: block;
+    padding: 5px 30px;
+    line-height: 60px;
+}
+
+.side-bar .menu .item a:hover {
+    background: #33363a;
+    transition: 0.3s ease;
+}
+
+.side-bar .menu .item i {
+    margin-right: 15px;
+}
+
+.side-bar .menu .item a .dropdown {
+    position: absolute;
+    right: 0;
+    margin: 20px;
+    transition: 0.3s ease;
+}
+
+.side-bar .menu .item .sub-menu {
+    background: #262627;
+    display: none;
+}
+
+.side-bar .menu .item .sub-menu a {
+    padding-left: 50px;
+}
+
+.rotate {
+    transform: rotate(90deg);
+}
+
+.close-btn {
+    position: absolute;
+    color: #fff;
+    font-size: 23px;
+    right: 0px;
+    margin: 15px;
+    cursor: pointer;
+}
+
+.menu-btn {
+    position: absolute;
+    color: rgb(0, 0, 0);
+    font-size: 35px;
+    margin: 25px;
+    cursor: pointer;
+}
+
+.main {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px;
+}
+
+.main h1 {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 60px;
+    text-align: center;
+    line-height: 80px;
+}
+
+@media (max-width: 900px) {
+    .main h1 {
+        font-size: 40px;
+        line-height: 60px;
+    }
+}
+
+.img-nav {
+    width: 100px;
+    padding-top: 5px;
+    border-radius: 50%;
+    margin-left: 70px;
+    border: 3px solid #a9adaf;
+}
+img {
+    padding: 0px;
+    border: 0px;
+}
+
+header {
+    background: #212529;
+}
+
+.header-top {
+    background-color: #212529;
+    color: white;
+    position: fixed;
+    top: 10px;
+    left: calc(250px + 5px);
+    right: 15px;
+    z-index: 10;
+    height: 80px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1; /* Faz o container crescer para ocupar o espaço disponível */
+}
+
+.header-top h2 {
+    margin: 0 10px;
+    color: white;
+    border: 1px #6e6e6d;
+}
+
+.header-icon {
+    height: 60px;
+    border: 0px;
+}
+
+
+.header-icon.left {
+
+}
+
+.header-icon.right {
+    transform: scaleX(-1); /* espelha a imagem */
+}
+
+.menu-btn {
+    visibility: hidden; /* Começa invisível */
+    color: rgb(255, 255, 255);
+    flex-shrink: 0; /* Impede o botão do menu de encolher */
+}
+
+.content {
+    margin-top: 100px; /* Ajuste baseado na altura do header-top mais um pouco de espaço */
+    left: calc(250px + 5px); /* Alinhado com o header-top */
+    right: 5px; /* Alinhado com o lado direito da tela */
+    position: absolute; /* Posicionamento absoluto */
+    top: 0;
+    bottom: 0;
+    overflow-y: auto; /* Adiciona rolagem se o conteúdo for muito longo */
+    background-color: #ECEBE9;
+}
+
+@media (max-width: 900px) {
+    .content {
+        left: 5px; /* Ajuste para telas menores */
+    }
+}
+.sidebar-title {
+    text-align: center;
+    font-size: 24pt;
+    color: white;
+}
+.header-title {
+    background-color: #212529;
+    color: white;
+    position: fixed;
+    top: 95px;
+    left: calc(250px + 5px);
+    right: 15px;
+    z-index: 10;
+    height: 50px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 15px;
+
+    flex-grow: 1; /* Faz o container crescer para ocupar o espaço disponível */
+}
+
+
+.header-title h2 {
+    margin: 0 10px;
+    color: #ECEBE9;
+    line-height: 500px;
+    font-size: 20pt;
+    border: 3px #6e6e6d;
+}
+
+table { /* Faz a tabela ocupar toda a largura disponível */
+    border-collapse: collapse; /* Remove os espaços entre as bordas das células */
+    justify-content: center;
+    text-align: center;
+    color: #0d0d11;
+}
+
+table, th, td {
+    border: 1px solid black; /* Adiciona borda para a tabela e células */
+}
+
+td {
+    border: 1px solid #ddd;
+    text-align: center; /* Alinha o texto ao centro das células */
+    padding: 0px; /* Adiciona um pouco de espaço interno nas células */
+}
+
+/* Estiliza a primeira linha */
+table tr:first-child td {
+    font-weight: bold;
+    background-color: #f0f0f0;
+    border-top-right-radius: 9px;
+    border-top-left-radius: 9px;
+}
+
+.content-panel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.wicket-modal {
+    position: fixed;
+    background-color: #FFFFFF;
+    color: #212529;
+    border: 2px #3f4450 solid;
+    border-radius: 9px;
+
+}
+
+
+.w_content_container {
+    padding: 15px;
+    background-color: #ECEBE9;
+    border: 2px #3f4450 solid;
+    border-radius: 5px;
+
+}
+.w_content_1 {
+    background-color: #ECEBE9;
+}
+.w_captionText {
+    color: #212529;
+    position: relative;
+    text-align: center;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    font-size: 15pt;
+}
+.bordered-div {
+    border: 1px solid #000; /* Cor e estilo da borda */
+    padding: 10px; /* Espaçamento interno para dar espaço à borda */
+    border-radius: 10px; /* Borda arredondada (opcional) */
+}
+.feedback-panel {
+    background-color: #212529 ;
+    color: #ECEBE9;
+    font-size: 15pt;
+    font-weight: bold;
+}
