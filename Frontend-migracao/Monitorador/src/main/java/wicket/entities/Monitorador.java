@@ -29,7 +29,6 @@ public class Monitorador implements Serializable {
     private List<Endereco> enderecos;
     private boolean selected;
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -27,17 +27,17 @@ public class MonitoradorService {
     }
 
     public Monitorador saveMonitorador(Monitorador monitorador) {
-        // Adicione aqui qualquer lógica de negócios antes de salvar
+
 
         return monitoradorRepository.save(removerMascaras(monitorador));
     }
 
     @Transactional
     public Monitorador salvarMonitoradorComEnderecos(Monitorador monitorador) {
-        // Primeiro, salve o monitorador
+        //salva o monitorador
         Monitorador monitoradorSalvo = monitoradorRepository.save(monitorador);
 
-        // Em seguida, associe os endereços ao monitorador e salve os endereços
+        //associa os endereços ao monitorador e salve os endereços
         List<Endereco> enderecos = monitorador.getEnderecos();
         if (enderecos != null && !enderecos.isEmpty()) {
             for (Endereco endereco : enderecos) {
@@ -46,7 +46,7 @@ public class MonitoradorService {
             }
         }
 
-        // Retorne o monitorador salvo com os endereços associados
+        // a o monitorador salvo com os endereços associados
         return monitoradorSalvo;
     }
 
@@ -60,7 +60,7 @@ public class MonitoradorService {
     }
 
     public Monitorador updateMonitorador(Monitorador monitorador) {
-        // Adicione lógica de validação ou negócios antes de atualizar
+
 
         return monitoradorRepository.save(monitorador);
     }
@@ -81,10 +81,10 @@ public class MonitoradorService {
         monitoradorRepository.deleteAll(list);
     }
     public Monitorador removerMascaras(Monitorador monitorador) {
-        if(monitorador.getTipoPessoa().equals("Física")) {
+        if(monitorador.getTipoPessoa().equals("PF")) {
             monitorador.setCpf(monitorador.getCpf().replaceAll("\\D", ""));
         }
-        if(monitorador.getTipoPessoa().equals("Jurídica")) {
+        if(monitorador.getTipoPessoa().equals("PF")) {
             monitorador.setCnpj(monitorador.getCnpj().replaceAll("\\D", ""));
         }
         monitorador.setTelefone(monitorador.getTelefone().replaceAll("\\D", ""));

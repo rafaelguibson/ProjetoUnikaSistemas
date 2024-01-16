@@ -1,9 +1,11 @@
 package wicket.classes;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
@@ -15,26 +17,36 @@ import wicket.entities.Monitorador;
 import wicket.http.MonitoradorHttpClient;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class HomePage extends BasePage implements Serializable {
     private static final long serialVersionUID = 1L;
     MonitoradorHttpClient monitoradorHttpClient = new MonitoradorHttpClient("http://localhost:8080/api/monitoradores");
     List<Monitorador> mntList;
+    FeedbackPanel fp;
 
     public HomePage(final PageParameters parameters) {
         super(parameters);
         Monitorador monitorador = new Monitorador();
+
         /* declaração do feedback panel para notificações */
-        FeedbackPanel feedbackPanel = new FeedbackPanel("feedbackPanel");
-        feedbackPanel.setOutputMarkupPlaceholderTag(true);
-        feedbackPanel.setVisible(false);
-        add(feedbackPanel);
+
+
+        fp = new FeedbackPanel("feedbackPanel");
+        fp.setOutputMarkupPlaceholderTag(true);
+        add(fp);
 
         WebMarkupContainer sectionForm = new WebMarkupContainer("sectionForm");
         sectionForm.setOutputMarkupId(true);
         add(sectionForm);
 
+        Form<Void> form = new Form<>("form");
+        sectionForm.add(form);
+
+        sectionForm.setOutputMarkupId(true);
+        form.setDefaultModel(new CompoundPropertyModel<>(monitorador));
         /* Lista que é preenchida com os monitoradores do banco de dados */
         mntList = monitoradorHttpClient.listarTodos();
 
@@ -73,27 +85,53 @@ public class HomePage extends BasePage implements Serializable {
             }
         };
         monitoradorList.setReuseItems(true);
-        sectionForm.add(monitoradorList);
+        form.add(monitoradorList);
 
 
         /* Método que controla o selecionar/deselecionar do checkbox de excluisão */
-        AjaxLink<Void> checkBox = new AjaxLink<>("checkBox", new PropertyModel<>(new CompoundPropertyModel<>(monitorador), "selected")) {
+//        AjaxLink<Void> checkBox = new AjaxLink<>("checkBox", new PropertyModel<>(new CompoundPropertyModel<>(monitorador), "selected")) {
+//            @Override
+//            public void onClick(AjaxRequestTarget target) {
+//                for (Monitorador monitorador : mntList) {
+//                    if(!monitorador.isSelected()) {
+//                        monitorador.setSelected(true);
+//                        target.add(sectionForm);
+//                    } else {
+//                        monitorador.setSelected(false);
+//                        target.add(sectionForm);
+//                    }
+//
+//                }
+//
+//            }
+//        };
+//        sectionForm.add(checkBox);
+
+        //Excluir monitorador
+        AjaxLink<Void> btnRemove = new AjaxLink<Void>("btnRemove") {
             @Override
             public void onClick(AjaxRequestTarget target) {
-                for (Monitorador monitorador : mntList) {
-                    if(!monitorador.isSelected()) {
-                        monitorador.setSelected(true);
-                        target.add(sectionForm);
-                    } else {
-                        monitorador.setSelected(false);
-                        target.add(sectionForm);
-                    }
+                List<Monitorador> monitoradorRemove = mntList.stream().
+                        filter(Monitorador::isSelected).collect(Collectors.toList());
 
+                monitoradorHttpClient.deleteAllMonitoradores(monitoradorRemove);
+
+                mntList.clear();
+                mntList.addAll(monitoradorHttpClient.listarTodos());
+
+                if(monitoradorRemove.isEmpty()) {
+                    showInfo(target, "Selecione algum registro para remover...");
+                } else {
+                    showInfo(target, "Foram removidos ("+monitoradorRemove.size()+") monitoradores...");
                 }
-
+                target.add(sectionForm);
             }
         };
-        sectionForm.add(checkBox);
-
+        btnRemove.add(new AjaxFormSubmitBehavior(form, "click") {});
+        add(btnRemove);
     } //Fora do construtor
+    private void showInfo(AjaxRequestTarget target, String msg) {
+        info(msg);
+        target.add(fp);
+    }
 }

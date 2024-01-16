@@ -45,7 +45,6 @@ public class CadastroPJ  extends Panel implements Serializable {
         MonitoradorHttpClient monitoradorHttpClient = new MonitoradorHttpClient("http://localhost:8080/api/monitoradores");
 
         setOutputMarkupId(true);
-
         fp = new FeedbackPanel("feedbackPanel");
         fp.setOutputMarkupPlaceholderTag(true);
         add(fp);

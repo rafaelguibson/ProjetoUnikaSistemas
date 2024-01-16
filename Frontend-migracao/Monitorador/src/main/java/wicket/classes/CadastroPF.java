@@ -211,6 +211,7 @@ public class CadastroPF extends Panel implements Serializable {
             }
         };
 
+
         //Botão que fecha o modal
         AjaxLink<Void> cancelButton = new AjaxLink<Void>("cancelButton") {
             @Override
@@ -224,6 +225,8 @@ public class CadastroPF extends Panel implements Serializable {
 
         };
         form.add(saveMonitorador,cancelButton);
+
+
 
     }
 

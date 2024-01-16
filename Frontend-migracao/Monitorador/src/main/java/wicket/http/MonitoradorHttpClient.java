@@ -118,8 +118,7 @@ public class MonitoradorHttpClient implements Serializable {
             request.setEntity(new StringEntity(requestBody, ContentType.APPLICATION_JSON));
 
             try (CloseableHttpResponse response = httpClient.execute(request)) {
-                // adicionar lógica adicional aqui se necessário,
-                // por exemplo, para processar a resposta do servidor
+
             }
         } catch (IOException e) {
             e.printStackTrace();
