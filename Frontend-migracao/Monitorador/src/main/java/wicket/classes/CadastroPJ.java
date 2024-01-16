@@ -12,12 +12,14 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import wicket.entities.Endereco;
 import wicket.entities.Monitorador;
+import wicket.http.MonitoradorHttpClient;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -31,6 +33,7 @@ public class CadastroPJ  extends Panel implements Serializable {
 
     private String selectedEstadoCivil;
     private String selectedStatus;
+    FeedbackPanel fp;
     List<Endereco> listaDeEnderecos = new ArrayList<>();
     WebMarkupContainer formAddress = new WebMarkupContainer("formAddress");
     WebMarkupContainer tableAddress = new WebMarkupContainer("tableAddress");
@@ -39,7 +42,15 @@ public class CadastroPJ  extends Panel implements Serializable {
     public CadastroPJ(String id) {
         super(id);
 
-//Formulário que contem os dados de cadastro monitorador, o botão de adicionar endereço e a tableAddress
+        MonitoradorHttpClient monitoradorHttpClient = new MonitoradorHttpClient("http://localhost:8080/api/monitoradores");
+
+        setOutputMarkupId(true);
+
+        fp = new FeedbackPanel("feedbackPanel");
+        fp.setOutputMarkupPlaceholderTag(true);
+        add(fp);
+
+        //Formulário que contem os dados de cadastro monitorador, o botão de adicionar endereço e a tableAddress
         Form<Void> form = new Form<>("form");
         add(form);
 
@@ -66,25 +77,6 @@ public class CadastroPJ  extends Panel implements Serializable {
         // Cria o dropdown e o adiciona à página
         DropDownChoice<String> statusDropDown = new DropDownChoice<>("status", listaStatus, statusOptions);
 
-        // Crie um componente ListView para exibir a tabela
-
-        Endereco endereco1 = new Endereco();
-        endereco1.setCep("12345-678");
-        endereco1.setLogradouro("Rua A");
-        endereco1.setNumero("123");
-        endereco1.setBairro("Bairro 1");
-        endereco1.setCidade("Cidade 1");
-        endereco1.setEstado("Estado 1");
-        listaDeEnderecos.add(endereco1);
-
-        Endereco endereco2 = new Endereco();
-        endereco2.setCep("98765-432");
-        endereco2.setLogradouro("Rua B");
-        endereco2.setNumero("456");
-        endereco2.setBairro("Bairro 2");
-        endereco2.setCidade("Cidade 2");
-        endereco2.setEstado("Estado 2");
-        listaDeEnderecos.add(endereco2);
 
         ListView<Endereco> enderecoList = new ListView<Endereco>("enderecoList", listaDeEnderecos) {
             @Override
@@ -130,6 +122,28 @@ public class CadastroPJ  extends Panel implements Serializable {
 
         formAddress.add(cep,logradouro, numero, bairro, cidade, estado);
 
+        AjaxLink<Void> saveMonitorador = new AjaxLink<Void>("saveMonitorador") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                Monitorador monitoradorSalvar = new Monitorador();
+                monitoradorSalvar.setTipoPessoa("PJ");
+                monitoradorSalvar.setRazaoSocial(razaoSocial.getValue());
+                monitoradorSalvar.setCnpj(cnpj.getValue());
+                monitoradorSalvar.setInscricaoEstadual(inscricaoEstadual.getValue());
+                monitoradorSalvar.setTelefone(telefone.getValue());
+                monitoradorSalvar.setEmail(email.getValue());
+                monitoradorSalvar.setAtivo(true);
+                if(!listaDeEnderecos.isEmpty()) {
+                    monitorador.setEnderecos(listaDeEnderecos);
+                    monitoradorHttpClient.salvar(monitorador);
+                    ModalWindow.closeCurrent(target);
+                } else {
+                    showInfo(target, "É obrigatório adicionar pelo menos um endereço !");
+                }
+            }
+        };
+        saveMonitorador.add(new AjaxFormSubmitBehavior(form,"click") {});
+        form.add(saveMonitorador);
         //Botão para pesquisar cep via correios
         AjaxLink<Void> searchCEP  = new AjaxLink<Void>("searchCEP") {
             @Override
@@ -189,5 +203,8 @@ public class CadastroPJ  extends Panel implements Serializable {
         form.add(cancelButton);
 
     }
-
+    private void showInfo(AjaxRequestTarget target, String msg) {
+        info(msg);
+        target.add(fp);
+    }
 }

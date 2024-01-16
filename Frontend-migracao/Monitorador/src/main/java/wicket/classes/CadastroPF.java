@@ -15,6 +15,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
@@ -45,6 +46,7 @@ public class CadastroPF extends Panel implements Serializable {
 
     private String selectedEstadoCivil;
     private String selectedStatus;
+    FeedbackPanel fp;
     public CadastroPF(String id) {
         super(id);
 
@@ -58,6 +60,9 @@ public class CadastroPF extends Panel implements Serializable {
 
         setOutputMarkupId(true);
 
+        fp = new FeedbackPanel("feedbackPanel");
+        fp.setOutputMarkupPlaceholderTag(true);
+        add(fp);
         //Formulário que contem os dados de cadastro monitorador, o botão de adicionar endereço e a tableAddress
         Form<Void> form = new Form<>("form");
         add(form);
@@ -198,10 +203,11 @@ public class CadastroPF extends Panel implements Serializable {
                 monitoradorSalvar.setAtivo(true);
                 if(!listaDeEnderecos.isEmpty()) {
                     monitorador.setEnderecos(listaDeEnderecos);
+                    monitoradorHttpClient.salvar(monitorador);
+                    ModalWindow.closeCurrent(target);
+                } else {
+                    showInfo(target, "É obrigatório adicionar pelo menos um endereço !");
                 }
-                monitoradorHttpClient.salvar(monitorador);
-                ModalWindow.closeCurrent(target);
-
             }
         };
 
@@ -221,6 +227,9 @@ public class CadastroPF extends Panel implements Serializable {
 
     }
 
-
+    private void showInfo(AjaxRequestTarget target, String msg) {
+        info(msg);
+        target.add(fp);
+    }
 }
 

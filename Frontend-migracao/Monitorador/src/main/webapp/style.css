@@ -316,3 +316,9 @@ table tr:first-child td {
     padding: 10px; /* Espaçamento interno para dar espaço à borda */
     border-radius: 10px; /* Borda arredondada (opcional) */
 }
+.feedback-panel {
+    background-color: #212529 ;
+    color: #ECEBE9;
+    font-size: 15pt;
+    font-weight: bold;
+}
