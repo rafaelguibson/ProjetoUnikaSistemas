@@ -1,6 +1,7 @@
 package wicket.classes;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.Page;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.AttributeAppender;
@@ -32,6 +33,7 @@ public class MonitoradorPJ extends BasePage implements Serializable {
     MonitoradorHttpClient monitoradorHttpClient = new MonitoradorHttpClient("http://localhost:8080/api/monitoradores");
     List<Monitorador> mntList;
     private ModalWindow modal  = new ModalWindow("modal");
+    final Class<? extends Page> currentPageClass = this.getPage().getClass();
     public MonitoradorPJ(final PageParameters parameters) {
         super(parameters);
 
@@ -78,6 +80,15 @@ public class MonitoradorPJ extends BasePage implements Serializable {
                 if ("true".equals(parameters.get("openModal").toString("")) && !modal.isShown()) {
                     response.render(OnDomReadyHeaderItem.forScript(getCallbackScript()));
                 }
+            }
+        });
+        modal.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
+            @Override
+            public void onClose(AjaxRequestTarget target) {
+                mntList.clear();
+                mntList.addAll(monitoradorHttpClient.listarTodos());
+                target.add(formSearch);
+                setResponsePage(currentPageClass);
             }
         });
         add(modal);

@@ -1,6 +1,7 @@
 package wicket.classes;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.Page;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.AttributeAppender;
@@ -33,6 +34,8 @@ public class MonitoradorPF extends BasePage implements Serializable {
     MonitoradorHttpClient monitoradorHttpClient = new MonitoradorHttpClient("http://localhost:8080/api/monitoradores");
     List<Monitorador> mntList;
     private ModalWindow modal = new ModalWindow("modal");
+
+    final Class<? extends Page> currentPageClass = this.getPage().getClass();
 
     public MonitoradorPF(final PageParameters parameters) {
         super(parameters);
@@ -81,6 +84,15 @@ public class MonitoradorPF extends BasePage implements Serializable {
             }
         });
         modal.setOutputMarkupId(true);
+        modal.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
+            @Override
+            public void onClose(AjaxRequestTarget target) {
+                mntList.clear();
+                mntList.addAll(monitoradorHttpClient.listarTodos());
+                target.add(formSearch);
+                setResponsePage(currentPageClass);
+            }
+        });
         add(modal);
 
         //Verificação de carregamento do section filter na tela de busca
