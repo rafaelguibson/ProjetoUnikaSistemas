@@ -1,10 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:wicket="http://wicket.apache.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Editar Pessoa Física</title>
 </head>
 <body>
+<wicket:panel>
+    <div class="container central-div">
+        <div wicket:id="feedbackPanel" class="feedback-panel"></div>
+        <form wicket:id="form">
+            <!-- Nome -->
+            <div class="form-group">
+                <label for="nome" class="control-label"> <b>Nome Completo:</b> </label>
+                <input wicket:id="nome" type="text" class="form-control">
+            </div>
 
+            <!-- CPF e RG -->
+            <div class="form-group" style="display: flex; justify-content: space-between;">
+                <div style="flex-grow: 3; margin-right: 5px;">
+                    <label for="cpf" class="control-label"><b>CPF: </b></label>
+                    <input wicket:id="cpf" type="text" class="form-control cpf">
+                </div>
+                <div style="flex-grow: 1;">
+                    <label for="rg" class="control-label"><b>RG: </b></label>
+                    <input wicket:id="rg" type="text" class="form-control">
+                </div>
+            </div>
+
+            <!-- Telefone e Email -->
+            <div class="form-group" style="display: flex; justify-content: space-between;">
+                <div style="flex-grow: 2; margin-right: 5px;">
+                    <label for="telefone" class="control-label"><b>Telefone: </b></label>
+                    <input wicket:id="telefone" type="text" class="form-control">
+                </div>
+                <div style="flex-grow: 7; margin-right: 5px;">
+                    <label for="email" class="control-label"><b>Email: </b></label>
+                    <input wicket:id="email" type="text" class="form-control">
+                </div>
+                <div style="flex-grow: 1;">
+                    <label for="dataNascimento" class="control-label"><b>Data de Nascimento: </b></label>
+                    <input wicket:id="dataNascimento" type="date" class="form-control">
+                </div>
+            </div>
+
+            <div style="padding-top: 10px;">
+                <div class="form-group" style="display: flex;  justify-content: center; align-items: center;">
+                    <div style="flex-grow: 1; margin-right: 5px;">
+                        <button type="button" class="btn btn-sm btn-dark" style="margin-top: 10px;" wicket:id="saveMonitorador"><i class="bi bi-floppy" style="padding-right: 3px;"></i>Atualizar Monitorador</button>
+                        <button type="button" class="btn btn-sm btn-dark" style="margin-top: 10px;" wicket:id="cancelButton"><i class="bi bi-x-square"  style="padding-right: 3px;"></i>Cancelar</button>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</wicket:panel>
 </body>
 </html>

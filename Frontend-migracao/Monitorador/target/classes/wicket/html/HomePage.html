@@ -2,19 +2,14 @@
 <html xmlns:wicket="http://wicket.apache.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Monitorador</title>
 </head>
 <body>
 <wicket:extend>
     <div>
 
-        <div class="feedback-panel" wicket:id="feedbackPanel">
-
-            <h2>IMPLEMENTAR FEEDCACK PANEL</h2>
-
-        </div>
-
-
+        <div class="feedback-panel" wicket:id="feedbackPanel"></div>
+        <div wicket:id="modal"></div>
         <div class="content-panel" wicket:id="sectionForm">
             <form wicket:id="form" style="width: 100%; ">
                 <table class="table table-striped">
@@ -22,7 +17,7 @@
                         <td colspan="14" style="background-color: #212429; color: #ECEBE9;"><h3>Dados Gerais Monitorador</h3></td>
                     </tr>
                     <tr class="table-dark">
-                        <th ><i class="bi bi-check2-square" ></i></th>
+                        <th ><i class="bi bi-check2-square" wicket:id="checkBox" ></i></th>
                         <th scope="col">ID</th>
                         <th scope="col">Tipo Pessoa</th>
                         <th scope="col">CPF/CNPJ</th>
@@ -47,7 +42,7 @@
                         <td wicket:id="dataNascimento"></td>
                         <td wicket:id="ativo"></td>
                         <td style="width: 100px; align-items: center; justify-content: center; justify-items: center; text-align: center"
-                            id="icon"><a href="#"><i class="bi bi-pencil" style="color: #0d0d11"></i></a></td>
+                            id="icon"><a href="#" wicket:id="btnEditarPF" ><i class="bi bi-pencil" style="color: #0d0d11"></i></a></td>
                     </tr>
                 </table>
             </form>

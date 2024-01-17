@@ -59,12 +59,15 @@ public class MonitoradorHttpClient implements Serializable {
         return null;
     }
 
-    public Monitorador alterar(Long id, Monitorador novoMonitorador) {
+    public Monitorador alterar(Monitorador novoMonitorador) {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
-            HttpPatch request = new HttpPatch(baseUrl + "/" + id);
+            HttpPatch request = new HttpPatch(baseUrl + "/" + novoMonitorador.getId());
+
+            // Configure o cabeçalho Content-Type para JSON
+            request.setHeader("Content-Type", "application/json; charset=UTF-8");
 
             String requestBody = objectMapper.writeValueAsString(novoMonitorador);
-            request.setEntity(new StringEntity(requestBody));
+            request.setEntity(new StringEntity(requestBody, ContentType.APPLICATION_JSON));
 
             try (CloseableHttpResponse response = httpClient.execute(request)) {
                 HttpEntity entity = response.getEntity();
@@ -77,6 +80,7 @@ public class MonitoradorHttpClient implements Serializable {
         }
         return null;
     }
+
 
     public void excluir(Long id) {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {

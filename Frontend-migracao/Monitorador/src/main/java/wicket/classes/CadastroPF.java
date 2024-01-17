@@ -42,7 +42,6 @@ import static wicket.entities.Endereco.buscarCep;
 
 
 public class CadastroPF extends Panel implements Serializable {
-    private static final long serialVersionUID = 1L;
 
     private String selectedEstadoCivil;
     private String selectedStatus;
@@ -119,6 +118,7 @@ public class CadastroPF extends Panel implements Serializable {
         AjaxLink<Void> addAddress = new AjaxLink<>("addAddress") {
             @Override
             public void onClick(AjaxRequestTarget target) {
+                fp.setVisible(false);
                 formAddress.setVisible(!formAddress.isVisible());
                 target.add(formAddress);
             }

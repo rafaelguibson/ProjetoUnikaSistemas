@@ -4,6 +4,8 @@ import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.extensions.ajax.markup.html.modal.theme.DefaultTheme;
@@ -19,6 +21,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -29,11 +32,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MonitoradorPF extends BasePage implements Serializable {
     MonitoradorHttpClient monitoradorHttpClient = new MonitoradorHttpClient("http://localhost:8080/api/monitoradores");
+    Monitorador monitorador = new Monitorador();
     List<Monitorador> mntList;
     private ModalWindow modal = new ModalWindow("modal");
+    FeedbackPanel fp;
 
     final Class<? extends Page> currentPageClass = this.getPage().getClass();
 
@@ -41,14 +47,24 @@ public class MonitoradorPF extends BasePage implements Serializable {
         super(parameters);
         mntList = monitoradorHttpClient.listarTodos();
 
-        Form<Void> formSearch = new Form<>("formSearch");
-        formSearch.setOutputMarkupId(true);
-        add(formSearch);
+        /* declaração do feedback panel para notificações */
+        fp = new FeedbackPanel("feedbackPanel");
+        fp.setOutputMarkupPlaceholderTag(true);
+        add(fp);
+
+
+        WebMarkupContainer sectionForm = new WebMarkupContainer("sectionForm");
+        sectionForm.setOutputMarkupId(true);
+        add(sectionForm);
+
+        Form<Void> form = new Form<>("form");
+        form.setOutputMarkupId(true);
+        sectionForm.add(form);
 
         WebMarkupContainer sectionFilters = new WebMarkupContainer("sectionFilters");
         sectionFilters.setOutputMarkupId(true);
         sectionFilters.setVisible(false);
-        formSearch.add(sectionFilters);
+        form.add(sectionFilters);
 
         //Definições da janela modal de cadastrar pessoa Física
         modal.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
@@ -89,8 +105,12 @@ public class MonitoradorPF extends BasePage implements Serializable {
             public void onClose(AjaxRequestTarget target) {
                 mntList.clear();
                 mntList.addAll(monitoradorHttpClient.listarTodos());
-                target.add(formSearch);
-                setResponsePage(currentPageClass);
+                target.add(form);
+                PageParameters pageParameters = new PageParameters();
+                pageParameters.add("message", "Operação realizada com sucesso");
+
+                setResponsePage(currentPageClass, pageParameters);
+
             }
         });
         add(modal);
@@ -102,7 +122,7 @@ public class MonitoradorPF extends BasePage implements Serializable {
                 if ("true".equals(parameters.get("showFilter").toString(""))) {
                     sectionFilters.setVisible(true);
                     target.add(sectionFilters);
-                    target.add(formSearch);
+                    target.add(sectionForm);
                 }
             }
 
@@ -116,11 +136,6 @@ public class MonitoradorPF extends BasePage implements Serializable {
         });
 
 
-        /* declaração do feedback panel para notificações */
-        FeedbackPanel feedbackPanel = new FeedbackPanel("feedbackPanel");
-        feedbackPanel.setOutputMarkupPlaceholderTag(true);
-        feedbackPanel.setVisible(false);
-        add(feedbackPanel);
 
         // Filtrar a lista para listar apenas os monitoradores com tipoPessoa igual a "PJ"
 
@@ -138,7 +153,7 @@ public class MonitoradorPF extends BasePage implements Serializable {
 
 
                 // Coluna do chebox para selecionar os monitoradores para deletar
-
+                item.add(new CheckBox("selected", new PropertyModel<>(item.getModel(), "selected")));
                 item.add(new Label("id", new PropertyModel<String>(item.getModel(), "id")));
                 String tipoPessoa = monitorador.getTipoPessoa().equals("PF") ? "Física" : "Jurídica";
                 item.add(new Label("tipoPessoa", tipoPessoa));
@@ -153,7 +168,53 @@ public class MonitoradorPF extends BasePage implements Serializable {
             }
         };
         monitoradorList.setReuseItems(true);
-        formSearch.add(monitoradorList);
+        monitoradorList.setOutputMarkupId(true);
+        form.add(monitoradorList);
+
+
+        AjaxLink<Void> checkBox = new AjaxLink<>("checkBox", new PropertyModel<>(new CompoundPropertyModel<>(monitorador), "selected")) {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                for (Monitorador monitorador : mntList) {
+                    if(!monitorador.isSelected()) {
+                        monitorador.setSelected(true);
+                        target.add(sectionForm);
+                    } else {
+                        monitorador.setSelected(false);
+                        target.add(sectionForm);
+                    }
+
+                }
+
+            }
+        };
+        form.add(checkBox);
+
+        AjaxLink<Void> btnRemove = new AjaxLink<Void>("btnRemove") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                List<Monitorador> monitoradorRemove = mntList.stream().
+                        filter(Monitorador::isSelected).collect(Collectors.toList());
+
+                monitoradorHttpClient.deleteAllMonitoradores(monitoradorRemove);
+
+                mntList.clear();
+                mntList.addAll(monitoradorHttpClient.listarTodos());
+
+                if(monitoradorRemove.isEmpty()) {
+                    showInfo(target, "Selecione algum registro para remover...");
+                } else {
+                    //Adiciona uma mensagem de feedback para ser exibida ao remover e atualizar tabela
+                    PageParameters pageParameters = new PageParameters();
+                    pageParameters.add("message", "Foram removidos (" +monitoradorRemove.size() +") monitoradores...");
+                    setResponsePage(currentPageClass, pageParameters);
+//                    showInfo(target, "Foram removidos ("+monitoradorRemove.size()+") monitoradores...");
+                }
+
+            }
+        };
+        btnRemove.add(new AjaxFormSubmitBehavior(form, "click") {});
+        add(btnRemove);
 
         // Campos do Formulário de busca
 
@@ -169,5 +230,17 @@ public class MonitoradorPF extends BasePage implements Serializable {
         DropDownChoice<String> statusFilter = new DropDownChoice<>("statusFilter", Model.ofList(listaDeStatus));
         statusFilter.setOutputMarkupId(true);
         sectionFilters.add(nomeFilter,cpfFilter,rgFilter,dataNascimentoFilter,statusFilter);
+
+        String message = parameters.get("message").toString("");
+        if (!message.isEmpty()) {
+            info(message);
+        }
+        
+
+    }
+
+    private void showInfo(AjaxRequestTarget target, String msg) {
+        info(msg);
+        target.add(fp);
     }
 }

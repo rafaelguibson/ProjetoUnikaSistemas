@@ -3,6 +3,9 @@ package wicket.classes;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.behavior.AttributeAppender;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.extensions.ajax.markup.html.modal.theme.DefaultTheme;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
@@ -10,6 +13,8 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.markup.html.basic.Label;
@@ -25,15 +30,28 @@ public class HomePage extends BasePage implements Serializable {
     private static final long serialVersionUID = 1L;
     MonitoradorHttpClient monitoradorHttpClient = new MonitoradorHttpClient("http://localhost:8080/api/monitoradores");
     List<Monitorador> mntList;
+    private ModalWindow modal = new ModalWindow("modal");
+    private IModel<Monitorador> monitoradorModel = Model.of(new Monitorador());
     FeedbackPanel fp;
 
     public HomePage(final PageParameters parameters) {
         super(parameters);
         Monitorador monitorador = new Monitorador();
 
+        //Definições da janela modal de cadastrar pessoa Física
+        modal.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
+        modal.setInitialHeight(600);
+        modal.setInitialWidth(1150);
+        modal.setResizable(false);
+//      modal.setMarkupId("idDaModalWindow ");
+        modal.add(AttributeAppender.append("class", "custom-1"));
+        modal.setCssClassName("style");
+        modal.setTitle("");
+        modal.showUnloadConfirmation(false);
+        modal.add(new DefaultTheme());
+        add(modal);
+
         /* declaração do feedback panel para notificações */
-
-
         fp = new FeedbackPanel("feedbackPanel");
         fp.setOutputMarkupPlaceholderTag(true);
         add(fp);
@@ -82,6 +100,34 @@ public class HomePage extends BasePage implements Serializable {
 
                 String status = monitorador.getAtivo() ? "Ativo" : "Inativo";
                 item.add(new Label("ativo", status));
+                item.add(new AjaxLink<Void>("btnEditarPF") {
+                    @Override
+                    public void onClick(AjaxRequestTarget target) {
+                        Monitorador monitorador = item.getModelObject();
+                        monitoradorModel.setObject(monitorador); // Armazena o Monitorador da linha clicada no modelo
+                        EditarPF editarPF = new EditarPF(modal.getContentId(), monitorador);
+                        modal.setTitle("Editar Monitorador Pessoa Física");
+                        modal.setEscapeModelStrings(true);
+                        modal.setContent(editarPF);
+                        modal.show(target);
+                        modal.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
+                            @Override
+                            public void onClose(AjaxRequestTarget target) {
+                                // Lógica para atualizar a lista de monitoradores após a edição
+                                mntList.clear();
+                                mntList.addAll(monitoradorHttpClient.listarTodos());
+                                target.add(sectionForm);
+                            }
+                        });
+                        modal.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
+                            @Override
+                            public void onClose(AjaxRequestTarget target) {
+
+                            }
+                        });
+                    }
+
+                });
             }
         };
         monitoradorList.setReuseItems(true);
@@ -89,23 +135,23 @@ public class HomePage extends BasePage implements Serializable {
 
 
         /* Método que controla o selecionar/deselecionar do checkbox de excluisão */
-//        AjaxLink<Void> checkBox = new AjaxLink<>("checkBox", new PropertyModel<>(new CompoundPropertyModel<>(monitorador), "selected")) {
-//            @Override
-//            public void onClick(AjaxRequestTarget target) {
-//                for (Monitorador monitorador : mntList) {
-//                    if(!monitorador.isSelected()) {
-//                        monitorador.setSelected(true);
-//                        target.add(sectionForm);
-//                    } else {
-//                        monitorador.setSelected(false);
-//                        target.add(sectionForm);
-//                    }
-//
-//                }
-//
-//            }
-//        };
-//        sectionForm.add(checkBox);
+        AjaxLink<Void> checkBox = new AjaxLink<>("checkBox", new PropertyModel<>(new CompoundPropertyModel<>(monitorador), "selected")) {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                for (Monitorador monitorador : mntList) {
+                    if(!monitorador.isSelected()) {
+                        monitorador.setSelected(true);
+                        target.add(sectionForm);
+                    } else {
+                        monitorador.setSelected(false);
+                        target.add(sectionForm);
+                    }
+
+                }
+
+            }
+        };
+        form.add(checkBox);
 
         //Excluir monitorador
         AjaxLink<Void> btnRemove = new AjaxLink<Void>("btnRemove") {

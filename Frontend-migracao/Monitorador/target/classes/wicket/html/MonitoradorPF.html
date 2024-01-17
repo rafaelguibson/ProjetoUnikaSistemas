@@ -7,92 +7,97 @@
 <body>
 <wicket:extend>
 
-    <div class="header-title" wicket:id="feedbackPanel">
+    <div class="feedback-panel" style="border-radius: 9px;" wicket:id="feedbackPanel"></div>
+    <div wicket:id="modal"></div>
 
-        <h2>IMPLEMENTAR FEEDCACK PANEL</h2>
+    <div class="content-panel" wicket:id="sectionForm">
+        <form wicket:id="form" style="width: 100%;" >
+            <table style="color: #0d0d11;" class="table table-striped">
+                <tr>
+                    <td colspan="12" style="background-color: #212429; color: #ECEBE9;"><h3>Monitorador Pessoa Física</h3></td>
+                </tr>
+                <tr class="table-dark">
+                    <th><i class="bi bi-check2-square" wicket:id="checkBox"></i></th>
+                    <th scope="col">ID</th>
+                    <th scope="col">Tipo Pessoa</th>
+                    <th scope="col">CPF</th>
+                    <th scope="col">NOME</th>
+                    <th scope="col">TELEFONE</th>
+                    <th scope="col">EMAIL</th>
+                    <th scope="col">RG</th>
+                    <th scope="col">DATA DE NASC.</th>
+                    <th scope="col">STATUS</th>
+                    <th scope="col">EDITAR</th>
+                </tr>
+                <!-- Repita as linhas abaixo conforme necessário -->
+                <tr wicket:id="monitoradorList">
+                    <td><input type="checkbox" wicket:id="selected"></td>
+                    <td wicket:id="id"></td>
+                    <td wicket:id="tipoPessoa"></td>
+                    <td wicket:id="nome"></td>
+                    <td wicket:id="cpf"></td>
+                    <td wicket:id="telefone"></td>
+                    <td wicket:id="email"></td>
+                    <td wicket:id="rg"></td>
+                    <td wicket:id="dataNascimento"></td>
+                    <td wicket:id="ativo"></td>
+                    <td style="width: 100px;">
+                        <a href="#"><i class="bi bi-pencil" style="color: #0d0d11"></i></a>
+                    </td>
+                </tr>
+            </table>
 
+
+            <div wicket:id="sectionFilters" class="bordered-div">
+                <fieldset>
+                    <h4> Buscar Monitorador Pessoa Física</h4>
+                    <div class="container container-sm" style="color: #0d0d11">
+                        <div class="form-group">
+                            <div style="flex-grow: 3; margin-right: 5px;">
+                                <label for="nomeFilter" class="control-label"> <b>Nome Completo:</b> </label>
+                                <input wicket:id="nomeFilter" type="text" class="form-control">
+                            </div>
+                            <div style="flex-grow: 8; margin-right: 5px;"></div>
+                        </div>
+
+                        <!-- CPF e RG -->
+                        <div class="form-group" style="display: flex; justify-content: space-between;">
+                            <div style="flex-grow: 3; margin-right: 5px;">
+                                <label for="cpfFilter" class="control-label"><b>CPF: </b></label>
+                                <input wicket:id="cpfFilter" type="text" class="form-control cpf">
+                            </div>
+                            <div style="flex-grow: 1;">
+                                <label for="rgFilter" class="control-label"><b>RG: </b></label>
+                                <input wicket:id="rgFilter" type="text" class="form-control">
+                            </div>
+
+                            <div style="flex-grow: 1;">
+                                <label for="dataNascimentoFilter" class="control-label"><b>Data de Nascimento: </b></label>
+                                <input wicket:id="dataNascimentoFilter" type="date" class="form-control">
+                            </div>
+                            <div style="flex-grow: 2; margin-right: 5px;">
+                                <label for="statusFilter" class="control-label"><b>Status: </b></label>
+                                <select wicket:id="statusFilter" class="form-select" id="statusFilter"></select>
+                            </div>
+                        </div>
+                        <div class="form-group" style="display: flex; justify-content: space-between;">
+                            <div style="flex-grow: 2; margin-right: 5px; padding-top: 15px;">
+                                <button type="button" class="btn btn-primary btn-dark"><i class="bi bi-search"></i>
+                                    Pesquisar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </form>
     </div>
 
-    <div wicket:id="modal"></div>
-    <form wicket:id="formSearch">
-        <table style="color: #0d0d11;" class="table table-striped">
-            <tr>
-                <td colspan="12" style="background-color: #212429; color: #ECEBE9;"><h3>Monitorador Pessoa Física</h3>
-                </td>
-            </tr>
-            <tr class="table-dark">
-                <th scope="col">ID</th>
-                <th scope="col">Tipo Pessoa</th>
-                <th scope="col">CPF</th>
-                <th scope="col">NOME</th>
-                <th scope="col">TELEFONE</th>
-                <th scope="col">EMAIL</th>
-                <th scope="col">RG</th>
-                <th scope="col">DATA DE NASC.</th>
-                <th scope="col">STATUS</th>
-                <th scope="col">EDITAR</th>
-            </tr>
-            <!-- Repita as linhas abaixo conforme necessário -->
-            <tr wicket:id="monitoradorList">
-                <td wicket:id="id"></td>
-                <td wicket:id="tipoPessoa"></td>
-                <td wicket:id="nome"></td>
-                <td wicket:id="cpf"></td>
-                <td wicket:id="telefone"></td>
-                <td wicket:id="email"></td>
-                <td wicket:id="rg"></td>
-                <td wicket:id="dataNascimento"></td>
-                <td wicket:id="ativo"></td>
-                <td style="width: 100px;">
-                    <a href="#"><i class="bi bi-pencil" style="color: #0d0d11"></i></a>
-                </td>
-            </tr>
-        </table>
-
-
-        <div wicket:id="sectionFilters" class="bordered-div">
-            <fieldset>
-                <h4> Buscar Monitorador Pessoa Física</h4>
-                <div class="container container-sm" style="color: #0d0d11">
-                    <div class="form-group">
-                        <div style="flex-grow: 3; margin-right: 5px;">
-                            <label for="nomeFilter" class="control-label"> <b>Nome Completo:</b> </label>
-                            <input wicket:id="nomeFilter" type="text" class="form-control">
-                        </div>
-                        <div style="flex-grow: 8; margin-right: 5px;"></div>
-                    </div>
-
-                    <!-- CPF e RG -->
-                    <div class="form-group" style="display: flex; justify-content: space-between;">
-                        <div style="flex-grow: 3; margin-right: 5px;">
-                            <label for="cpfFilter" class="control-label"><b>CPF: </b></label>
-                            <input wicket:id="cpfFilter" type="text" class="form-control cpf">
-                        </div>
-                        <div style="flex-grow: 1;">
-                            <label for="rgFilter" class="control-label"><b>RG: </b></label>
-                            <input wicket:id="rgFilter" type="text" class="form-control">
-                        </div>
-
-                        <div style="flex-grow: 1;">
-                            <label for="dataNascimentoFilter" class="control-label"><b>Data de Nascimento: </b></label>
-                            <input wicket:id="dataNascimentoFilter" type="date" class="form-control">
-                        </div>
-                        <div style="flex-grow: 2; margin-right: 5px;">
-                            <label for="statusFilter" class="control-label"><b>Status: </b></label>
-                            <select wicket:id="statusFilter" class="form-select" id="statusFilter"></select>
-                        </div>
-                    </div>
-                    <div class="form-group" style="display: flex; justify-content: space-between;">
-                        <div style="flex-grow: 2; margin-right: 5px; padding-top: 15px;">
-                            <button type="button" class="btn btn-primary btn-dark"><i class="bi bi-search"></i> Pesquisar
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </fieldset>
-        </div>
-    </form>
-
+    <div class="content-panel.">
+        <button type="button" class="btn btn-primary btn-dark" wicket:id="btnRemove"><i class="bi bi-trash3-fill"></i>
+            Excluir
+        </button>
+    </div>
 </wicket:extend>
 </body>
 </html>

@@ -54,7 +54,7 @@ public class MonitoradorController {
         return ResponseEntity.ok(listaPJ);
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<Monitorador> updateMonitorador(@PathVariable Long id, @RequestBody Monitorador monitorador) {
         if (!monitoradorService.getMonitoradorById(id).isPresent()) {
             return ResponseEntity.notFound().build();
