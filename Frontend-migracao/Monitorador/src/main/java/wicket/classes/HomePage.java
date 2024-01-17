@@ -11,6 +11,8 @@ import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.list.PageableListView;
+import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
@@ -69,11 +71,78 @@ public class HomePage extends BasePage implements Serializable {
         /* Lista que é preenchida com os monitoradores do banco de dados */
         mntList = monitoradorHttpClient.listarTodos();
 
+        int itemsPerPage = 3;
+
+
         /* listview que preenche a table com os dados dos monitoradores*/
-        ListView<Monitorador> monitoradorList = new ListView<Monitorador>("monitoradorList", mntList) {
+//        ListView<Monitorador> monitoradorList = new ListView<Monitorador>("monitoradorList", mntList) {
+//            @Override
+//            protected void populateItem(ListItem<Monitorador> item) {
+//                Monitorador monitorador = item.getModelObject();
+//                // Coluna do chebox para selecionar os monitoradores para deletar
+//                item.add(new CheckBox("selected", new PropertyModel<>(item.getModel(), "selected")));
+//
+//                item.add(new Label("id", new PropertyModel<String>(item.getModel(), "id")));
+//
+//                String tipoPessoa = monitorador.getTipoPessoa().equals(TipoPessoa.PF) ? "Física" : "Jurídica";
+//                item.add(new Label("tipoPessoa", tipoPessoa));
+//
+//                // Combina Nome e Razão Social
+//                String nomeOuRazaoSocial = (monitorador.getTipoPessoa() == TipoPessoa.PF) ? monitorador.getNome() : monitorador.getRazaoSocial();
+//                item.add(new Label("nomeOuRazaoSocial", nomeOuRazaoSocial));
+//
+//                // Combina CPF e CNPJ
+//                String cpfOuCnpj = (monitorador.getTipoPessoa() == TipoPessoa.PF) ? monitorador.getCpf() : monitorador.getCnpj();
+//                item.add(new Label("cpfOuCnpj", cpfOuCnpj));
+//
+//                item.add(new Label("telefone", new PropertyModel<String>(item.getModel(), "telefone")));
+//                item.add(new Label("email", new PropertyModel<String>(item.getModel(), "email")));
+//                // Combina RG e Inscrição Estadual
+//                String rgOuInscricaoEstadual = (monitorador.getTipoPessoa() == TipoPessoa.PF) ? monitorador.getRg() : monitorador.getInscricaoEstadual();
+//                item.add(new Label("rgOuInscricaoEstadual", rgOuInscricaoEstadual));
+//
+//                item.add(new Label("dataNascimento", new PropertyModel<String>(item.getModel(), "dataNascimento")));
+//
+//                String status = monitorador.getStatus().toString();
+//                item.add(new Label("status", status));
+//                item.add(new AjaxLink<Void>("btnEditarPF") {
+//                    @Override
+//                    public void onClick(AjaxRequestTarget target) {
+//                        Monitorador monitorador = item.getModelObject();
+//                        monitoradorModel.setObject(monitorador); // Armazena o Monitorador da linha clicada no modelo
+//                        EditarPF editarPF = new EditarPF(modal.getContentId(), monitorador);
+//                        modal.setTitle("Editar Monitorador Pessoa Física");
+//                        modal.setEscapeModelStrings(true);
+//                        modal.setContent(editarPF);
+//                        modal.show(target);
+//                        modal.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
+//                            @Override
+//                            public void onClose(AjaxRequestTarget target) {
+//                                // Lógica para atualizar a lista de monitoradores após a edição
+//                                mntList.clear();
+//                                mntList.addAll(monitoradorHttpClient.listarTodos());
+//                                target.add(sectionForm);
+//                            }
+//                        });
+//                        modal.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
+//                            @Override
+//                            public void onClose(AjaxRequestTarget target) {
+//
+//                            }
+//                        });
+//                    }
+//
+//                });
+//            }
+//        };
+//        monitoradorList.setReuseItems(true);
+//        form.add(monitoradorList);
+
+        PageableListView<Monitorador> monitoradorList = new PageableListView<Monitorador>("monitoradorList", mntList, itemsPerPage) {
             @Override
             protected void populateItem(ListItem<Monitorador> item) {
                 Monitorador monitorador = item.getModelObject();
+
                 // Coluna do chebox para selecionar os monitoradores para deletar
                 item.add(new CheckBox("selected", new PropertyModel<>(item.getModel(), "selected")));
 
@@ -100,6 +169,7 @@ public class HomePage extends BasePage implements Serializable {
 
                 String status = monitorador.getStatus().toString();
                 item.add(new Label("status", status));
+
                 item.add(new AjaxLink<Void>("btnEditarPF") {
                     @Override
                     public void onClick(AjaxRequestTarget target) {
@@ -130,9 +200,9 @@ public class HomePage extends BasePage implements Serializable {
                 });
             }
         };
-        monitoradorList.setReuseItems(true);
-        form.add(monitoradorList);
 
+        form.add(monitoradorList);
+        form.add(new PagingNavigator("pagingNavigator", monitoradorList));
 
         /* Método que controla o selecionar/deselecionar do checkbox de excluisão */
         AjaxLink<Void> checkBox = new AjaxLink<>("checkBox", new PropertyModel<>(new CompoundPropertyModel<>(monitorador), "selected")) {

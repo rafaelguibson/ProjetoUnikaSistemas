@@ -58,7 +58,9 @@ public class MonitoradorPF extends BasePage implements Serializable {
         sectionForm.setOutputMarkupId(true);
         add(sectionForm);
 
-        Form<Void> form = new Form<>("form");
+
+        CompoundPropertyModel<Monitorador> model = new CompoundPropertyModel<>(monitorador);
+        Form<Monitorador> form = new Form<>("form", model);
         form.setOutputMarkupId(true);
         sectionForm.add(form);
 
@@ -136,35 +138,8 @@ public class MonitoradorPF extends BasePage implements Serializable {
             }
         });
 
-
-
-        // Filtrar a lista para listar apenas os monitoradores com tipoPessoa igual a "PJ"
-
-        //TODO - ajustar lista para o backend chamando a lista já filtrada
         List<Monitorador> mntListPF = monitoradorHttpClient.listarPF();
-        ListView<Monitorador> monitoradorList = new ListView<Monitorador>("monitoradorList", mntListPF) {
-            @Override
-            protected void populateItem(ListItem<Monitorador> item) {
-                Monitorador monitorador = item.getModelObject();
-
-
-                // Coluna do chebox para selecionar os monitoradores para deletar
-                item.add(new CheckBox("selected", new PropertyModel<>(item.getModel(), "selected")));
-                item.add(new Label("id", new PropertyModel<String>(item.getModel(), "id")));
-                String tipoPessoa = monitorador.getTipoPessoa().equals(TipoPessoa.PF) ? "Física" : "Jurídica";
-                item.add(new Label("tipoPessoa", tipoPessoa));
-                item.add(new Label("nome", new PropertyModel<String>(item.getModel(), "nome")));
-                item.add(new Label("cpf", new PropertyModel<String>(item.getModel(), "cpf")));
-                item.add(new Label("telefone", new PropertyModel<String>(item.getModel(), "telefone")));
-                item.add(new Label("email", new PropertyModel<String>(item.getModel(), "email")));
-                item.add(new Label("rg", new PropertyModel<String>(item.getModel(), "rg")));
-                item.add(new Label("dataNascimento", new PropertyModel<String>(item.getModel(), "dataNascimento")));
-                String status = monitorador.getStatus().toString();
-                item.add(new Label("ativo", status));
-            }
-        };
-        monitoradorList.setReuseItems(true);
-        monitoradorList.setOutputMarkupId(true);
+        ListView<Monitorador> monitoradorList = getMonitoradorList(mntListPF);
         form.add(monitoradorList);
 
 
@@ -233,6 +208,32 @@ public class MonitoradorPF extends BasePage implements Serializable {
         }
 
 
+    }
+
+    public static ListView<Monitorador> getMonitoradorList(List<Monitorador> mntListPF) {
+        ListView<Monitorador> monitoradorList = new ListView<>("monitoradorList", mntListPF) {
+            @Override
+            protected void populateItem(ListItem<Monitorador> item) {
+                Monitorador monitorador = item.getModelObject();
+
+
+                // Coluna do chebox para selecionar os monitoradores para deletar
+                item.add(new CheckBox("selected", new PropertyModel<>(item.getModel(), "selected")));
+                item.add(new Label("id", new PropertyModel<String>(item.getModel(), "id")));
+//                String tipoPessoa = monitorador.getTipoPessoa().equals(TipoPessoa.PF) ? "Física" : "Jurídica";
+                item.add(new Label("tipoPessoa", monitorador.getTipoPessoa().getTipoPessoa()));
+                item.add(new Label("nome", new PropertyModel<String>(item.getModel(), "nome")));
+                item.add(new Label("cpf", new PropertyModel<String>(item.getModel(), "cpf")));
+                item.add(new Label("telefone", new PropertyModel<String>(item.getModel(), "telefone")));
+                item.add(new Label("email", new PropertyModel<String>(item.getModel(), "email")));
+                item.add(new Label("rg", new PropertyModel<String>(item.getModel(), "rg")));
+                item.add(new Label("dataNascimento", new PropertyModel<String>(item.getModel(), "dataNascimento")));
+                item.add(new Label("ativo", monitorador.getStatus().getStatus()));
+            }
+        };
+        monitoradorList.setReuseItems(true);
+        monitoradorList.setOutputMarkupId(true);
+        return monitoradorList;
     }
 
     private void showInfo(AjaxRequestTarget target, String msg) {
