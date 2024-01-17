@@ -1,4 +1,7 @@
 package backend.dto;
+
+import backend.enums.Status;
+import backend.enums.TipoPessoa;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +15,7 @@ import java.util.List;
 public class MonitoradorDTO {
 
     private Long id;
-    private String tipoPessoa;
+    private TipoPessoa tipoPessoa;
     private String cpf;
     private String cnpj;
     private String nome;
@@ -22,7 +25,10 @@ public class MonitoradorDTO {
     private String rg;
     private String inscricaoEstadual;
     private Date dataNascimento;
-    private Boolean ativo;
-    private List<EnderecoDTO> enderecos;
-
+    private String estadoCivil;
+    private Status status;
+    private Date dataCadastro;
+    private List<EnderecoDTO> enderecos; // Supondo que você tenha um EnderecoDTO
+    private boolean selected;
 }
+

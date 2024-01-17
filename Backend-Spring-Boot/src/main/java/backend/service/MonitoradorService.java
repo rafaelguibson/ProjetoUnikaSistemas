@@ -2,6 +2,7 @@ package backend.service;
 
 import backend.entitie.Endereco;
 import backend.entitie.Monitorador;
+import backend.enums.TipoPessoa;
 import backend.repository.EnderecoRepository;
 import backend.repository.MonitoradorRepository;
 import jakarta.transaction.Transactional;
@@ -60,8 +61,6 @@ public class MonitoradorService {
     }
 
     public Monitorador updateMonitorador(Monitorador monitorador) {
-
-
         return monitoradorRepository.save(monitorador);
     }
 
@@ -70,25 +69,30 @@ public class MonitoradorService {
     }
 
     public List<Monitorador> buscarPF() {
-        return monitoradorRepository.findByTipoPessoa("PF");
+        return monitoradorRepository.findByTipoPessoa(TipoPessoa.PF);
     }
 
     public List<Monitorador> buscarPJ() {
-        return monitoradorRepository.findByTipoPessoa("PJ");
+        return monitoradorRepository.findByTipoPessoa(TipoPessoa.PJ);
+    }
+
+    public List<Monitorador> filtrar(Monitorador filtro) {
+        return monitoradorRepository.filtrar(filtro);
     }
 
     public void deleteAllMonitoradores(List<Monitorador> list) {
         monitoradorRepository.deleteAll(list);
     }
     public Monitorador removerMascaras(Monitorador monitorador) {
-        if(monitorador.getTipoPessoa().equals("PF")) {
+        if(monitorador.getTipoPessoa().equals(TipoPessoa.PF)) {
             monitorador.setCpf(monitorador.getCpf().replaceAll("\\D", ""));
         }
-        if(monitorador.getTipoPessoa().equals("PJ")) {
+        if(monitorador.getTipoPessoa().equals(TipoPessoa.PJ)) {
             monitorador.setCnpj(monitorador.getCnpj().replaceAll("\\D", ""));
         }
         monitorador.setTelefone(monitorador.getTelefone().replaceAll("\\D", ""));
         return monitorador;
     }
+
 }
 

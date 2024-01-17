@@ -1,6 +1,6 @@
 package backend.entitie;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import backend.enums.Estado;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,13 +9,11 @@ import lombok.Setter;
 
 import java.io.Serializable;
 
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@JsonIgnoreProperties(ignoreUnknown = true)
 @Table(name = "endereco")
 public class Endereco implements Serializable {
 
@@ -23,8 +21,8 @@ public class Endereco implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonIgnore
     @JoinColumn(name = "monitorador_id", nullable = false)
     private Monitorador monitorador;
 
@@ -43,11 +41,10 @@ public class Endereco implements Serializable {
     @Column(name = "cidade", nullable = false, length = 100)
     private String cidade;
 
-    @Column(name = "uf", nullable = false, length = 50)
-    private String uf;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estado", nullable = false, length = 50)
+    private Estado estado;
 
     @Transient
     private String complemento;
-    // Additional methods, if necessary...
 }
-

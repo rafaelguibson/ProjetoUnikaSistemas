@@ -1,4 +1,7 @@
 package backend.entitie;
+import backend.enums.Status;
+import backend.enums.TipoPessoa;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,8 +26,9 @@ public class Monitorador implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "tipo_pessoa", nullable = false)
-    private String tipoPessoa;
+    private TipoPessoa tipoPessoa;
 
     @CPF
     @Column(name = "cpf", unique = true, length = 11)
@@ -56,14 +60,26 @@ public class Monitorador implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date dataNascimento;
 
-    @Column(name = "ativo", nullable = false)
-    private Boolean ativo;
+    @Column(name = "estado_civil", length = 50)
+    private String estadoCivil;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private Status status;
+
+    @Column(name = "data_cadastro")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dataCadastro;
+
+    @JsonManagedReference
     @OneToMany(mappedBy = "monitorador", orphanRemoval = true)
     private List<Endereco> enderecos;
 
     @Transient
     private boolean selected;
+
+    @PrePersist
+    protected void onCreate() {
+        dataCadastro = new Date();
+    }
 }
-
-

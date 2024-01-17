@@ -130,12 +130,7 @@ public class MonitoradorPJ extends BasePage implements Serializable {
 
         // Filtrar a lista para listar apenas os monitoradores com tipoPessoa igual a "PJ"
         //TODO - ajustar lista para o backend chamando a lista já filtrada
-        List<Monitorador> mntListPJ = new ArrayList<>();
-        for (Monitorador monitorador : mntList) {
-            if ("PJ".equals(monitorador.getTipoPessoa())) {
-                mntListPJ.add(monitorador);
-            }
-        }
+        List<Monitorador> mntListPJ = monitoradorHttpClient.listarTodos()
         ListView<Monitorador> monitoradorList = new ListView<Monitorador>("monitoradorList", mntListPJ) {
             @Override
             protected void populateItem(ListItem<Monitorador> item) {

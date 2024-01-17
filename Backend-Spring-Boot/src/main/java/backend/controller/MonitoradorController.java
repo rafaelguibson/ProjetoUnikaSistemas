@@ -78,7 +78,11 @@ public class MonitoradorController {
         return ResponseEntity.ok().build();
     }
 
-    // Outros endpoints podem ser adicionados aqui
+    @PostMapping("/filtrar")
+    public ResponseEntity<List<Monitorador>> filtrar(@RequestBody Monitorador filtro) {
+        List<Monitorador> resultado = monitoradorService.filtrar(filtro);
+        return ResponseEntity.ok(resultado);
+    }
 
 
     private Monitorador convertToEntity(MonitoradorDTO monitoradorDTO) {
@@ -94,7 +98,7 @@ public class MonitoradorController {
         monitorador.setRg(monitoradorDTO.getRg());
         monitorador.setInscricaoEstadual(monitoradorDTO.getInscricaoEstadual());
         monitorador.setDataNascimento(monitoradorDTO.getDataNascimento());
-        monitorador.setAtivo(monitoradorDTO.getAtivo());
+        monitorador.setStatus(monitoradorDTO.getStatus());
 
         if (monitoradorDTO.getEnderecos() != null) {
             List<Endereco> enderecos = monitoradorDTO.getEnderecos().stream()
@@ -114,7 +118,7 @@ public class MonitoradorController {
         endereco.setCep(enderecoDTO.getCep());
         endereco.setBairro(enderecoDTO.getBairro());
         endereco.setCidade(enderecoDTO.getCidade());
-        endereco.setUf(enderecoDTO.getEstado());
+        endereco.setEstado(enderecoDTO.getEstado());
         // O Monitorador será associado no serviço
 
         return endereco;
