@@ -25,6 +25,7 @@ public class MonitoradorHttpClient implements Serializable {
         this.objectMapper = new ObjectMapper();
         this.objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
+
     public List<Monitorador> listarTodos() {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         try {
@@ -36,7 +37,8 @@ public class MonitoradorHttpClient implements Serializable {
             httpClient.close();
             response.close();
 
-            return objectMapper.readValue(responseString, new TypeReference<List<Monitorador>>() {});
+            return objectMapper.readValue(responseString, new TypeReference<List<Monitorador>>() {
+            });
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -127,6 +129,51 @@ public class MonitoradorHttpClient implements Serializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<Monitorador> filtrar(Monitorador filtro) {
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            HttpPost request = new HttpPost(baseUrl + "/filtrar");
+
+            request.setHeader("Content-Type", "application/json; charset=UTF-8");
+
+            String requestBody = objectMapper.writeValueAsString(filtro);
+            request.setEntity(new StringEntity(requestBody, ContentType.APPLICATION_JSON));
+
+            try (CloseableHttpResponse response = httpClient.execute(request)) {
+                HttpEntity entity = response.getEntity();
+                String responseString = EntityUtils.toString(entity);
+
+                return objectMapper.readValue(responseString, new TypeReference<List<Monitorador>>() {
+                });
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Monitorador> listarPF() {
+        return listarPorTipo("pf");
+    }
+
+    public List<Monitorador> listarPJ() {
+        return listarPorTipo("pj");
+    }
+
+    private List<Monitorador> listarPorTipo(String tipo) {
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            HttpGet request = new HttpGet(baseUrl + "/" + tipo);
+            try (CloseableHttpResponse response = httpClient.execute(request)) {
+                HttpEntity entity = response.getEntity();
+                String responseString = EntityUtils.toString(entity);
+
+                return objectMapper.readValue(responseString, new TypeReference<List<Monitorador>>() {});
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

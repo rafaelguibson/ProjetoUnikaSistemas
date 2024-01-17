@@ -19,6 +19,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import wicket.entities.Endereco;
 import wicket.entities.Monitorador;
+import wicket.enums.Status;
+import wicket.enums.TipoPessoa;
 import wicket.http.MonitoradorHttpClient;
 
 import java.io.Serializable;
@@ -125,13 +127,13 @@ public class CadastroPJ  extends Panel implements Serializable {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 Monitorador monitoradorSalvar = new Monitorador();
-                monitoradorSalvar.setTipoPessoa("PJ");
+                monitoradorSalvar.setTipoPessoa(TipoPessoa.PJ);
                 monitoradorSalvar.setRazaoSocial(razaoSocial.getValue());
                 monitoradorSalvar.setCnpj(cnpj.getValue());
                 monitoradorSalvar.setInscricaoEstadual(inscricaoEstadual.getValue());
                 monitoradorSalvar.setTelefone(telefone.getValue());
                 monitoradorSalvar.setEmail(email.getValue());
-                monitoradorSalvar.setAtivo(true);
+                monitoradorSalvar.setStatus(Status.ATIVO);
                 if(!listaDeEnderecos.isEmpty()) {
                     monitorador.setEnderecos(listaDeEnderecos);
                     monitoradorHttpClient.salvar(monitoradorSalvar);
@@ -152,7 +154,7 @@ public class CadastroPJ  extends Panel implements Serializable {
                 logradouro.setModelObject(endereco.getLogradouro());
                 bairro.setModelObject(endereco.getBairro());
                 cidade.setModelObject(endereco.getCidade());
-                estado.setModelObject(endereco.getEstado());
+//                estado.setModelObject(endereco.getEstado());
                 target.add(logradouro, bairro, numero, cidade, estado);
 
             }
@@ -169,7 +171,7 @@ public class CadastroPJ  extends Panel implements Serializable {
                 endereco.setLogradouro(logradouro.getValue());
                 endereco.setCidade(cidade.getValue());
                 endereco.setBairro(bairro.getValue());
-                endereco.setEstado(estado.getValue());
+//                endereco.setEstado(estado.getValue());
                 listaDeEnderecos.add(endereco);
                 formAddress.setVisible(false);;
                 target.add(formAddress, tableAddress);

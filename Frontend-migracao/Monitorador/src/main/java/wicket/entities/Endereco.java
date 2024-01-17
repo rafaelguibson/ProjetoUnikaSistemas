@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import wicket.enums.Estado;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -15,6 +16,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Objects;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -33,7 +35,7 @@ public class Endereco implements Serializable {
     private String cidade;
 
     @JsonProperty("uf")
-    private String estado;
+    private Estado estado; // Usando enum Estado
 
 
     @Override

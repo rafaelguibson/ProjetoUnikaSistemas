@@ -25,6 +25,8 @@ import org.apache.wicket.request.resource.CssPackageResource;
 import wicket.configs.MaskBehavior;
 import wicket.entities.Endereco;
 import wicket.entities.Monitorador;
+import wicket.enums.Status;
+import wicket.enums.TipoPessoa;
 import wicket.http.MonitoradorHttpClient;
 
 import java.io.IOException;
@@ -153,7 +155,7 @@ public class CadastroPF extends Panel implements Serializable {
                 logradouro.setModelObject(endereco.getLogradouro());
                 bairro.setModelObject(endereco.getBairro());
                 cidade.setModelObject(endereco.getCidade());
-                estado.setModelObject(endereco.getEstado());
+//                estado.setModelObject(endereco.getEstado());
                 target.add(logradouro, bairro, numero, cidade, estado);
 
             }
@@ -170,7 +172,7 @@ public class CadastroPF extends Panel implements Serializable {
                 endereco.setLogradouro(logradouro.getValue());
                 endereco.setCidade(cidade.getValue());
                 endereco.setBairro(bairro.getValue());
-                endereco.setEstado(estado.getValue());
+//                endereco.setEstado(estado.getValue());
                 listaDeEnderecos.add(endereco);
                 formAddress.setVisible(false);;
                 target.add(formAddress, tableAddress);
@@ -193,14 +195,14 @@ public class CadastroPF extends Panel implements Serializable {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 Monitorador monitoradorSalvar = new Monitorador();
-                monitoradorSalvar.setTipoPessoa("PF");
+                monitoradorSalvar.setTipoPessoa(TipoPessoa.PF);
                 monitoradorSalvar.setNome(nome.getValue());
                 monitoradorSalvar.setCpf(cpf.getValue());
                 monitoradorSalvar.setTelefone(telefone.getValue());
                 monitoradorSalvar.setEmail(email.getValue());
                 monitoradorSalvar.setRg(rg.getValue());
                 monitoradorSalvar.setDataNascimento(dataNascimento.getModelObject());
-                monitoradorSalvar.setAtivo(true);
+                monitoradorSalvar.setStatus(Status.ATIVO);
                 if(!listaDeEnderecos.isEmpty()) {
                     monitorador.setEnderecos(listaDeEnderecos);
                     monitoradorHttpClient.salvar(monitoradorSalvar);

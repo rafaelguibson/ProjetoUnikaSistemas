@@ -19,6 +19,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.markup.html.basic.Label;
 import wicket.entities.Monitorador;
+import wicket.enums.TipoPessoa;
 import wicket.http.MonitoradorHttpClient;
 
 import java.io.Serializable;
@@ -73,33 +74,32 @@ public class HomePage extends BasePage implements Serializable {
             @Override
             protected void populateItem(ListItem<Monitorador> item) {
                 Monitorador monitorador = item.getModelObject();
-
                 // Coluna do chebox para selecionar os monitoradores para deletar
                 item.add(new CheckBox("selected", new PropertyModel<>(item.getModel(), "selected")));
 
                 item.add(new Label("id", new PropertyModel<String>(item.getModel(), "id")));
 
-                String tipoPessoa = monitorador.getTipoPessoa().equals("PF") ? "Física" : "Jurídica";
+                String tipoPessoa = monitorador.getTipoPessoa().equals(TipoPessoa.PF) ? "Física" : "Jurídica";
                 item.add(new Label("tipoPessoa", tipoPessoa));
 
                 // Combina Nome e Razão Social
-                String nomeOuRazaoSocial = monitorador.getTipoPessoa().equals("PF") ? monitorador.getNome() : monitorador.getRazaoSocial();
+                String nomeOuRazaoSocial = (monitorador.getTipoPessoa() == TipoPessoa.PF) ? monitorador.getNome() : monitorador.getRazaoSocial();
                 item.add(new Label("nomeOuRazaoSocial", nomeOuRazaoSocial));
 
                 // Combina CPF e CNPJ
-                String cpfOuCnpj = monitorador.getTipoPessoa().equals("PF") ? monitorador.getCpf() : monitorador.getCnpj();
+                String cpfOuCnpj = (monitorador.getTipoPessoa() == TipoPessoa.PF) ? monitorador.getCpf() : monitorador.getCnpj();
                 item.add(new Label("cpfOuCnpj", cpfOuCnpj));
 
                 item.add(new Label("telefone", new PropertyModel<String>(item.getModel(), "telefone")));
                 item.add(new Label("email", new PropertyModel<String>(item.getModel(), "email")));
                 // Combina RG e Inscrição Estadual
-                String rgOuInscricaoEstadual = monitorador.getTipoPessoa().equals("PF") ? monitorador.getRg() : monitorador.getInscricaoEstadual();
+                String rgOuInscricaoEstadual = (monitorador.getTipoPessoa() == TipoPessoa.PF) ? monitorador.getRg() : monitorador.getInscricaoEstadual();
                 item.add(new Label("rgOuInscricaoEstadual", rgOuInscricaoEstadual));
 
                 item.add(new Label("dataNascimento", new PropertyModel<String>(item.getModel(), "dataNascimento")));
 
-                String status = monitorador.getAtivo() ? "Ativo" : "Inativo";
-                item.add(new Label("ativo", status));
+                String status = monitorador.getStatus().toString();
+                item.add(new Label("status", status));
                 item.add(new AjaxLink<Void>("btnEditarPF") {
                     @Override
                     public void onClick(AjaxRequestTarget target) {

@@ -26,6 +26,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import wicket.entities.Monitorador;
+import wicket.enums.TipoPessoa;
 import wicket.http.MonitoradorHttpClient;
 
 import java.io.Serializable;
@@ -140,12 +141,7 @@ public class MonitoradorPF extends BasePage implements Serializable {
         // Filtrar a lista para listar apenas os monitoradores com tipoPessoa igual a "PJ"
 
         //TODO - ajustar lista para o backend chamando a lista já filtrada
-        List<Monitorador> mntListPF = new ArrayList<>();
-        for (Monitorador monitorador : mntList) {
-            if ("PF".equals(monitorador.getTipoPessoa())) {
-                mntListPF.add(monitorador);
-            }
-        }
+        List<Monitorador> mntListPF = monitoradorHttpClient.listarPF();
         ListView<Monitorador> monitoradorList = new ListView<Monitorador>("monitoradorList", mntListPF) {
             @Override
             protected void populateItem(ListItem<Monitorador> item) {
@@ -155,7 +151,7 @@ public class MonitoradorPF extends BasePage implements Serializable {
                 // Coluna do chebox para selecionar os monitoradores para deletar
                 item.add(new CheckBox("selected", new PropertyModel<>(item.getModel(), "selected")));
                 item.add(new Label("id", new PropertyModel<String>(item.getModel(), "id")));
-                String tipoPessoa = monitorador.getTipoPessoa().equals("PF") ? "Física" : "Jurídica";
+                String tipoPessoa = monitorador.getTipoPessoa().equals(TipoPessoa.PF) ? "Física" : "Jurídica";
                 item.add(new Label("tipoPessoa", tipoPessoa));
                 item.add(new Label("nome", new PropertyModel<String>(item.getModel(), "nome")));
                 item.add(new Label("cpf", new PropertyModel<String>(item.getModel(), "cpf")));
@@ -163,7 +159,7 @@ public class MonitoradorPF extends BasePage implements Serializable {
                 item.add(new Label("email", new PropertyModel<String>(item.getModel(), "email")));
                 item.add(new Label("rg", new PropertyModel<String>(item.getModel(), "rg")));
                 item.add(new Label("dataNascimento", new PropertyModel<String>(item.getModel(), "dataNascimento")));
-                String status = monitorador.getAtivo() ? "Ativo" : "Inativo";
+                String status = monitorador.getStatus().toString();
                 item.add(new Label("ativo", status));
             }
         };
@@ -235,7 +231,7 @@ public class MonitoradorPF extends BasePage implements Serializable {
         if (!message.isEmpty()) {
             info(message);
         }
-        
+
 
     }
 

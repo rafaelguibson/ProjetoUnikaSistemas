@@ -26,6 +26,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import wicket.entities.Monitorador;
+import wicket.enums.Status;
+import wicket.enums.TipoPessoa;
 import wicket.http.MonitoradorHttpClient;
 
 import java.io.Serializable;
@@ -130,7 +132,7 @@ public class MonitoradorPJ extends BasePage implements Serializable {
 
         // Filtrar a lista para listar apenas os monitoradores com tipoPessoa igual a "PJ"
         //TODO - ajustar lista para o backend chamando a lista já filtrada
-        List<Monitorador> mntListPJ = monitoradorHttpClient.listarTodos()
+        List<Monitorador> mntListPJ = monitoradorHttpClient.listarPJ();
         ListView<Monitorador> monitoradorList = new ListView<Monitorador>("monitoradorList", mntListPJ) {
             @Override
             protected void populateItem(ListItem<Monitorador> item) {
@@ -141,14 +143,14 @@ public class MonitoradorPJ extends BasePage implements Serializable {
                 // Coluna do chebox para selecionar os monitoradores para deletar
                 item.add(new CheckBox("selected", new PropertyModel<>(item.getModel(), "selected")));
                 item.add(new org.apache.wicket.markup.html.basic.Label("id", new PropertyModel<String>(item.getModel(), "id")));
-                String tipoPessoa = monitorador.getTipoPessoa().equals("PF") ? "Física" : "Jurídica";
+                String tipoPessoa = monitorador.getTipoPessoa().equals(TipoPessoa.PF) ? "Física" : "Jurídica";
                 item.add(new Label("tipoPessoa", tipoPessoa));
                 item.add(new org.apache.wicket.markup.html.basic.Label("razaoSocial", new PropertyModel<String>(item.getModel(), "razaoSocial")));
                 item.add(new org.apache.wicket.markup.html.basic.Label("cnpj", new PropertyModel<String>(item.getModel(), "cnpj")));
                 item.add(new org.apache.wicket.markup.html.basic.Label("telefone", new PropertyModel<String>(item.getModel(), "telefone")));
                 item.add(new org.apache.wicket.markup.html.basic.Label("email", new PropertyModel<String>(item.getModel(), "email")));
                 item.add(new org.apache.wicket.markup.html.basic.Label("inscricaoEstadual", new PropertyModel<String>(item.getModel(), "inscricaoEstadual")));
-                String status = monitorador.getAtivo() ? "Ativo" : "Inativo";
+                String status = monitorador.getStatus() == Status.ATIVO ? "Ativo" : "Inativo";
                 item.add(new Label("ativo", status));
             }
         };
