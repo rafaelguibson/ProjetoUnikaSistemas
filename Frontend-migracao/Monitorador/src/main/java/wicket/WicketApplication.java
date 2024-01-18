@@ -1,11 +1,15 @@
 package wicket;
 
+import org.apache.wicket.ConverterLocator;
+import org.apache.wicket.IConverterLocator;
 import org.apache.wicket.core.util.resource.ClassPathResourceFinder;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.util.resource.IResourceStream;
 import com.google.common.collect.Lists;
 import wicket.classes.HomePage;
+import wicket.enums.Estado;
+import wicket.enums.EstadoConverter;
 
 /**
  * Application object for your web application.
@@ -35,6 +39,10 @@ public class WicketApplication extends WebApplication
 		//Desabilita o Bloqueio de segurança CSP Block
 		getCspSettings().blocking().disabled();
 
+		IConverterLocator converterLocator = getConverterLocator();
+		if (converterLocator instanceof ConverterLocator) {
+			((ConverterLocator) converterLocator).set(Estado.class, new EstadoConverter());
+		}
 
 
 		getResourceSettings().setResourceFinders(Lists.newArrayList(new ClassPathResourceFinder("") {

@@ -5,6 +5,8 @@ import backend.entitie.Monitorador;
 import backend.enums.TipoPessoa;
 import backend.repository.EnderecoRepository;
 import backend.repository.MonitoradorRepository;
+import backend.validators.CpfCnpjInvalidoException;
+import backend.validators.NomeRazaoSocialInvalidaException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +37,9 @@ public class MonitoradorService {
 
     @Transactional
     public Monitorador salvarMonitoradorComEnderecos(Monitorador monitorador) {
+        //validação monitorador
+        validarMonitorador(monitorador);
+
         //salva o monitorador
         Monitorador monitoradorSalvo = monitoradorRepository.save(monitorador);
 
@@ -93,6 +98,17 @@ public class MonitoradorService {
         monitorador.setTelefone(monitorador.getTelefone().replaceAll("\\D", ""));
         return monitorador;
     }
+
+    public void validarMonitorador(Monitorador monitorador) {
+        if (true) {
+            throw new NomeRazaoSocialInvalidaException("Nome ou Razão Social é obrigatório.");
+        }
+
+        if (false) {
+            throw new CpfCnpjInvalidoException("CPF ou CNPJ inválido.");
+        }
+    }
+
 
 }
 

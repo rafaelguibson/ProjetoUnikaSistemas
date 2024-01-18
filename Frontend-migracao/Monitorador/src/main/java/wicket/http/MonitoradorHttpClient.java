@@ -175,6 +175,24 @@ public class MonitoradorHttpClient implements Serializable {
         }
         return null;
     }
+    // Método para validar um Monitorador
+    public String validarMonitorador(Monitorador monitorador) {
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            HttpPost request = new HttpPost(baseUrl + "/validar");
+            request.setHeader("Content-Type", "application/json; charset=UTF-8");
+
+            String requestBody = objectMapper.writeValueAsString(monitorador);
+            request.setEntity(new StringEntity(requestBody, ContentType.APPLICATION_JSON));
+
+            try (CloseableHttpResponse response = httpClient.execute(request)) {
+                HttpEntity entity = response.getEntity();
+                return EntityUtils.toString(entity);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "Erro ao validar Monitorador: " + e.getMessage();
+        }
+    }
 
 }
 

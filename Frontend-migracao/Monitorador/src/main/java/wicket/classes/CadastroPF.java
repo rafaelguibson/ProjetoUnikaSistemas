@@ -25,6 +25,7 @@ import org.apache.wicket.request.resource.CssPackageResource;
 import wicket.configs.MaskBehavior;
 import wicket.entities.Endereco;
 import wicket.entities.Monitorador;
+import wicket.enums.Estado;
 import wicket.enums.Status;
 import wicket.enums.TipoPessoa;
 import wicket.http.MonitoradorHttpClient;
@@ -155,7 +156,7 @@ public class CadastroPF extends Panel implements Serializable {
                 logradouro.setModelObject(endereco.getLogradouro());
                 bairro.setModelObject(endereco.getBairro());
                 cidade.setModelObject(endereco.getCidade());
-//                estado.setModelObject(endereco.getEstado());
+                estado.setModelObject(endereco.getEstado().toString());
                 target.add(logradouro, bairro, numero, cidade, estado);
 
             }
@@ -172,7 +173,7 @@ public class CadastroPF extends Panel implements Serializable {
                 endereco.setLogradouro(logradouro.getValue());
                 endereco.setCidade(cidade.getValue());
                 endereco.setBairro(bairro.getValue());
-//                endereco.setEstado(estado.getValue());
+                endereco.setEstado(Estado.valueOf(estado.getValue()));
                 listaDeEnderecos.add(endereco);
                 formAddress.setVisible(false);;
                 target.add(formAddress, tableAddress);

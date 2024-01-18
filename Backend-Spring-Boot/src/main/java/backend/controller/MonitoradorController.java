@@ -5,6 +5,8 @@ import backend.dto.MonitoradorDTO;
 import backend.entitie.Endereco;
 import backend.entitie.Monitorador;
 import backend.service.MonitoradorService;
+import backend.validators.CpfCnpjInvalidoException;
+import backend.validators.NomeRazaoSocialInvalidaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -82,6 +84,22 @@ public class MonitoradorController {
     public ResponseEntity<List<Monitorador>> filtrar(@RequestBody Monitorador filtro) {
         List<Monitorador> resultado = monitoradorService.filtrar(filtro);
         return ResponseEntity.ok(resultado);
+    }
+
+    @PostMapping("/validar")
+    public ResponseEntity<String> validarMonitorador(@RequestBody Monitorador monitorador) {
+        monitoradorService.validarMonitorador(monitorador);
+        return ResponseEntity.ok("Validação bem-sucedida.");
+    }
+
+    @ExceptionHandler(NomeRazaoSocialInvalidaException.class)
+    public ResponseEntity<String> handleNomeRazaoSocialInvalida(NomeRazaoSocialInvalidaException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
+    }
+
+    @ExceptionHandler(CpfCnpjInvalidoException.class)
+    public ResponseEntity<String> handleCpfCnpjInvalido(CpfCnpjInvalidoException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
 
 
