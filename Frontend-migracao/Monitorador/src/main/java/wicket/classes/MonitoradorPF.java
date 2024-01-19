@@ -20,6 +20,8 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.list.PageableListView;
+import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
@@ -41,7 +43,7 @@ public class MonitoradorPF extends BasePage implements Serializable {
     List<Monitorador> mntList;
     private ModalWindow modal = new ModalWindow("modal");
     FeedbackPanel fp;
-
+    static int itemsPerPage = 3;
     final Class<? extends Page> currentPageClass = this.getPage().getClass();
 
     public MonitoradorPF(final PageParameters parameters) {
@@ -70,11 +72,9 @@ public class MonitoradorPF extends BasePage implements Serializable {
         form.add(sectionFilters);
 
         //Definições da janela modal de cadastrar pessoa Física
-        modal.setMaskType(ModalWindow.MaskType.SEMI_TRANSPARENT);
         modal.setInitialHeight(600);
         modal.setInitialWidth(1150);
         modal.setResizable(false);
-//      modal.setMarkupId("idDaModalWindow ");
         modal.add(AttributeAppender.append("class", "custom-1"));
         modal.setCssClassName("style");
         modal.setTitle("");
@@ -139,8 +139,11 @@ public class MonitoradorPF extends BasePage implements Serializable {
         });
 
         List<Monitorador> mntListPF = monitoradorHttpClient.listarPF();
-        ListView<Monitorador> monitoradorList = getMonitoradorList(mntListPF);
-        form.add(monitoradorList);
+
+        PageableListView<Monitorador> monitoradorPageableList = getMonitoradorPageableList(mntListPF);
+        form.add(monitoradorPageableList);
+
+        form.add(new PagingNavigator("pagingNavigator", monitoradorPageableList));
 
 
         AjaxLink<Void> checkBox = new AjaxLink<>("checkBox", new PropertyModel<>(new CompoundPropertyModel<>(monitorador), "selected")) {
@@ -187,20 +190,28 @@ public class MonitoradorPF extends BasePage implements Serializable {
         btnRemove.add(new AjaxFormSubmitBehavior(form, "click") {});
         add(btnRemove);
 
-        // Campos do Formulário de busca
+        CompoundPropertyModel<Monitorador> filterModel = new CompoundPropertyModel<>(monitorador);
 
-        TextField<String> nomeFilter = new TextField<String>("nomeFilter");
+        // 3. Mova os campos de filtro para dentro do formFilter
+        Form<Monitorador> formFilter = new Form<>("formFilter", filterModel);
+        sectionFilters.add(formFilter);
+
+        // Campos do Formulário de busca
+        TextField<String> nomeFilter = new TextField<>("nomeFilter");
         nomeFilter.setOutputMarkupId(true);
-        TextField<String> cpfFilter = new TextField<String>("cpfFilter");
+        TextField<String> cpfFilter = new TextField<>("cpfFilter");
         cpfFilter.setOutputMarkupId(true);
-        TextField<String> rgFilter = new TextField<String>("rgFilter");
+        TextField<String> rgFilter = new TextField<>("rgFilter");
         rgFilter.setOutputMarkupId(true);
         DateTextField dataNascimentoFilter = new DateTextField("dataNascimentoFilter", "yyyy-MM-dd");
         dataNascimentoFilter.setOutputMarkupId(true);
         List<String> listaDeStatus = Arrays.asList("Ativado", "Desativado");
         DropDownChoice<String> statusFilter = new DropDownChoice<>("statusFilter", Model.ofList(listaDeStatus));
         statusFilter.setOutputMarkupId(true);
-        sectionFilters.add(nomeFilter,cpfFilter,rgFilter,dataNascimentoFilter,statusFilter);
+
+        // Adicione os campos de filtro ao formFilter
+        formFilter.add(nomeFilter, cpfFilter, rgFilter, dataNascimentoFilter, statusFilter);
+
 
         String message = parameters.get("message").toString("");
         if (!message.isEmpty()) {
@@ -210,12 +221,11 @@ public class MonitoradorPF extends BasePage implements Serializable {
 
     }
 
-    public static ListView<Monitorador> getMonitoradorList(List<Monitorador> mntListPF) {
-        ListView<Monitorador> monitoradorList = new ListView<>("monitoradorList", mntListPF) {
-            @Override
-            protected void populateItem(ListItem<Monitorador> item) {
-                Monitorador monitorador = item.getModelObject();
-
+        public PageableListView<Monitorador> getMonitoradorPageableList(List<Monitorador> mntListPF) {
+            return new PageableListView<Monitorador>("monitoradorList", mntListPF, itemsPerPage) {
+                @Override
+                protected void populateItem(ListItem<Monitorador> item) {
+                    Monitorador monitorador = item.getModelObject();
 
                 // Coluna do chebox para selecionar os monitoradores para deletar
                 item.add(new CheckBox("selected", new PropertyModel<>(item.getModel(), "selected")));
@@ -231,9 +241,6 @@ public class MonitoradorPF extends BasePage implements Serializable {
                 item.add(new Label("ativo", monitorador.getStatus().getStatus()));
             }
         };
-        monitoradorList.setReuseItems(true);
-        monitoradorList.setOutputMarkupId(true);
-        return monitoradorList;
     }
 
     private void showInfo(AjaxRequestTarget target, String msg) {

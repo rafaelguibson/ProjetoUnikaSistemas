@@ -5,14 +5,20 @@ import backend.entitie.Monitorador;
 import backend.enums.TipoPessoa;
 import backend.repository.EnderecoRepository;
 import backend.repository.MonitoradorRepository;
+import backend.validators.CampoObrigatorioException;
 import backend.validators.CpfCnpjInvalidoException;
+import backend.validators.EnderecoInvalidaException;
 import backend.validators.NomeRazaoSocialInvalidaException;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 @Service
 public class MonitoradorService {
@@ -22,6 +28,8 @@ public class MonitoradorService {
 
     @Autowired
     private final EnderecoRepository enderecoRepository;
+    private static final Pattern CPF_PATTERN =
+            Pattern.compile("[0-9]{3}\\.?[0-9]{3}\\.?[0-9]{3}\\-?[0-9]{2}");
 
     @Autowired
     public MonitoradorService(MonitoradorRepository monitoradorRepository, EnderecoRepository enderecoRepository) {
@@ -29,14 +37,14 @@ public class MonitoradorService {
         this.enderecoRepository = enderecoRepository;
     }
 
-    public Monitorador saveMonitorador(Monitorador monitorador) {
+    public Monitorador saveMonitorador(@Valid Monitorador monitorador) {
 
 
         return monitoradorRepository.save(removerMascaras(monitorador));
     }
 
     @Transactional
-    public Monitorador salvarMonitoradorComEnderecos(Monitorador monitorador) {
+    public Monitorador salvarMonitoradorComEnderecos(@Valid Monitorador monitorador) {
         //validação monitorador
         validarMonitorador(monitorador);
 
@@ -100,15 +108,38 @@ public class MonitoradorService {
     }
 
     public void validarMonitorador(Monitorador monitorador) {
-        if (true) {
-            throw new NomeRazaoSocialInvalidaException("Nome ou Razão Social é obrigatório.");
+        if (monitorador.getTipoPessoa() == TipoPessoa.PF) {
+            validarCampoObrigatorio(monitorador.getNome(), "Nome");
+            validarCampoObrigatorio(monitorador.getCpf(), "CPF");
+            validarCPF(monitorador.getCpf());
+            validarCampoObrigatorio(monitorador.getRg(), "RG");
+            validarCampoObrigatorio(monitorador.getTelefone(), "Telefone");
+            validarCampoObrigatorio(monitorador.getDataNascimento(), "Data de Nascimento");
+            validarCampoObrigatorio(monitorador.getStatus(), "Status");
+        } else if (monitorador.getTipoPessoa() == TipoPessoa.PJ) {
+            validarCampoObrigatorio(monitorador.getRazaoSocial(), "Razão Social");
+            validarCampoObrigatorio(monitorador.getCnpj(), "CNPJ");
+            validarCampoObrigatorio(monitorador.getInscricaoEstadual(), "Inscrição Estadual");
+            validarCampoObrigatorio(monitorador.getTelefone(), "Telefone");
+            validarCampoObrigatorio(monitorador.getStatus(), "Status");
         }
 
-        if (false) {
-            throw new CpfCnpjInvalidoException("CPF ou CNPJ inválido.");
+        validarCampoObrigatorio(monitorador.getEnderecos(), "Endereços");
+    }
+
+    private void validarCampoObrigatorio(Object campo, String nomeCampo) {
+        if (Objects.isNull(campo) || (campo instanceof String && ((String) campo).isEmpty())
+                || (campo instanceof Collection && ((Collection<?>) campo).isEmpty())) {
+            throw new CampoObrigatorioException(nomeCampo);
         }
     }
 
+    public void validarCPF(String cpf) throws IllegalArgumentException {
+        if (!CPF_PATTERN.matcher(cpf).matches()) {
+            throw new IllegalArgumentException("CPF inválido. Formato esperado: XXX.XXX.XXX-XX");
+        }
+        // Aqui você pode adicionar lógica adicional para validar os dígitos verificadores do CPF, se necessário.
+    }
 
 }
 

@@ -5,13 +5,19 @@ import backend.dto.MonitoradorDTO;
 import backend.entitie.Endereco;
 import backend.entitie.Monitorador;
 import backend.service.MonitoradorService;
+import backend.validators.CampoObrigatorioException;
 import backend.validators.CpfCnpjInvalidoException;
+import backend.validators.EnderecoInvalidaException;
 import backend.validators.NomeRazaoSocialInvalidaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -97,9 +103,31 @@ public class MonitoradorController {
         return ResponseEntity.badRequest().body(e.getMessage());
     }
 
-    @ExceptionHandler(CpfCnpjInvalidoException.class)
-    public ResponseEntity<String> handleCpfCnpjInvalido(CpfCnpjInvalidoException e) {
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleCpfInvalido(IllegalArgumentException e) {
         return ResponseEntity.badRequest().body(e.getMessage());
+    }
+
+    @ExceptionHandler(EnderecoInvalidaException.class)
+    public ResponseEntity<String> handleEnderecoInvalida (EnderecoInvalidaException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
+    }
+
+    @ExceptionHandler(CampoObrigatorioException.class)
+    public ResponseEntity<String> handleCamposObrigatorios (CampoObrigatorioException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Object> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+
+        return ResponseEntity.badRequest().body(errors);
     }
 
 

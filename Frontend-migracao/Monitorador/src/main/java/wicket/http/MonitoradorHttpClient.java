@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.*;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
@@ -98,7 +99,6 @@ public class MonitoradorHttpClient implements Serializable {
             HttpPost request = new HttpPost(baseUrl);
             request.setHeader("Content-Type", "application/json; charset=UTF-8");
 
-            // Converte o objeto Monitorador para JSON
             String requestBody = objectMapper.writeValueAsString(novoMonitorador);
             request.setEntity(new StringEntity(requestBody, ContentType.APPLICATION_JSON));
 
@@ -106,7 +106,11 @@ public class MonitoradorHttpClient implements Serializable {
                 HttpEntity entity = response.getEntity();
                 String responseString = EntityUtils.toString(entity);
 
-                return objectMapper.readValue(responseString, Monitorador.class);
+                if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                    return objectMapper.readValue(responseString, Monitorador.class);
+                } else {
+                    throw new RuntimeException(responseString); // Lança uma exceção com a mensagem de erro
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -174,24 +178,6 @@ public class MonitoradorHttpClient implements Serializable {
             e.printStackTrace();
         }
         return null;
-    }
-    // Método para validar um Monitorador
-    public String validarMonitorador(Monitorador monitorador) {
-        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
-            HttpPost request = new HttpPost(baseUrl + "/validar");
-            request.setHeader("Content-Type", "application/json; charset=UTF-8");
-
-            String requestBody = objectMapper.writeValueAsString(monitorador);
-            request.setEntity(new StringEntity(requestBody, ContentType.APPLICATION_JSON));
-
-            try (CloseableHttpResponse response = httpClient.execute(request)) {
-                HttpEntity entity = response.getEntity();
-                return EntityUtils.toString(entity);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "Erro ao validar Monitorador: " + e.getMessage();
-        }
     }
 
 }

@@ -46,48 +46,54 @@
                     </td>
                 </tr>
             </table>
-
+            <div wicket:id="pagingNavigator" style="justify-content: center"></div>
 
             <div wicket:id="sectionFilters" class="bordered-div">
                 <fieldset>
                     <h4> Buscar Monitorador Pessoa Física</h4>
-                    <div class="container container-sm" style="color: #0d0d11">
-                        <div class="form-group">
-                            <div style="flex-grow: 3; margin-right: 5px;">
-                                <label for="nomeFilter" class="control-label"> <b>Nome Completo:</b> </label>
-                                <input wicket:id="nomeFilter" type="text" class="form-control">
-                            </div>
-                            <div style="flex-grow: 8; margin-right: 5px;"></div>
-                        </div>
-
-                        <!-- CPF e RG -->
-                        <div class="form-group" style="display: flex; justify-content: space-between;">
-                            <div style="flex-grow: 3; margin-right: 5px;">
-                                <label for="cpfFilter" class="control-label"><b>CPF: </b></label>
-                                <input wicket:id="cpfFilter" type="text" class="form-control cpf">
-                            </div>
-                            <div style="flex-grow: 1;">
-                                <label for="rgFilter" class="control-label"><b>RG: </b></label>
-                                <input wicket:id="rgFilter" type="text" class="form-control">
+                    <form wicket:id="formFilter">
+                        <div class="container container-sm" style="color: #0d0d11">
+                            <div class="form-group">
+                                <div style="flex-grow: 3; margin-right: 5px;">
+                                    <label for="nomeFilter" class="control-label"> <b>Nome Completo:</b> </label>
+                                    <label for="nomeFilter" class="control-label">
+                                        <input wicket:id="nomeFilter" type="text" class="form-control">
+                                    </label>
+                                </div>
+                                <div style="flex-grow: 8; margin-right: 5px;"></div>
                             </div>
 
-                            <div style="flex-grow: 1;">
-                                <label for="dataNascimentoFilter" class="control-label"><b>Data de Nascimento: </b></label>
-                                <input wicket:id="dataNascimentoFilter" type="date" class="form-control">
+                            <!-- CPF e RG -->
+                            <div class="form-group" style="display: flex; justify-content: space-between;">
+                                <div style="flex-grow: 3; margin-right: 5px;">
+                                    <label for="cpfFilter" class="control-label"><b>CPF: </b></label>
+                                    <label >
+                                        <input wicket:id="cpfFilter" type="text" class="form-control cpf">
+                                    </label>
+                                </div>
+                                <div style="flex-grow: 1;">
+                                    <label for="rgFilter" class="control-label"><b>RG: </b></label>
+                                    <input wicket:id="rgFilter" type="text" class="form-control">
+                                </div>
+
+                                <div style="flex-grow: 1;">
+                                    <label for="dataNascimentoFilter" class="control-label"><b>Data de Nascimento: </b></label>
+                                    <input wicket:id="dataNascimentoFilter" type="date" class="form-control">
+                                </div>
+                                <div style="flex-grow: 2; margin-right: 5px;">
+                                    <label for="statusFilter" class="control-label"><b>Status: </b></label>
+                                    <select wicket:id="statusFilter" class="form-select" id="statusFilter"></select>
+                                </div>
                             </div>
-                            <div style="flex-grow: 2; margin-right: 5px;">
-                                <label for="statusFilter" class="control-label"><b>Status: </b></label>
-                                <select wicket:id="statusFilter" class="form-select" id="statusFilter"></select>
+                            <div class="form-group" style="display: flex; justify-content: space-between;">
+                                <div style="flex-grow: 2; margin-right: 5px; padding-top: 15px;">
+                                    <button type="button" class="btn btn-primary btn-dark"><i class="bi bi-search"></i>
+                                        Pesquisar
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group" style="display: flex; justify-content: space-between;">
-                            <div style="flex-grow: 2; margin-right: 5px; padding-top: 15px;">
-                                <button type="button" class="btn btn-primary btn-dark"><i class="bi bi-search"></i>
-                                    Pesquisar
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                    </form>
                 </fieldset>
             </div>
         </form>

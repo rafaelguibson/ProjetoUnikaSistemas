@@ -3,6 +3,7 @@ import backend.enums.Status;
 import backend.enums.TipoPessoa;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -47,6 +48,7 @@ public class Monitorador implements Serializable {
     @Column(name = "telefone", length = 20)
     private String telefone;
 
+    @Email
     @Column(name = "email", nullable = false, length = 255)
     private String email;
 

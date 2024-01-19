@@ -245,9 +245,18 @@ public class HomePage extends BasePage implements Serializable {
         };
         btnRemove.add(new AjaxFormSubmitBehavior(form, "click") {});
         add(btnRemove);
+
+        AjaxLink<Void> btnExcel = new AjaxLink<Void>("btnExcel") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+
+            }
+        };
+        add(btnExcel);
     } //Fora do construtor
     private void showInfo(AjaxRequestTarget target, String msg) {
         info(msg);
         target.add(fp);
     }
+
 }

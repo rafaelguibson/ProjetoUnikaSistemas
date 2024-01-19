@@ -14,10 +14,7 @@ import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
@@ -133,15 +130,18 @@ public class MonitoradorPJ extends BasePage implements Serializable {
         // Filtrar a lista para listar apenas os monitoradores com tipoPessoa igual a "PJ"
         //TODO - ajustar lista para o backend chamando a lista já filtrada
         List<Monitorador> mntListPJ = monitoradorHttpClient.listarPJ();
+        CheckGroup group=new CheckGroup("group");
+        form.add(group);
+        group.add(new CheckGroupSelector("selected"));
         ListView<Monitorador> monitoradorList = new ListView<Monitorador>("monitoradorList", mntListPJ) {
             @Override
             protected void populateItem(ListItem<Monitorador> item) {
-                Monitorador monitorador = item.getModelObject();
+                Monitorador monitorador =(Monitorador) item.getModelObject();
 
 
 
                 // Coluna do chebox para selecionar os monitoradores para deletar
-                item.add(new CheckBox("selected", new PropertyModel<>(item.getModel(), "selected")));
+                item.add(new Check("selected", new PropertyModel<>(item.getModel(), "selected")));
                 item.add(new org.apache.wicket.markup.html.basic.Label("id", new PropertyModel<String>(item.getModel(), "id")));
                 String tipoPessoa = monitorador.getTipoPessoa().equals(TipoPessoa.PF) ? "Física" : "Jurídica";
                 item.add(new Label("tipoPessoa", tipoPessoa));
