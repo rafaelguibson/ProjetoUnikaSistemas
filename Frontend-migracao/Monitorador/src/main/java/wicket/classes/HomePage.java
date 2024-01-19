@@ -1,5 +1,12 @@
 package wicket.classes;
 
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -18,12 +25,17 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.IRequestCycle;
+import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.markup.html.basic.Label;
 import wicket.entities.Monitorador;
 import wicket.enums.TipoPessoa;
 import wicket.http.MonitoradorHttpClient;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -249,10 +261,12 @@ public class HomePage extends BasePage implements Serializable {
         AjaxLink<Void> btnExcel = new AjaxLink<Void>("btnExcel") {
             @Override
             public void onClick(AjaxRequestTarget target) {
-
             }
         };
         add(btnExcel);
+
+
+
     } //Fora do construtor
     private void showInfo(AjaxRequestTarget target, String msg) {
         info(msg);

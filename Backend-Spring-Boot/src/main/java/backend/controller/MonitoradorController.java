@@ -6,15 +6,20 @@ import backend.entitie.Endereco;
 import backend.entitie.Monitorador;
 import backend.service.MonitoradorService;
 import backend.validators.CampoObrigatorioException;
-import backend.validators.CpfCnpjInvalidoException;
 import backend.validators.EnderecoInvalidaException;
 import backend.validators.NomeRazaoSocialInvalidaException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +30,7 @@ import java.util.stream.Collectors;
 public class MonitoradorController {
 
     private final MonitoradorService monitoradorService;
+
 
     @Autowired
     public MonitoradorController(MonitoradorService monitoradorService) {
@@ -96,6 +102,24 @@ public class MonitoradorController {
     public ResponseEntity<String> validarMonitorador(@RequestBody Monitorador monitorador) {
         monitoradorService.validarMonitorador(monitorador);
         return ResponseEntity.ok("Validação bem-sucedida.");
+    }
+
+    @PostMapping("/export/excel")
+    public ResponseEntity<byte[]> exportMonitoradoresExcel(@RequestBody(required = false) Monitorador filtro) {
+        try {
+            byte[] excelData = monitoradorService.exportMonitoradoresToExcel(filtro);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=monitoradores.xlsx");
+            headers.set(HttpHeaders.CONTENT_TYPE, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .body(excelData);
+        } catch (IOException e) {
+            // Tratar exceção apropriadamente
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     @ExceptionHandler(NomeRazaoSocialInvalidaException.class)

@@ -13,6 +13,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import wicket.entities.Monitorador;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
@@ -178,6 +179,31 @@ public class MonitoradorHttpClient implements Serializable {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void exportMonitoradoresToExcel() {
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            String exportUrl = baseUrl + "/export/excel"; // Substitua pela URL correta
+            HttpGet request = new HttpGet(exportUrl);
+            try (CloseableHttpResponse response = httpClient.execute(request)) {
+                // Verifica se a resposta é bem-sucedida
+                if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                    // Lê o conteúdo da resposta (o arquivo Excel)
+                    byte[] data = EntityUtils.toByteArray(response.getEntity());
+
+                    // Salva o arquivo no sistema de arquivos local
+                    try (FileOutputStream fos = new FileOutputStream("monitoradores.xlsx")) {
+                        fos.write(data);
+                    }
+                } else {
+                    // Trata outros códigos de resposta
+                    throw new RuntimeException("Falha na exportação: " + response.getStatusLine().getReasonPhrase());
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao exportar para Excel", e);
+        }
     }
 
 }
