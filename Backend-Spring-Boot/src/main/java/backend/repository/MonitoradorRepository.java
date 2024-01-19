@@ -21,7 +21,7 @@ public interface MonitoradorRepository extends JpaRepository<Monitorador, Long>,
             List<Predicate> predicates = new ArrayList<>();
 
             if (filtro.getNome() != null && !filtro.getNome().trim().isEmpty()) {
-                predicates.add(criteriaBuilder.like(root.get("nome"), "%" + filtro.getNome() + "%"));
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("nome")), "%" + filtro.getNome().toLowerCase() + "%"));
             }
             if (filtro.getRazaoSocial() != null && !filtro.getRazaoSocial().trim().isEmpty()) {
                 predicates.add(criteriaBuilder.like(root.get("razaoSocial"), "%" + filtro.getRazaoSocial() + "%"));

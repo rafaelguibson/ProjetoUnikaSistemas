@@ -1,12 +1,6 @@
 package wicket.classes;
 
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -16,8 +10,8 @@ import org.apache.wicket.extensions.ajax.markup.html.modal.theme.DefaultTheme;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.list.PageableListView;
 import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
@@ -27,17 +21,37 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.IRequestCycle;
 import org.apache.wicket.request.IRequestHandler;
+import org.apache.wicket.request.handler.resource.ResourceStreamRequestHandler;
+import org.apache.wicket.request.http.WebResponse;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.util.resource.FileResourceStream;
+import org.apache.wicket.util.resource.IResourceStream;
 import wicket.entities.Monitorador;
 import wicket.enums.TipoPessoa;
 import wicket.http.MonitoradorHttpClient;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.ExternalLink;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.Model;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.OutputStream;
+
+import java.io.File;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
+import java.util.Collections;
+import java.util.List;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -258,14 +272,28 @@ public class HomePage extends BasePage implements Serializable {
         btnRemove.add(new AjaxFormSubmitBehavior(form, "click") {});
         add(btnRemove);
 
-        AjaxLink<Void> btnExcel = new AjaxLink<Void>("btnExcel") {
+        // Adicione o link de download na sua página
+        add(new Link<Void>("btnExcel") {
             @Override
-            public void onClick(AjaxRequestTarget target) {
+            public void onClick() {
+                try {
+                    Monitorador filtro = new Monitorador();
+                    filtro.setNome("Oliveira");
+                    monitoradorHttpClient.exportMonitoradoresToExcel(filtro);
+                    File file = new File("src/main/webapp/download/monitoradores.xlsx");
+                    if (file.exists()) {
+                        IResourceStream resourceStream = new FileResourceStream(file);
+                        getRequestCycle().scheduleRequestHandlerAfterCurrent(
+                                new ResourceStreamRequestHandler(resourceStream, file.getName()));
+                    } else {
+                        error("Arquivo não encontrado.");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    error("Erro ao baixar o arquivo.");
+                }
             }
-        };
-        add(btnExcel);
-
-
+        });
 
     } //Fora do construtor
     private void showInfo(AjaxRequestTarget target, String msg) {

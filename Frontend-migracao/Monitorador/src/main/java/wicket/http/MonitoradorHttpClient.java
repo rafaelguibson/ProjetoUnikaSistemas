@@ -181,10 +181,16 @@ public class MonitoradorHttpClient implements Serializable {
         return null;
     }
 
-    public void exportMonitoradoresToExcel() {
+    public void exportMonitoradoresToExcel(Monitorador filtro) {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             String exportUrl = baseUrl + "/export/excel"; // Substitua pela URL correta
-            HttpGet request = new HttpGet(exportUrl);
+            HttpPost request = new HttpPost(exportUrl);
+            request.setHeader("Content-Type", "application/json; charset=UTF-8");
+
+            // Converte o objeto filtro para JSON
+            String requestBody = objectMapper.writeValueAsString(filtro);
+            request.setEntity(new StringEntity(requestBody, ContentType.APPLICATION_JSON));
+
             try (CloseableHttpResponse response = httpClient.execute(request)) {
                 // Verifica se a resposta é bem-sucedida
                 if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
@@ -192,7 +198,7 @@ public class MonitoradorHttpClient implements Serializable {
                     byte[] data = EntityUtils.toByteArray(response.getEntity());
 
                     // Salva o arquivo no sistema de arquivos local
-                    try (FileOutputStream fos = new FileOutputStream("monitoradores.xlsx")) {
+                    try (FileOutputStream fos = new FileOutputStream("src/main/webapp/download/monitoradores.xlsx")) {
                         fos.write(data);
                     }
                 } else {
