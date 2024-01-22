@@ -4,6 +4,7 @@ package wicket.classes;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.extensions.ajax.markup.html.modal.theme.DefaultTheme;
@@ -11,6 +12,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.link.ResourceLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PageableListView;
 import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
@@ -25,6 +27,9 @@ import org.apache.wicket.request.handler.resource.ResourceStreamRequestHandler;
 import org.apache.wicket.request.http.WebResponse;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.request.resource.AbstractResource;
+import org.apache.wicket.request.resource.IResource;
+import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.util.resource.FileResourceStream;
 import org.apache.wicket.util.resource.IResourceStream;
 import wicket.entities.Monitorador;
@@ -45,13 +50,13 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 
 
-import java.io.File;
+import java.io.*;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.text.ParseException;
 import java.util.Collections;
 import java.util.List;
-import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -295,10 +300,82 @@ public class HomePage extends BasePage implements Serializable {
             }
         });
 
+        add(createExportPdfResourceLink("btnExportPDF"));
+
     } //Fora do construtor
     private void showInfo(AjaxRequestTarget target, String msg) {
         info(msg);
         target.add(fp);
+    }
+
+
+    private ResourceLink<Void> createExportPdfResourceLink(String wicketId) {
+        ResourceReference exportPdfResourceRef = new ResourceReference("exportPdfResource") {
+            @Override
+            public IResource getResource() {
+                return new AbstractResource() {
+                    @Override
+                    protected ResourceResponse newResourceResponse(Attributes attributes) {
+                        ResourceResponse response = new ResourceResponse();
+                        response.setContentType("application/pdf");
+                        response.setFileName("relatorio-monitoradores.pdf");
+
+                        response.setWriteCallback(new WriteCallback() {
+                            @Override
+                            public void writeData(Attributes attributes) throws IOException {
+                                Monitorador filtro = new Monitorador();
+                                // Configure seu filtro conforme necessário
+
+                                try (InputStream pdfInputStream = monitoradorHttpClient.exportMonitoradoresToPdf(filtro)) {
+                                    OutputStream outputStream = attributes.getResponse().getOutputStream();
+                                    byte[] buffer = new byte[1024];
+                                    int length;
+                                    while ((length = pdfInputStream.read(buffer)) != -1) {
+                                        outputStream.write(buffer, 0, length);
+                                    }
+                                }
+                            }
+                        });
+
+                        return response;
+                    }
+                };
+            }
+        };
+
+        return new ResourceLink<Void>(wicketId, exportPdfResourceRef);
+    }
+    {
+        ResourceReference exportPdfResourceRef = new ResourceReference("exportPdfResource") {
+            @Override
+            public IResource getResource() {
+                return new AbstractResource() {
+                    @Override
+                    protected ResourceResponse newResourceResponse(Attributes attributes) {
+                        ResourceResponse response = new ResourceResponse();
+                        response.setContentType("application/pdf");
+                        response.setFileName("relatorio-monitoradores.pdf");
+
+                        response.setWriteCallback(new WriteCallback() {
+                            @Override
+                            public void writeData(Attributes attributes) throws IOException, IOException {
+                                OutputStream outputStream = attributes.getResponse().getOutputStream();
+                                Monitorador filtro = new Monitorador();
+                                // Configure o filtro conforme necessário
+
+
+                                File pdfFile = monitoradorHttpClient.exportMonitoradoresToPdf(filtro);
+                                Files.copy(pdfFile.toPath(), outputStream);
+                            }
+                        });
+
+                        return response;
+                    }
+                };
+            }
+        };
+
+        return new ResourceLink<Void>(wicketId, exportPdfResourceRef);
     }
 
 }

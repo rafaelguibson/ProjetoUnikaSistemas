@@ -9,6 +9,13 @@ import backend.validators.CampoObrigatorioException;
 import backend.validators.CpfCnpjInvalidoException;
 import backend.validators.EnderecoInvalidaException;
 import backend.validators.NomeRazaoSocialInvalidaException;
+import com.itextpdf.io.font.constants.StandardFonts;
+import com.itextpdf.kernel.font.PdfFontFactory;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.property.TextAlignment;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -18,10 +25,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.List;
-import java.util.Collection;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.regex.Pattern;
 
 @Service
@@ -32,13 +36,17 @@ public class MonitoradorService {
 
     @Autowired
     private final EnderecoRepository enderecoRepository;
+
+    @Autowired
+    private PdfGeneratorService pdfGeneratorService;
     private static final Pattern CPF_PATTERN =
             Pattern.compile("[0-9]{3}\\.?[0-9]{3}\\.?[0-9]{3}\\-?[0-9]{2}");
 
     @Autowired
-    public MonitoradorService(MonitoradorRepository monitoradorRepository, EnderecoRepository enderecoRepository) {
+    public MonitoradorService(MonitoradorRepository monitoradorRepository, EnderecoRepository enderecoRepository,PdfGeneratorService pdfGeneratorService) {
         this.monitoradorRepository = monitoradorRepository;
         this.enderecoRepository = enderecoRepository;
+        this.pdfGeneratorService = pdfGeneratorService;
     }
 
     public Monitorador saveMonitorador(@Valid Monitorador monitorador) {
@@ -316,5 +324,15 @@ public class MonitoradorService {
         return str == null || str.trim().isEmpty();
     }
 
+    public byte[] generateMonitoradorPDF(Monitorador monitorador) throws Exception {
+        List<Monitorador> monitoradores = new ArrayList<>();
+        if(Objects.isNull(monitorador) || todosOsCamposVazios(monitorador)) {
+            monitoradores = getAllMonitoradores();
+        } else {
+            monitoradores = filtrar(monitorador);
+        }
+
+        return pdfGeneratorService.exportMonitoradorPDF(monitoradores);
+    }
 }
 

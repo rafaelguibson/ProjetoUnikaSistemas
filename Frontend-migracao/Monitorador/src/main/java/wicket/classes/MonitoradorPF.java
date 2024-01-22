@@ -125,7 +125,7 @@ public class MonitoradorPF extends BasePage implements Serializable {
                 if ("true".equals(parameters.get("showFilter").toString(""))) {
                     sectionFilters.setVisible(true);
                     target.add(sectionFilters);
-                    target.add(sectionForm);
+                    target.add(form);
                 }
             }
 
@@ -190,11 +190,11 @@ public class MonitoradorPF extends BasePage implements Serializable {
         btnRemove.add(new AjaxFormSubmitBehavior(form, "click") {});
         add(btnRemove);
 
-        CompoundPropertyModel<Monitorador> filterModel = new CompoundPropertyModel<>(monitorador);
+//        CompoundPropertyModel<Monitorador> filterModel = new CompoundPropertyModel<>(monitorador);
 
         // 3. Mova os campos de filtro para dentro do formFilter
-        Form<Monitorador> formFilter = new Form<>("formFilter", filterModel);
-        sectionFilters.add(formFilter);
+//        Form<Void> formFilter = new Form<>("formFilter");
+        //sectionFilters.add(formFilter);
 
         // Campos do Formulário de busca
         TextField<String> nomeFilter = new TextField<>("nomeFilter");
@@ -210,7 +210,7 @@ public class MonitoradorPF extends BasePage implements Serializable {
         statusFilter.setOutputMarkupId(true);
 
         // Adicione os campos de filtro ao formFilter
-        formFilter.add(nomeFilter, cpfFilter, rgFilter, dataNascimentoFilter, statusFilter);
+        sectionFilters.add(nomeFilter, cpfFilter, rgFilter, dataNascimentoFilter, statusFilter);
 
 
         String message = parameters.get("message").toString("");

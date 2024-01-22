@@ -10,6 +10,8 @@ import backend.validators.EnderecoInvalidaException;
 import backend.validators.NomeRazaoSocialInvalidaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -119,6 +121,24 @@ public class MonitoradorController {
         } catch (IOException e) {
             // Tratar exceção apropriadamente
             return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @PostMapping(value = "/export/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<byte[]> getMonitoradoresPdf(@RequestBody(required = false)  Monitorador filtro) {
+        try {
+            byte[] pdfContent = monitoradorService.generateMonitoradorPDF(filtro);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            String filename = "relatorio-monitoradores.pdf";
+            headers.setContentDispositionFormData(filename, filename);
+            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+
+            return new ResponseEntity<>(pdfContent, headers, HttpStatus.OK);
+        } catch (Exception e) {
+            // Tratar exceção
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
