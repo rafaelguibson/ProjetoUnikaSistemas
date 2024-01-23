@@ -55,6 +55,10 @@ public class MonitoradorService {
         return monitoradorRepository.save(removerMascaras(monitorador));
     }
 
+    public List<Monitorador> saveAllMonitorador(@Valid List<Monitorador> monitorador) {
+        return monitoradorRepository.saveAll(monitorador);
+    }
+
     @Transactional
     public Monitorador salvarMonitoradorComEnderecos(@Valid Monitorador monitorador) {
         //validação monitorador
@@ -153,14 +157,8 @@ public class MonitoradorService {
         // Aqui você pode adicionar lógica adicional para validar os dígitos verificadores do CPF, se necessário.
     }
 
-    public byte[] exportMonitoradoresToExcel(Monitorador filtro) throws IOException {
-        List<Monitorador> monitoradores;
-
-        if (filtro == null || todosOsCamposVazios(filtro)) {
-            monitoradores = getAllMonitoradores();
-        } else {
-            monitoradores = filtrar(filtro);
-        }
+    public byte[] exportMonitoradoresToExcel() throws IOException {
+        List<Monitorador> monitoradores= getAllMonitoradores();
 
         String[] headers = {"ID", "Tipo Pessoa", "CPF/CNPJ", "Nome/Razão Social", "Telefone", "Email", "RG/I.E","Data de Nascimento", "Status"};
 
@@ -324,14 +322,8 @@ public class MonitoradorService {
         return str == null || str.trim().isEmpty();
     }
 
-    public byte[] generateMonitoradorPDF(Monitorador monitorador) throws Exception {
-        List<Monitorador> monitoradores = new ArrayList<>();
-        if(Objects.isNull(monitorador) || todosOsCamposVazios(monitorador)) {
-            monitoradores = getAllMonitoradores();
-        } else {
-            monitoradores = filtrar(monitorador);
-        }
-
+    public byte[] generateMonitoradorPDF() throws Exception {
+        List<Monitorador> monitoradores = getAllMonitoradores();
         return pdfGeneratorService.exportMonitoradorPDF(monitoradores);
     }
 }

@@ -102,72 +102,63 @@ public class HomePage extends BasePage implements Serializable {
         /* Lista que é preenchida com os monitoradores do banco de dados */
         mntList = monitoradorHttpClient.listarTodos();
 
-        int itemsPerPage = 3;
+        PageableListView<Monitorador> monitoradorList = getComponents(sectionForm);
+
+        form.add(monitoradorList);
+        form.add(new PagingNavigator("pagingNavigator", monitoradorList));
+
+        /* Método que controla o selecionar/deselecionar do checkbox de excluisão */
+        AjaxLink<Void> checkBox = new AjaxLink<>("checkBox", new PropertyModel<>(new CompoundPropertyModel<>(monitorador), "selected")) {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                for (Monitorador monitorador : mntList) {
+                    if(!monitorador.isSelected()) {
+                        monitorador.setSelected(true);
+                        target.add(sectionForm);
+                    } else {
+                        monitorador.setSelected(false);
+                        target.add(sectionForm);
+                    }
+
+                }
+
+            }
+        };
+        form.add(checkBox);
+
+        //Excluir monitorador
+        AjaxLink<Void> btnRemove = new AjaxLink<Void>("btnRemove") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                List<Monitorador> monitoradorRemove = mntList.stream().
+                        filter(Monitorador::isSelected).collect(Collectors.toList());
+
+                monitoradorHttpClient.deleteAllMonitoradores(monitoradorRemove);
+
+                mntList.clear();
+                mntList.addAll(monitoradorHttpClient.listarTodos());
+
+                if(monitoradorRemove.isEmpty()) {
+                    showInfo(target, "Selecione algum registro para remover...");
+                } else {
+                    showInfo(target, "Foram removidos ("+monitoradorRemove.size()+") monitoradores...");
+                }
+                target.add(sectionForm);
+            }
+        };
+        btnRemove.add(new AjaxFormSubmitBehavior(form, "click") {});
+        add(btnRemove);
+
+        // Adicione o link de download na sua página
+        ExternalLink btnExcel = new ExternalLink("btnExcel", "http://localhost:8080/api/monitoradores/export/excel");
+        ExternalLink btnPDF = new ExternalLink("btnPDF", "http://localhost:8080/api/monitoradores/export/pdf");
+        add(btnExcel, btnPDF);
 
 
-        /* listview que preenche a table com os dados dos monitoradores*/
-//        ListView<Monitorador> monitoradorList = new ListView<Monitorador>("monitoradorList", mntList) {
-//            @Override
-//            protected void populateItem(ListItem<Monitorador> item) {
-//                Monitorador monitorador = item.getModelObject();
-//                // Coluna do chebox para selecionar os monitoradores para deletar
-//                item.add(new CheckBox("selected", new PropertyModel<>(item.getModel(), "selected")));
-//
-//                item.add(new Label("id", new PropertyModel<String>(item.getModel(), "id")));
-//
-//                String tipoPessoa = monitorador.getTipoPessoa().equals(TipoPessoa.PF) ? "Física" : "Jurídica";
-//                item.add(new Label("tipoPessoa", tipoPessoa));
-//
-//                // Combina Nome e Razão Social
-//                String nomeOuRazaoSocial = (monitorador.getTipoPessoa() == TipoPessoa.PF) ? monitorador.getNome() : monitorador.getRazaoSocial();
-//                item.add(new Label("nomeOuRazaoSocial", nomeOuRazaoSocial));
-//
-//                // Combina CPF e CNPJ
-//                String cpfOuCnpj = (monitorador.getTipoPessoa() == TipoPessoa.PF) ? monitorador.getCpf() : monitorador.getCnpj();
-//                item.add(new Label("cpfOuCnpj", cpfOuCnpj));
-//
-//                item.add(new Label("telefone", new PropertyModel<String>(item.getModel(), "telefone")));
-//                item.add(new Label("email", new PropertyModel<String>(item.getModel(), "email")));
-//                // Combina RG e Inscrição Estadual
-//                String rgOuInscricaoEstadual = (monitorador.getTipoPessoa() == TipoPessoa.PF) ? monitorador.getRg() : monitorador.getInscricaoEstadual();
-//                item.add(new Label("rgOuInscricaoEstadual", rgOuInscricaoEstadual));
-//
-//                item.add(new Label("dataNascimento", new PropertyModel<String>(item.getModel(), "dataNascimento")));
-//
-//                String status = monitorador.getStatus().toString();
-//                item.add(new Label("status", status));
-//                item.add(new AjaxLink<Void>("btnEditarPF") {
-//                    @Override
-//                    public void onClick(AjaxRequestTarget target) {
-//                        Monitorador monitorador = item.getModelObject();
-//                        monitoradorModel.setObject(monitorador); // Armazena o Monitorador da linha clicada no modelo
-//                        EditarPF editarPF = new EditarPF(modal.getContentId(), monitorador);
-//                        modal.setTitle("Editar Monitorador Pessoa Física");
-//                        modal.setEscapeModelStrings(true);
-//                        modal.setContent(editarPF);
-//                        modal.show(target);
-//                        modal.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
-//                            @Override
-//                            public void onClose(AjaxRequestTarget target) {
-//                                // Lógica para atualizar a lista de monitoradores após a edição
-//                                mntList.clear();
-//                                mntList.addAll(monitoradorHttpClient.listarTodos());
-//                                target.add(sectionForm);
-//                            }
-//                        });
-//                        modal.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
-//                            @Override
-//                            public void onClose(AjaxRequestTarget target) {
-//
-//                            }
-//                        });
-//                    }
-//
-//                });
-//            }
-//        };
-//        monitoradorList.setReuseItems(true);
-//        form.add(monitoradorList);
+    } //Fora do construtor
+
+    private PageableListView<Monitorador> getComponents(WebMarkupContainer sectionForm) {
+        final int itemsPerPage = 5;
 
         PageableListView<Monitorador> monitoradorList = new PageableListView<Monitorador>("monitoradorList", mntList, itemsPerPage) {
             @Override
@@ -231,151 +222,14 @@ public class HomePage extends BasePage implements Serializable {
                 });
             }
         };
+        return monitoradorList;
+    }
 
-        form.add(monitoradorList);
-        form.add(new PagingNavigator("pagingNavigator", monitoradorList));
-
-        /* Método que controla o selecionar/deselecionar do checkbox de excluisão */
-        AjaxLink<Void> checkBox = new AjaxLink<>("checkBox", new PropertyModel<>(new CompoundPropertyModel<>(monitorador), "selected")) {
-            @Override
-            public void onClick(AjaxRequestTarget target) {
-                for (Monitorador monitorador : mntList) {
-                    if(!monitorador.isSelected()) {
-                        monitorador.setSelected(true);
-                        target.add(sectionForm);
-                    } else {
-                        monitorador.setSelected(false);
-                        target.add(sectionForm);
-                    }
-
-                }
-
-            }
-        };
-        form.add(checkBox);
-
-        //Excluir monitorador
-        AjaxLink<Void> btnRemove = new AjaxLink<Void>("btnRemove") {
-            @Override
-            public void onClick(AjaxRequestTarget target) {
-                List<Monitorador> monitoradorRemove = mntList.stream().
-                        filter(Monitorador::isSelected).collect(Collectors.toList());
-
-                monitoradorHttpClient.deleteAllMonitoradores(monitoradorRemove);
-
-                mntList.clear();
-                mntList.addAll(monitoradorHttpClient.listarTodos());
-
-                if(monitoradorRemove.isEmpty()) {
-                    showInfo(target, "Selecione algum registro para remover...");
-                } else {
-                    showInfo(target, "Foram removidos ("+monitoradorRemove.size()+") monitoradores...");
-                }
-                target.add(sectionForm);
-            }
-        };
-        btnRemove.add(new AjaxFormSubmitBehavior(form, "click") {});
-        add(btnRemove);
-
-        // Adicione o link de download na sua página
-        add(new Link<Void>("btnExcel") {
-            @Override
-            public void onClick() {
-                try {
-                    Monitorador filtro = new Monitorador();
-                    filtro.setNome("Oliveira");
-                    monitoradorHttpClient.exportMonitoradoresToExcel(filtro);
-                    File file = new File("src/main/webapp/download/monitoradores.xlsx");
-                    if (file.exists()) {
-                        IResourceStream resourceStream = new FileResourceStream(file);
-                        getRequestCycle().scheduleRequestHandlerAfterCurrent(
-                                new ResourceStreamRequestHandler(resourceStream, file.getName()));
-                    } else {
-                        error("Arquivo não encontrado.");
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    error("Erro ao baixar o arquivo.");
-                }
-            }
-        });
-
-        add(createExportPdfResourceLink("btnExportPDF"));
-
-    } //Fora do construtor
+    //Metodos externos
     private void showInfo(AjaxRequestTarget target, String msg) {
         info(msg);
         target.add(fp);
     }
 
-
-    private ResourceLink<Void> createExportPdfResourceLink(String wicketId) {
-        ResourceReference exportPdfResourceRef = new ResourceReference("exportPdfResource") {
-            @Override
-            public IResource getResource() {
-                return new AbstractResource() {
-                    @Override
-                    protected ResourceResponse newResourceResponse(Attributes attributes) {
-                        ResourceResponse response = new ResourceResponse();
-                        response.setContentType("application/pdf");
-                        response.setFileName("relatorio-monitoradores.pdf");
-
-                        response.setWriteCallback(new WriteCallback() {
-                            @Override
-                            public void writeData(Attributes attributes) throws IOException {
-                                Monitorador filtro = new Monitorador();
-                                // Configure seu filtro conforme necessário
-
-                                try (InputStream pdfInputStream = monitoradorHttpClient.exportMonitoradoresToPdf(filtro)) {
-                                    OutputStream outputStream = attributes.getResponse().getOutputStream();
-                                    byte[] buffer = new byte[1024];
-                                    int length;
-                                    while ((length = pdfInputStream.read(buffer)) != -1) {
-                                        outputStream.write(buffer, 0, length);
-                                    }
-                                }
-                            }
-                        });
-
-                        return response;
-                    }
-                };
-            }
-        };
-
-        return new ResourceLink<Void>(wicketId, exportPdfResourceRef);
-    }
-    {
-        ResourceReference exportPdfResourceRef = new ResourceReference("exportPdfResource") {
-            @Override
-            public IResource getResource() {
-                return new AbstractResource() {
-                    @Override
-                    protected ResourceResponse newResourceResponse(Attributes attributes) {
-                        ResourceResponse response = new ResourceResponse();
-                        response.setContentType("application/pdf");
-                        response.setFileName("relatorio-monitoradores.pdf");
-
-                        response.setWriteCallback(new WriteCallback() {
-                            @Override
-                            public void writeData(Attributes attributes) throws IOException, IOException {
-                                OutputStream outputStream = attributes.getResponse().getOutputStream();
-                                Monitorador filtro = new Monitorador();
-                                // Configure o filtro conforme necessário
-
-
-                                File pdfFile = monitoradorHttpClient.exportMonitoradoresToPdf(filtro);
-                                Files.copy(pdfFile.toPath(), outputStream);
-                            }
-                        });
-
-                        return response;
-                    }
-                };
-            }
-        };
-
-        return new ResourceLink<Void>(wicketId, exportPdfResourceRef);
-    }
 
 }

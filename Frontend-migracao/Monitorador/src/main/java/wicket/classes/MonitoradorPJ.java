@@ -20,6 +20,8 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.list.PageableListView;
+import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
@@ -45,8 +47,6 @@ public class MonitoradorPJ extends BasePage implements Serializable {
     final Class<? extends Page> currentPageClass = this.getPage().getClass();
     public MonitoradorPJ(final PageParameters parameters) {
         super(parameters);
-
-        mntList = monitoradorHttpClient.listarTodos();
 
         /* declaração do feedback panel para notificações */
         fp = new FeedbackPanel("feedbackPanel");
@@ -132,30 +132,35 @@ public class MonitoradorPJ extends BasePage implements Serializable {
 
         // Filtrar a lista para listar apenas os monitoradores com tipoPessoa igual a "PJ"
         //TODO - ajustar lista para o backend chamando a lista já filtrada
-        List<Monitorador> mntListPJ = monitoradorHttpClient.listarPJ();
-        ListView<Monitorador> monitoradorList = new ListView<Monitorador>("monitoradorList", mntListPJ) {
+        mntList = monitoradorHttpClient.listarPJ();
+        int itemsPerPage = 5; // Define the number of items you want per page
+        PageableListView<Monitorador> monitoradorList = new PageableListView<Monitorador>("monitoradorList", mntList, itemsPerPage) {
             @Override
             protected void populateItem(ListItem<Monitorador> item) {
                 Monitorador monitorador = item.getModelObject();
 
-
-
-                // Coluna do chebox para selecionar os monitoradores para deletar
+                // Your existing item population logic...
                 item.add(new CheckBox("selected", new PropertyModel<>(item.getModel(), "selected")));
-                item.add(new org.apache.wicket.markup.html.basic.Label("id", new PropertyModel<String>(item.getModel(), "id")));
+                item.add(new Label("id", new PropertyModel<String>(item.getModel(), "id")));
                 String tipoPessoa = monitorador.getTipoPessoa().equals(TipoPessoa.PF) ? "Física" : "Jurídica";
                 item.add(new Label("tipoPessoa", tipoPessoa));
-                item.add(new org.apache.wicket.markup.html.basic.Label("razaoSocial", new PropertyModel<String>(item.getModel(), "razaoSocial")));
-                item.add(new org.apache.wicket.markup.html.basic.Label("cnpj", new PropertyModel<String>(item.getModel(), "cnpj")));
-                item.add(new org.apache.wicket.markup.html.basic.Label("telefone", new PropertyModel<String>(item.getModel(), "telefone")));
-                item.add(new org.apache.wicket.markup.html.basic.Label("email", new PropertyModel<String>(item.getModel(), "email")));
-                item.add(new org.apache.wicket.markup.html.basic.Label("inscricaoEstadual", new PropertyModel<String>(item.getModel(), "inscricaoEstadual")));
+                item.add(new Label("razaoSocial", new PropertyModel<String>(item.getModel(), "razaoSocial")));
+                item.add(new Label("cnpj", new PropertyModel<String>(item.getModel(), "cnpj")));
+                item.add(new Label("telefone", new PropertyModel<String>(item.getModel(), "telefone")));
+                item.add(new Label("email", new PropertyModel<String>(item.getModel(), "email")));
+                item.add(new Label("inscricaoEstadual", new PropertyModel<String>(item.getModel(), "inscricaoEstadual")));
                 String status = monitorador.getStatus() == Status.ATIVO ? "Ativo" : "Inativo";
                 item.add(new Label("ativo", status));
             }
         };
-        monitoradorList.setReuseItems(true);
+
+// Add the PageableListView to the form
         form.add(monitoradorList);
+
+// Add a PagingNavigator for the PageableListView
+        PagingNavigator navigator = new PagingNavigator("pagingNavigator", monitoradorList);
+        form.add(navigator);
+
 
         AjaxLink<Void> checkBox = new AjaxLink<>("checkBox", new PropertyModel<>(new CompoundPropertyModel<>(monitorador), "selected")) {
             @Override

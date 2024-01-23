@@ -48,7 +48,6 @@ public class MonitoradorPF extends BasePage implements Serializable {
 
     public MonitoradorPF(final PageParameters parameters) {
         super(parameters);
-        mntList = monitoradorHttpClient.listarTodos();
 
         /* declaração do feedback panel para notificações */
         fp = new FeedbackPanel("feedbackPanel");
@@ -61,8 +60,9 @@ public class MonitoradorPF extends BasePage implements Serializable {
         add(sectionForm);
 
 
-        CompoundPropertyModel<Monitorador> model = new CompoundPropertyModel<>(monitorador);
-        Form<Monitorador> form = new Form<>("form", model);
+
+        Form<Monitorador> form = new Form<>("form");
+        //form.setDefaultModel(new CompoundPropertyModel<>(monitorador));
         form.setOutputMarkupId(true);
         sectionForm.add(form);
 
@@ -138,9 +138,9 @@ public class MonitoradorPF extends BasePage implements Serializable {
             }
         });
 
-        List<Monitorador> mntListPF = monitoradorHttpClient.listarPF();
+        mntList = monitoradorHttpClient.listarPF();
 
-        PageableListView<Monitorador> monitoradorPageableList = getMonitoradorPageableList(mntListPF);
+        PageableListView<Monitorador> monitoradorPageableList = getMonitoradorPageableList(mntList);
         form.add(monitoradorPageableList);
 
         form.add(new PagingNavigator("pagingNavigator", monitoradorPageableList));
@@ -190,11 +190,6 @@ public class MonitoradorPF extends BasePage implements Serializable {
         btnRemove.add(new AjaxFormSubmitBehavior(form, "click") {});
         add(btnRemove);
 
-//        CompoundPropertyModel<Monitorador> filterModel = new CompoundPropertyModel<>(monitorador);
-
-        // 3. Mova os campos de filtro para dentro do formFilter
-//        Form<Void> formFilter = new Form<>("formFilter");
-        //sectionFilters.add(formFilter);
 
         // Campos do Formulário de busca
         TextField<String> nomeFilter = new TextField<>("nomeFilter");

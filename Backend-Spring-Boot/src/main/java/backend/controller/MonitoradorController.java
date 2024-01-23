@@ -45,6 +45,12 @@ public class MonitoradorController {
         return ResponseEntity.ok(savedMonitorador);
     }
 
+    @PostMapping("/saveAll")
+    public ResponseEntity<Monitorador> saveAllMonitorador (@RequestBody List<Monitorador> monitorador) {
+        monitoradorService.saveAllMonitorador(monitorador);
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping
     public ResponseEntity<List<Monitorador>> getAllMonitoradores() {
         return ResponseEntity.ok(monitoradorService.getAllMonitoradores());
@@ -106,10 +112,10 @@ public class MonitoradorController {
         return ResponseEntity.ok("Validação bem-sucedida.");
     }
 
-    @PostMapping("/export/excel")
-    public ResponseEntity<byte[]> exportMonitoradoresExcel(@RequestBody(required = false) Monitorador filtro) {
+    @GetMapping("/export/excel")
+    public ResponseEntity<byte[]> exportMonitoradoresExcel() {
         try {
-            byte[] excelData = monitoradorService.exportMonitoradoresToExcel(filtro);
+            byte[] excelData = monitoradorService.exportMonitoradoresToExcel();
 
             HttpHeaders headers = new HttpHeaders();
             headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=monitoradores.xlsx");
@@ -124,10 +130,10 @@ public class MonitoradorController {
         }
     }
 
-    @PostMapping(value = "/export/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
-    public ResponseEntity<byte[]> getMonitoradoresPdf(@RequestBody(required = false)  Monitorador filtro) {
+    @GetMapping(value = "/export/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<byte[]> getMonitoradoresPdf() {
         try {
-            byte[] pdfContent = monitoradorService.generateMonitoradorPDF(filtro);
+            byte[] pdfContent = monitoradorService.generateMonitoradorPDF();
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_PDF);

@@ -181,60 +181,6 @@ public class MonitoradorHttpClient implements Serializable {
         return null;
     }
 
-    public void exportMonitoradoresToExcel(Monitorador filtro) {
-        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
-            String exportUrl = baseUrl + "/export/excel"; // Substitua pela URL correta
-            HttpPost request = new HttpPost(exportUrl);
-            request.setHeader("Content-Type", "application/json; charset=UTF-8");
-
-            // Converte o objeto filtro para JSON
-            String requestBody = objectMapper.writeValueAsString(filtro);
-            request.setEntity(new StringEntity(requestBody, ContentType.APPLICATION_JSON));
-
-            try (CloseableHttpResponse response = httpClient.execute(request)) {
-                // Verifica se a resposta é bem-sucedida
-                if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                    // Lê o conteúdo da resposta (o arquivo Excel)
-                    byte[] data = EntityUtils.toByteArray(response.getEntity());
-
-                    // Salva o arquivo no sistema de arquivos local
-                    try (FileOutputStream fos = new FileOutputStream("src/main/webapp/download/monitoradores.xlsx")) {
-                        fos.write(data);
-                    }
-                } else {
-                    // Trata outros códigos de resposta
-                    throw new RuntimeException("Falha na exportação: " + response.getStatusLine().getReasonPhrase());
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Erro ao exportar para Excel", e);
-        }
-    }
-
-    public InputStream exportMonitoradoresToPdf(Monitorador filtro) {
-        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
-            HttpPost request = new HttpPost(baseUrl + "/export/pdf");
-            request.setHeader("Content-Type", "application/json; charset=UTF-8");
-
-            String requestBody = objectMapper.writeValueAsString(filtro);
-            request.setEntity(new StringEntity(requestBody, ContentType.APPLICATION_JSON));
-
-            CloseableHttpResponse response = httpClient.execute(request);
-
-            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                HttpEntity entity = response.getEntity();
-                byte[] data = EntityUtils.toByteArray(entity);
-                return new ByteArrayInputStream(data);
-            } else {
-                // Trata outros códigos de resposta
-                throw new RuntimeException("Falha na geração do PDF: " + response.getStatusLine().getReasonPhrase());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Erro ao gerar PDF", e);
-        }
-    }
 
 }
 
