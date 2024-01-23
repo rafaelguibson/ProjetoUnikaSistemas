@@ -265,6 +265,7 @@ table { /* Faz a tabela ocupar toda a largura disponível */
     justify-content: center;
     text-align: center;
     color: #0d0d11;
+    border:none;
 }
 
 table, th, td {
@@ -272,7 +273,7 @@ table, th, td {
 }
 
 td {
-    border: 1px solid #ddd;
+    border: none;
     text-align: center; /* Alinha o texto ao centro das células */
     padding: 0px; /* Adiciona um pouco de espaço interno nas células */
 }
@@ -280,7 +281,7 @@ td {
 /* Estiliza a primeira linha */
 table tr:first-child td {
     font-weight: bold;
-    background-color: #f0f0f0;
+    background-color: #BBBBBBFF;
     border-top-right-radius: 9px;
     border-top-left-radius: 9px;
 }
@@ -294,8 +295,8 @@ table tr:first-child td {
 .wicket-modal {
     position: fixed;
     background-color: #FFFFFF;
-    color: #212529;
-    border: 2px #3f4450 solid;
+    color: #000000;
+    border: 2px #212529 solid;
     border-radius: 9px;
 
 }
@@ -309,10 +310,14 @@ table tr:first-child td {
 
 }
 .w_content_1 {
-    background-color: #ECEBE9;
+    background-color: #000000;
+}
+
+.w_caption {
+    background-color: #0d0d11;
 }
 .w_captionText {
-    color: #212529;
+    color: #0d0d11;
     position: relative;
     text-align: center;
     justify-content: center;
@@ -321,7 +326,7 @@ table tr:first-child td {
     font-size: 15pt;
 }
 .bordered-div {
-    border: 1px solid #000; /* Cor e estilo da borda */
+    border: 2px solid #000; /* Cor e estilo da borda */
     padding: 10px; /* Espaçamento interno para dar espaço à borda */
     border-radius: 10px; /* Borda arredondada (opcional) */
 }
@@ -330,4 +335,31 @@ table tr:first-child td {
     color: #ECEBE9;
     font-size: 15pt;
     font-weight: bold;
+}
+
+.input-group-text {
+    border-radius: 0;
+}
+/* Estilização de Links */
+a {
+    color: #000000;
+    font-family: sans-serif;
+    font-weight: bold;
+}
+/* Estado padrão do link */
+a:link {
+    color: #000000; /* Cor preta para links não visitados */
+}
+
+/* Estado do link após ser visitado */
+a:visited {
+    color: #3f4450; /* Cor cinza escuro para links visitados */
+}
+
+/* Estado do link quando o mouse passa sobre ele */
+a:hover {
+    color: #212529; /* Cor cinza quase preto para quando o mouse está sobre o link */
+}
+a:active {
+    color: #3f4450;
 }

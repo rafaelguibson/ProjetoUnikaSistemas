@@ -1,6 +1,7 @@
 package backend.entitie;
 import backend.enums.Estado;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -39,10 +40,12 @@ public class Endereco implements Serializable {
     private String bairro;
 
     @Column(name = "cidade", nullable = false, length = 100)
+    @JsonProperty("localidade")
     private String cidade;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "estado", nullable = false, length = 50)
+    @JsonProperty("uf")
     private Estado estado;
 
     @Transient

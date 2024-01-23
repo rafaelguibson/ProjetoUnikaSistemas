@@ -42,13 +42,15 @@ public class MonitoradorController {
 
     @PostMapping
     public ResponseEntity<Monitorador> createMonitorador(@RequestBody Monitorador monitorador) {
-        Monitorador savedMonitorador = monitoradorService.salvarMonitoradorComEnderecos(monitorador);
+        Monitorador monitoradorSemMascara = monitoradorService.removerMascaraMonitorador(monitorador);
+        Monitorador savedMonitorador = monitoradorService.salvarMonitoradorComEnderecos(monitoradorSemMascara);
         return ResponseEntity.ok(savedMonitorador);
     }
 
     @PostMapping("/saveAll")
     public ResponseEntity<Monitorador> saveAllMonitorador (@RequestBody List<Monitorador> monitorador) {
-        monitoradorService.saveAllMonitorador(monitorador);
+        List<Monitorador> monitoradorSemMascara = monitoradorService.removerMascaraListaMonitorador(monitorador);
+        monitoradorService.saveAllMonitorador(monitoradorSemMascara);
         return ResponseEntity.ok().build();
     }
 

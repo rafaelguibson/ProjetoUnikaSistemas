@@ -43,7 +43,7 @@ public class MonitoradorPF extends BasePage implements Serializable {
     List<Monitorador> mntList;
     private ModalWindow modal = new ModalWindow("modal");
     FeedbackPanel fp;
-    static int itemsPerPage = 3;
+    static int itemsPerPage = 5;
     final Class<? extends Page> currentPageClass = this.getPage().getClass();
 
     public MonitoradorPF(final PageParameters parameters) {

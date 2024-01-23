@@ -3,8 +3,6 @@ package wicket.classes;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -20,6 +18,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import wicket.entities.Endereco;
 import wicket.entities.Monitorador;
+import wicket.enums.Estado;
 import wicket.enums.Status;
 import wicket.enums.TipoPessoa;
 import wicket.http.MonitoradorHttpClient;
@@ -165,7 +164,7 @@ public class CadastroPF  extends Panel implements Serializable {
                 logradouro.setModelObject(endereco.getLogradouro());
                 bairro.setModelObject(endereco.getBairro());
                 cidade.setModelObject(endereco.getCidade());
-                estado.setModelObject(endereco.getEstado().getNome());
+                estado.setModelObject(endereco.getEstado().toString());
                 target.add(logradouro, bairro, numero, cidade, estado);
 
             }
@@ -182,7 +181,7 @@ public class CadastroPF  extends Panel implements Serializable {
                 endereco.setLogradouro(logradouro.getValue());
                 endereco.setCidade(cidade.getValue());
                 endereco.setBairro(bairro.getValue());
-//                endereco.setEstado(estado.getValue());
+                endereco.setEstado(Estado.valueOf(estado.getValue()));
                 listaDeEnderecos.add(endereco);
                 formAddress.setVisible(false);;
                 target.add(formAddress, tableAddress);
@@ -207,7 +206,7 @@ public class CadastroPF  extends Panel implements Serializable {
             public void onClick(AjaxRequestTarget target) {
                 // Fecha a janela modal
                 closeCurrent(target);
-                //Atualiza a tabela de
+                //Atualiza a tabla de
                 target.add(tableAddress);
             }
 

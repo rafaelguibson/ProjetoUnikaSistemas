@@ -4,6 +4,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
@@ -19,6 +20,8 @@ public class BasePage extends WebPage {
         add(new BookmarkablePageLink<>("monitoradorPJ", MonitoradorPJ.class));
         add(new BookmarkablePageLink<>("cadastrarPJ", MonitoradorPJ.class, new PageParameters().add("openModal", "true")));
         add(new BookmarkablePageLink<>("buscarPJ", MonitoradorPJ.class, new PageParameters().add("showFilter", "true")));
+        add(new ExternalLink("btnReport", "http://localhost:8080/api/monitoradores/export/report"));
+
 
     }
 }

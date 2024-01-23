@@ -12,18 +12,28 @@
             <!-- Nome -->
             <div class="form-group">
                 <label for="nome" class="control-label"> <b>Razão Social:</b> </label>
-                <input wicket:id="razaoSocial" type="text" class="form-control">
+                <input wicket:id="razaoSocial" type="text" class="form-control" placeholder="Exemplo Empresa Ltda.">
             </div>
 
             <!-- CPF e RG -->
             <div class="form-group" style="display: flex; justify-content: space-between;">
                 <div style="flex-grow: 3; margin-right: 5px;">
-                    <label for="cpf" class="control-label"><b>CNPJ: </b></label>
-                    <input wicket:id="cnpj" type="text" class="form-control cpf">
+                    <label for="cnpj" class="control-label"><b>CNPJ: </b></label>
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text" style="border-bottom-right-radius: 0px; border-top-right-radius: 0px;"><b><i class="bi bi-buildings"></i></b></div>
+                        </div>
+                        <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="00.000.000/0000-00" wicket:id="cnpj">
+                    </div>
                 </div>
                 <div style="flex-grow: 1;">
-                    <label for="rg" class="control-label"><b>Inscrição Estadual: </b></label>
-                    <input wicket:id="inscricaoEstadual" type="text" class="form-control">
+                    <label for="inscricaoEstadual" class="control-label"><b>Incrição Estadual: </b></label>
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text" style="border-bottom-right-radius: 0px; border-top-right-radius: 0px;"><b><i class="bi bi-person-vcard"></i></b></div>
+                        </div>
+                        <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="Número de Inscrição Estadual" wicket:id="inscricaoEstadual">
+                    </div>
                 </div>
             </div>
 
@@ -31,11 +41,21 @@
             <div class="form-group" style="display: flex; justify-content: space-between;">
                 <div style="flex-grow: 2; margin-right: 5px;">
                     <label for="telefone" class="control-label"><b>Telefone: </b></label>
-                    <input wicket:id="telefone" type="text" class="form-control">
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text" style="border-bottom-right-radius: 0px; border-top-right-radius: 0px;"><b><i class="bi bi-telephone-plus"></i></b></div>
+                        </div>
+                        <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="(00) 00000-0000" wicket:id="telefone">
+                    </div>
                 </div>
                 <div style="flex-grow: 7; margin-right: 5px;">
                     <label for="email" class="control-label"><b>Email: </b></label>
-                    <input wicket:id="email" type="text" class="form-control">
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text" style="border-bottom-right-radius: 0px; border-top-right-radius: 0px;"><i class="bi bi-envelope-at"></i></div>
+                        </div>
+                        <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="exemplo@email.com" wicket:id="email">
+                    </div>
                 </div>
 
                 <div style="flex-grow: 2; margin-right: 5px;">
@@ -54,12 +74,24 @@
 
             </div>
 
-            <div wicket:id="formAddress" style="padding: 15px; background-color: #D1E7DD; border-radius: 9px;">
-                <div class="form-group" style="display: flex;">
-                    <label for="CEP" style="margin-right: 5px;"><b>CEP: <h11>*</h11></b></label>
-                    <input id="cep" name="cep" placeholder="Apenas números" class="form-control input-md" required="" type="text" maxlength="8"
-                           pattern="[0-9]+$" style="margin-right: 5px; width: fit-content;" wicket:id="cep">
-                    <button type="button" class="btn btn-primary btn-dark"  wicket:id="searchCEP"><i class="bi bi-search"></i> Pesquisar</button>
+            <div wicket:id="formAddress" style="padding: 15px; background-color: rgb(187,187,187); border-radius: 9px;">
+                <div class="form-group" style="display: flex; text-align: center; align-items: center; justify-content: center">
+                    <h5>Cadastrar Endereço</h5>
+                </div>
+                <div class="form-group" style="display: flex; justify-content: space-between;">
+                    <div class="input-group mb-2">
+                        <label for="CEP" class="control-label"><b>CEP: &nbsp&nbsp</b></label>
+                        <input id="cep" name="cep" placeholder="Apenas números" class="form-control input-md" required="" type="text" maxlength="8"
+                               pattern="[0-9]+$" style="width: 30%; border-right: 0; border-bottom-left-radius: 0.375rem; border-top-left-radius: 0.375rem;" wicket:id="cep">
+                        <div class="input-group-pospend">
+                            <div class="input-group-text right" style="border-bottom-left-radius: 0px; border-top-left-radius: 0px; border-left: 0px; background-color: #212529"><b>
+                                <a href="#" wicket:id="searchCEP">
+                                    <i class="bi bi-search" style="color: #ECEBE9; font-weight: bold;"></i>
+                                </a>
+                            </b>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-group" style="display: flex; justify-content: space-between;">
@@ -102,7 +134,7 @@
                 <div class="form-group" style="display: flex;">
                     <table class="table table-success table-striped" >
                         <tr>
-                            <th colspan="6" style="text-align: center;border-top-left-radius: 9px; border-top-right-radius: 9px;">
+                            <th colspan="6" style="text-align: center;border-top-left-radius: 9px; border-top-right-radius: 9px;background-color: #BBBBBB; ">
                                 Endereços
                             </th>
                         </tr>

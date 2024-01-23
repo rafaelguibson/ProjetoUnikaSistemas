@@ -130,10 +130,8 @@ public class MonitoradorPJ extends BasePage implements Serializable {
             }
         });
 
-        // Filtrar a lista para listar apenas os monitoradores com tipoPessoa igual a "PJ"
-        //TODO - ajustar lista para o backend chamando a lista já filtrada
         mntList = monitoradorHttpClient.listarPJ();
-        int itemsPerPage = 5; // Define the number of items you want per page
+        int itemsPerPage = 5;
         PageableListView<Monitorador> monitoradorList = new PageableListView<Monitorador>("monitoradorList", mntList, itemsPerPage) {
             @Override
             protected void populateItem(ListItem<Monitorador> item) {

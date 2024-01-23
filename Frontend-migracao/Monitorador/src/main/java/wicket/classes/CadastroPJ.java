@@ -3,7 +3,6 @@ package wicket.classes;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -134,13 +133,9 @@ public class CadastroPJ  extends Panel implements Serializable {
                 monitoradorSalvar.setTelefone(telefone.getValue());
                 monitoradorSalvar.setEmail(email.getValue());
                 monitoradorSalvar.setStatus(Status.ATIVO);
-                if(!listaDeEnderecos.isEmpty()) {
-                    monitorador.setEnderecos(listaDeEnderecos);
-                    monitoradorHttpClient.salvar(monitoradorSalvar);
-                    ModalWindow.closeCurrent(target);
-                } else {
-                    showInfo(target, "É obrigatório adicionar pelo menos um endereço !");
-                }
+                listaDeEnderecos.add(endereco);
+                formAddress.setVisible(false);;
+                target.add(formAddress, tableAddress);
             }
         };
         saveMonitorador.add(new AjaxFormSubmitBehavior(form,"click") {});
@@ -154,7 +149,7 @@ public class CadastroPJ  extends Panel implements Serializable {
                 logradouro.setModelObject(endereco.getLogradouro());
                 bairro.setModelObject(endereco.getBairro());
                 cidade.setModelObject(endereco.getCidade());
-//                estado.setModelObject(endereco.getEstado());
+                estado.setModelObject(endereco.getEstado().getNome());
                 target.add(logradouro, bairro, numero, cidade, estado);
 
             }
