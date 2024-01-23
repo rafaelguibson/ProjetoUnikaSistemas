@@ -8,6 +8,7 @@ import backend.service.MonitoradorService;
 import backend.validators.CampoObrigatorioException;
 import backend.validators.EnderecoInvalidaException;
 import backend.validators.NomeRazaoSocialInvalidaException;
+import net.sf.jasperreports.engine.JRException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -128,6 +129,18 @@ public class MonitoradorController {
             // Tratar exceção apropriadamente
             return ResponseEntity.internalServerError().build();
         }
+    }
+    @GetMapping(value = "/export/report")
+    public ResponseEntity<byte[]> pdf() throws JRException {
+        byte[] file = monitoradorService.exportReport();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        String filename = "relatorio-monitoradores.pdf";
+        headers.setContentDispositionFormData(filename, filename);
+        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+
+        return new ResponseEntity<>(file, headers, HttpStatus.OK);
     }
 
     @GetMapping(value = "/export/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
