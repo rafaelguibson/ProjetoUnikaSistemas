@@ -218,6 +218,22 @@ public class MonitoradorPJ extends BasePage implements Serializable {
         statusFilter.setOutputMarkupId(true);
         sectionFilters.add(razaoSocialFilter,cnpjFilter,inscricaoEstadual,statusFilter);
 
+        AjaxLink<Void> btnSearch = new AjaxLink<Void>("btnSearch") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                Monitorador monitoradorSalvar = new Monitorador();
+                monitoradorSalvar.setRazaoSocial(razaoSocialFilter.getValue());
+                monitoradorSalvar.setCnpj(cnpjFilter.getValue());
+                monitoradorSalvar.setInscricaoEstadual(inscricaoEstadual.getValue());
+                mntList.clear();
+                mntList.addAll(monitoradorHttpClient.filtrar(monitoradorSalvar));
+                target.add(sectionForm);
+            }
+        };
+        btnSearch.add(new AjaxFormSubmitBehavior(form, "click") {});
+        btnSearch.setOutputMarkupId(true);
+        sectionFilters.add(btnSearch);
+
         String message = parameters.get("message").toString("");
         if (!message.isEmpty()) {
             info(message);
