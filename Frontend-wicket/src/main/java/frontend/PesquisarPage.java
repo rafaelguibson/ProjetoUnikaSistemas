@@ -144,9 +144,6 @@ public class PesquisarPage extends BasePage implements Serializable {
         ListView<Monitorador> monitoradorList = new ListView<Monitorador>("monitoradorList", mntList) {
             @Override
             protected void populateItem(ListItem<Monitorador> item) {
-//                List<String> propertyNames = Arrays.asList("id", "tipoPessoa", "cpf", "cnpj",
-//                        "nome", "razaoSocial", "telefone", "email",
-//                        "rg", "inscricaoEstadual", "dataNascimento","ativo");
                 item.add(new CheckBox("selected", new PropertyModel<>(item.getModel(), "selected")));
                 item.add(new Label("id", new PropertyModel<String>(item.getModel(),"id")));
                 item.add(new Label("tipoPessoa", new PropertyModel<String>(item.getModel(),"tipoPessoa")));

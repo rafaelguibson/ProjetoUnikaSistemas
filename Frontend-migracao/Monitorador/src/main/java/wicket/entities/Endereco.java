@@ -64,7 +64,7 @@ public class Endereco implements Serializable {
                 ", estado='" + estado + '\'' +
                 '}';
     }
-    public static Endereco buscarCep(String cep) {
+    public static Endereco buscarCep(String cep) throws CepNaoEncontradoException {
         // Remove caracteres não numéricos
         cep = cep.replaceAll("\\D", "");
 
@@ -82,6 +82,11 @@ public class Endereco implements Serializable {
                         .build();
                 HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
+                // Verifica se a resposta contém erro
+                if (response.body().contains("\"erro\": true")) {
+                    throw new CepNaoEncontradoException("Numero de CEP não encontrado.");
+                }
+
                 // Converte a resposta para um objeto Endereco
                 ObjectMapper mapper = new ObjectMapper();
                 return mapper.readValue(response.body(), Endereco.class);
@@ -89,7 +94,16 @@ public class Endereco implements Serializable {
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
+        } else {
+            throw new IllegalArgumentException("CEP inválido.");
         }
-        return null; // Retorna null em caso de erro ou CEP inválido
+        return null; // Retorna null apenas se ocorrer uma exceção não tratada
+    }
+
+    // Exceção personalizada para CEP não encontrado
+    public static class CepNaoEncontradoException extends Exception {
+        public CepNaoEncontradoException(String message) {
+            super(message);
+        }
     }
 }

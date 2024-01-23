@@ -16,6 +16,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import wicket.configs.MaskBehavior;
 import wicket.entities.Endereco;
 import wicket.entities.Monitorador;
 import wicket.enums.Estado;
@@ -67,6 +68,7 @@ public class CadastroPF  extends Panel implements Serializable {
 
         TextField<String> nome = new TextField<String>("nome");
         TextField<String> cpf = new TextField<String>("cpf");
+        cpf.add(new MaskBehavior("000.000.000-00"));
         TextField<String> telefone = new TextField<String>("telefone");
         TextField<String> email = new TextField<String>("email");
         TextField<String> rg = new TextField<String>("rg");
@@ -160,14 +162,33 @@ public class CadastroPF  extends Panel implements Serializable {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 String cepValue = cep.getValue();
-                Endereco endereco = buscarCep(cepValue);
-                logradouro.setModelObject(endereco.getLogradouro());
-                bairro.setModelObject(endereco.getBairro());
-                cidade.setModelObject(endereco.getCidade());
-                estado.setModelObject(endereco.getEstado().toString());
-                target.add(logradouro, bairro, numero, cidade, estado);
+                if (cepValue == null || cepValue.trim().isEmpty()) {
+                    error("Favor digitar um número de CEP.");
+                    target.add(fp);
+                } else {
+                    Endereco endereco = null;
+                    try {
+                        endereco = buscarCep(cepValue);
+                        // Defina os valores dos campos com base no resultado da pesquisa
+                        logradouro.setModelObject(endereco.getLogradouro());
+                        bairro.setModelObject(endereco.getBairro());
+                        cidade.setModelObject(endereco.getCidade());
+                        estado.setModelObject(endereco.getEstado().toString());
+                    } catch (IllegalArgumentException e) {
+                        error(e.getMessage());
+                        cep.setModelObject("");
+                        target.add(formAddress);
+                    } catch (Endereco.CepNaoEncontradoException e) {
+                        error("CEP não encontrado.");
+                    } catch (Exception e) {
+                        error("Erro ao buscar CEP: " + e.getMessage()); // Captura outras exceções
+                    }
+                    target.add(fp); // Atualiza o FeedbackPanel na página
+                    target.add(logradouro, bairro, numero, cidade, estado); // Atualiza os campos no formulário
 
-            }
+                }
+                }
+
         };
         searchCEP.add(new AjaxFormSubmitBehavior(form,"click") {});
         formAddress.add(searchCEP);
@@ -218,4 +239,5 @@ public class CadastroPF  extends Panel implements Serializable {
         info(msg);
         target.add(fp);
     }
+
 }

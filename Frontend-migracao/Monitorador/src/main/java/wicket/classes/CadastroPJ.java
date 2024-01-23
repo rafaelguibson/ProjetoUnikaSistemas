@@ -145,7 +145,12 @@ public class CadastroPJ  extends Panel implements Serializable {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 String cepValue = cep.getValue();
-                Endereco endereco = buscarCep(cepValue);
+                Endereco endereco = null;
+                try {
+                    endereco = buscarCep(cepValue);
+                } catch (Endereco.CepNaoEncontradoException e) {
+                    throw new RuntimeException(e);
+                }
                 logradouro.setModelObject(endereco.getLogradouro());
                 bairro.setModelObject(endereco.getBairro());
                 cidade.setModelObject(endereco.getCidade());
