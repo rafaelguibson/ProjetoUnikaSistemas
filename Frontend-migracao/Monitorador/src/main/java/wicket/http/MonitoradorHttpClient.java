@@ -1,5 +1,6 @@
 package wicket.http;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,8 +15,10 @@ import org.apache.http.util.EntityUtils;
 import wicket.entities.Monitorador;
 
 import java.io.*;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.List;
 
 public class MonitoradorHttpClient implements Serializable {
@@ -182,5 +185,41 @@ public class MonitoradorHttpClient implements Serializable {
         return null;
     }
 
+
+    public List<Monitorador> uploadFile(File file) throws IOException, InterruptedException {
+        // Converte o arquivo em array de bytes
+        byte[] data = readFileToByteArray(file);
+
+        // Cria o request com o array de bytes
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(baseUrl + "/upload"))
+                .POST(HttpRequest.BodyPublishers.ofByteArray(data))
+                .build();
+
+        // Envia o request e recebe a resposta
+        HttpClient httpClient = HttpClient.newHttpClient();
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+        // Converte a resposta JSON em uma lista de Monitorador
+        // Assumindo que a resposta é um JSON e você possui um método para desserializar
+        return parseJsonToList(response.body());
+    }
+
+    private byte[] readFileToByteArray(File file) throws IOException {
+        try (FileInputStream fileInputStream = new FileInputStream(file)) {
+            byte[] data = new byte[(int) file.length()];
+            fileInputStream.read(data);
+            return data;
+        }
+    }
+
+    private List<Monitorador> parseJsonToList(String json) {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.readValue(json, new TypeReference<List<Monitorador>>() {});
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
 

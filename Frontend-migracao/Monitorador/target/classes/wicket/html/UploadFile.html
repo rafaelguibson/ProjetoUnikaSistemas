@@ -3,15 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
 </head>
 <body>
 <wicket:panel>
-    <div wicket:id="tableSection">
-        <h1>Upload your file here!</h1>
-        <form wicket:id="form">
-            <input type="file" wicket:id="fileUploadField"/>
-            <input type="submit" value="Upload"/>
-        </form>
+    <div wicket:id="tableSection" style="overflow: hidden;">
+       <div class="container" style="display: flex;">
+           <div>
+               <div class="container" >
+                   <div class="mb-3" style="background-color: #e0dfdf; display: flex;  justify-content: center; align-items: center; border: 3px solid black; border-radius: 9px;">
+                       <fieldset  style="text-align: center; font-weight: bold; padding: 10px;">
+                           <legend>Selecione o Arquivo de Envio...</legend>
+                           <div class="align-center">
+                               <form wicket:id="form" class="centered-container"> <!-- Use a classe .centered-container aqui -->
+                                   <input class="form-control" type="file" wicket:id="fileUploadField">
+                                   <button class="btn btn-primary btn-dark custom-button">Carregar Arquivo...</button>
+                               </form>
+                           </div>
+                       </fieldset>
+                   </div>
+               </div>
+
+               <div class="container"  style="max-height: 350px; overflow-x: hidden; overflow-y: auto;">
+                   <table class="table table-striped">
+                       <tr>
+                           <td colspan="14" style="background-color: #212429; color: #ECEBE9;"><h3>Dados Gerais Monitorador</h3></td>
+                       </tr>
+                       <tr class="table-dark">
+                           <th ><i class="bi bi-check2-square"></i></th>
+                           <th scope="col">ID</th>
+                           <th scope="col">Tipo Pessoa</th>
+                           <th scope="col">CPF/CNPJ</th>
+                           <th scope="col">NOME/RAZÃO SOCIAL</th>
+                           <th scope="col">TELEFONE</th>
+                           <th scope="col">EMAIL</th>
+                           <th scope="col">RG/I.E</th>
+                           <th scope="col">DATA DE NASCIMENTO</th>
+                           <th scope="col">STATUS</th>
+                           <th scope="col">EDITAR</th>
+                       </tr>
+                       <!-- Repita as linhas abaixo conforme necessário -->
+                       <tr wicket:id="monitoradorList">
+                           <td><input type="checkbox" wicket:id="selected"></td>
+                           <td wicket:id="id"></td>
+                           <td wicket:id="tipoPessoa"></td>
+                           <td wicket:id="cpfOuCnpj"></td>
+                           <td wicket:id="nomeOuRazaoSocial"></td>
+                           <td wicket:id="telefone"></td>
+                           <td wicket:id="email"></td>
+                           <td wicket:id="rgOuInscricaoEstadual"></td>
+                           <td wicket:id="dataNascimento"></td>
+                           <td wicket:id="status"></td>
+                           <td style="width: 100px; align-items: center; justify-content: center; justify-items: center; text-align: center"
+                               id="icon"><a href="#" wicket:id="btnExcluir" ><i class="bi bi-pencil-square"></i></a></td>
+                       </tr>
+                   </table>
+               </div>
+           </div>
+
+       </div>
         <div wicket:id="feedbackPanel"></div>
     </div>
 </wicket:panel>

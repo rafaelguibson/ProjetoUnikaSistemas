@@ -303,7 +303,7 @@ table tr:first-child td {
 
 
 .w_content_container {
-    padding: 15px;
+    padding: 5px;
     background-color: #ECEBE9;
     border: 2px #3f4450 solid;
     border-radius: 5px;
@@ -362,4 +362,18 @@ a:hover {
 }
 a:active {
     color: #3f4450;
+}
+fieldset {
+    border: 2px solid #000;
+    border-radius: 9px;
+    padding: 10px;
+    text-align: center;
+}
+
+legend {
+
+}
+
+.custom-button {
+    margin-left: 10px;
 }

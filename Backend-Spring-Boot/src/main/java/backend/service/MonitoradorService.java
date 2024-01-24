@@ -2,6 +2,7 @@ package backend.service;
 
 import backend.entitie.Endereco;
 import backend.entitie.Monitorador;
+import backend.enums.Status;
 import backend.enums.TipoPessoa;
 import backend.repository.EnderecoRepository;
 import backend.repository.MonitoradorRepository;
@@ -28,6 +29,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
@@ -223,13 +225,72 @@ public class MonitoradorService {
         return excelService.exportMonitoradoresToExcel(getAllMonitoradores());
     }
 
-    public List<Monitorador> gerarLista(MultipartFile file) throws IOException {
-        InputStream in = file.getInputStream();
-        XSSFWorkbook workbook = new XSSFWorkbook(in);
+    public List<Monitorador> gerarLista(FileInputStream file) throws IOException {
         List<Monitorador> monitoradores = new ArrayList<>();
+
+        try (Workbook workbook = new XSSFWorkbook(file)) {
+            Sheet sheet = workbook.getSheetAt(0); // Supondo que a planilha desejada está na primeira aba
+
+            Iterator<Row> rowIterator = sheet.iterator();
+
+            // Ignora as duas primeiras linhas
+            if (rowIterator.hasNext()) {
+                rowIterator.next(); // Primeira linha
+            }
+            if (rowIterator.hasNext()) {
+                rowIterator.next(); // Segunda linha
+            }
+
+            // Percorre todas as linhas da planilha
+            while (rowIterator.hasNext()) {
+                Row row = rowIterator.next();
+                Monitorador monitorador = criarMonitoradorDaLinha(row);
+                if (monitorador != null) {
+                    monitoradores.add(monitorador);
+                }
+            }
+        }
 
         return monitoradores;
     }
 
+    private Monitorador criarMonitoradorDaLinha(Row row) {
+        try {
+            Cell cellTipoPessoa = row.getCell(1); // Coluna do Tipo Pessoa
+
+            String tipoPessoa = cellTipoPessoa.getStringCellValue().toLowerCase(); // Converter para minúsculas para comparar
+
+            Monitorador monitorador = new Monitorador();
+
+            // Verificar o tipo de pessoa e preencher os campos apropriados
+            if ("Física".equalsIgnoreCase(tipoPessoa)) {
+                monitorador.setTipoPessoa(TipoPessoa.PF);
+                monitorador.setNome(row.getCell(3).getStringCellValue()); // Nome
+                monitorador.setCnpj(row.getCell(2).getStringCellValue()); // CPF
+                monitorador.setTelefone(row.getCell(4).getStringCellValue()); // Telefone
+                monitorador.setEmail(row.getCell(5).getStringCellValue()); // Email
+                monitorador.setRg(row.getCell(6).getStringCellValue()); // RG
+                monitorador.setDataNascimento(new Date()); // Data de Nascimento
+                monitorador.setStatus(Status.valueOf(row.getCell(8).getStringCellValue().toUpperCase())); // Status
+            } else if ("Jurídica".equalsIgnoreCase(tipoPessoa)) {
+                monitorador.setTipoPessoa(TipoPessoa.PJ);
+                monitorador.setRazaoSocial(row.getCell(3).getStringCellValue()); //Razão Social
+                monitorador.setCnpj(row.getCell(2).getStringCellValue()); //CNPJ
+                monitorador.setTelefone(row.getCell(4).getStringCellValue()); // Telefone
+                monitorador.setEmail(row.getCell(5).getStringCellValue()); // Email
+                monitorador.setInscricaoEstadual(row.getCell(6).getStringCellValue()); // Inscrição Estadual
+                monitorador.setStatus(Status.valueOf(row.getCell(8).getStringCellValue().toUpperCase())); // Status
+            } else {
+                // Trate casos em que o tipo de pessoa não é reconhecido
+                return null;
+            }
+
+            return monitorador;
+        } catch (Exception e) {
+            // Se houver algum erro ao ler a linha, retorna null
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
 

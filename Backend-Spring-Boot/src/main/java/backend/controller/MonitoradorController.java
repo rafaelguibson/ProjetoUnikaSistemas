@@ -24,8 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -166,15 +165,27 @@ public class MonitoradorController {
         }
     }
 
-    @PostMapping("/upload")
-    public String uploadFile(@RequestParam("file") MultipartFile file) {
-        try {
 
-            List<Monitorador> monitoradores = monitoradorService.gerarLista(file);
-            return "Arquivo processado com sucesso!";
-        } catch (Exception e) {
-            return "Erro ao processar arquivo: " + e.getMessage();
+    @PostMapping("/upload")
+    public List<Monitorador> uploadFile(@RequestBody byte[] fileBytes) throws IOException {
+        // Especifique o caminho onde deseja salvar o arquivo
+        String filePath = "src/main/resources/upload.xlsx";
+
+        // Crie um FileOutputStream para escrever os bytes no arquivo
+        try (FileOutputStream fos = new FileOutputStream(filePath)) {
+            fos.write(fileBytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Trate o erro adequadamente
+            return null;
         }
+
+        FileInputStream fis = new FileInputStream(filePath);
+        // Suponha que você tenha uma lista de monitoradores
+        List<Monitorador> monitoradores = monitoradorService.gerarLista(fis); // Implemente esse método
+
+        // Agora, 'monitoradores' é uma lista de Monitorador que você deseja retornar como JSON
+        return monitoradores;
     }
 
     @ExceptionHandler(NomeRazaoSocialInvalidaException.class)

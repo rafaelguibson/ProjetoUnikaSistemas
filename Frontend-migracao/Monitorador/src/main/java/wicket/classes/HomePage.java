@@ -80,8 +80,7 @@ public class HomePage extends BasePage implements Serializable {
 //      modal.setMarkupId("idDaModalWindow ");
         modal.add(AttributeAppender.append("class", "custom-1"));
         modal.setCssClassName("style");
-        modal.setTitle("");
-        modal.showUnloadConfirmation(false);
+        modal.showUnloadConfirmation(true);
         modal.add(new DefaultTheme());
         add(modal);
 
@@ -154,6 +153,9 @@ public class HomePage extends BasePage implements Serializable {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 UploadFile uploadModal = new UploadFile(modal.getContentId());
+                modal.setOutputMarkupPlaceholderTag(true);
+                modal.setInitialHeight(600);
+                modal.setInitialWidth(1250);
                 modal.setTitle("Envio de Arquivo");
                 modal.setContent(uploadModal);
                 modal.show(target);
