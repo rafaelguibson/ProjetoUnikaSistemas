@@ -182,6 +182,5 @@ public class MonitoradorHttpClient implements Serializable {
         return null;
     }
 
-
 }
 

@@ -68,7 +68,7 @@ public class CadastroPF  extends Panel implements Serializable {
 
         TextField<String> nome = new TextField<String>("nome");
         TextField<String> cpf = new TextField<String>("cpf");
-        cpf.add(new MaskBehavior("000.000.000-00"));
+//        cpf.add(new MaskBehavior("000.000.000-00"));
         TextField<String> telefone = new TextField<String>("telefone");
         TextField<String> email = new TextField<String>("email");
         TextField<String> rg = new TextField<String>("rg");

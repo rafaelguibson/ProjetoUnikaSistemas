@@ -25,8 +25,11 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -218,6 +221,14 @@ public class MonitoradorService {
 
     public byte[] exportMonitoradoresToExcel() throws IOException {
         return excelService.exportMonitoradoresToExcel(getAllMonitoradores());
+    }
+
+    public List<Monitorador> gerarLista(MultipartFile file) throws IOException {
+        InputStream in = file.getInputStream();
+        XSSFWorkbook workbook = new XSSFWorkbook(in);
+        List<Monitorador> monitoradores = new ArrayList<>();
+
+        return monitoradores;
     }
 
 }

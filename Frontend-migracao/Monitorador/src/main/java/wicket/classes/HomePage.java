@@ -149,6 +149,20 @@ public class HomePage extends BasePage implements Serializable {
         btnRemove.add(new AjaxFormSubmitBehavior(form, "click") {});
         add(btnRemove);
 
+        AjaxLink<Void> btnUpload = new AjaxLink<Void>("btnUpload") {
+
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                UploadFile uploadModal = new UploadFile(modal.getContentId());
+                modal.setTitle("Envio de Arquivo");
+                modal.setContent(uploadModal);
+                modal.show(target);
+            }
+        };
+        btnUpload.setOutputMarkupId(true);
+        btnUpload.add(new AjaxFormSubmitBehavior(form, "click") {});
+        add(btnUpload);
+
         // Adicione o link de download na sua página
         ExternalLink btnExcel = new ExternalLink("btnExcel", "http://localhost:8080/api/monitoradores/export/excel");
         ExternalLink btnPDF = new ExternalLink("btnPDF", "http://localhost:8080/api/monitoradores/export/pdf");

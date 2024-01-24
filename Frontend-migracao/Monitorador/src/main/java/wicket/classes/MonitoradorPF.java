@@ -178,11 +178,10 @@ public class MonitoradorPF extends BasePage implements Serializable {
                 if(monitoradorRemove.isEmpty()) {
                     showInfo(target, "Selecione algum registro para remover...");
                 } else {
-                    //Adiciona uma mensagem de feedback para ser exibida ao remover e atualizar tabela
                     PageParameters pageParameters = new PageParameters();
                     pageParameters.add("message", "Foram removidos (" +monitoradorRemove.size() +") monitoradores...");
                     setResponsePage(currentPageClass, pageParameters);
-//                    showInfo(target, "Foram removidos ("+monitoradorRemove.size()+") monitoradores...");
+
                 }
 
             }

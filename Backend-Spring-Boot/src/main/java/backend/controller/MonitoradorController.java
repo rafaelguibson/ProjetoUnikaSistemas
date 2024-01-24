@@ -9,6 +9,7 @@ import backend.validators.CampoObrigatorioException;
 import backend.validators.EnderecoInvalidaException;
 import backend.validators.NomeRazaoSocialInvalidaException;
 import net.sf.jasperreports.engine.JRException;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -21,8 +22,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -160,6 +163,17 @@ public class MonitoradorController {
         } catch (Exception e) {
             // Tratar exceção
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/upload")
+    public String uploadFile(@RequestParam("file") MultipartFile file) {
+        try {
+
+            List<Monitorador> monitoradores = monitoradorService.gerarLista(file);
+            return "Arquivo processado com sucesso!";
+        } catch (Exception e) {
+            return "Erro ao processar arquivo: " + e.getMessage();
         }
     }
 
