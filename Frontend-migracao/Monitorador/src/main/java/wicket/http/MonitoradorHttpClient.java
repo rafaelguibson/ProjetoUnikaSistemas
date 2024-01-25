@@ -114,7 +114,7 @@ public class MonitoradorHttpClient implements Serializable {
                     return objectMapper.readValue(responseString, Monitorador.class);
 
                 } else {
-                    throw new RuntimeException("Erro ao cadastrar Monitordor"); // Lança uma exceção com a mensagem de erro
+                    throw new RuntimeException(responseString); // Lança uma exceção com a mensagem de erro
                 }
             }
         } catch (IOException e) {

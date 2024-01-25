@@ -279,12 +279,7 @@ td {
 }
 
 /* Estiliza a primeira linha */
-table tr:first-child td {
-    font-weight: bold;
-    background-color: #BBBBBBFF;
-    border-top-right-radius: 9px;
-    border-top-left-radius: 9px;
-}
+
 
 .content-panel {
     display: flex;
