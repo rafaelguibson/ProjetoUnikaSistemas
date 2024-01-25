@@ -35,8 +35,6 @@ import static wicket.entities.Endereco.buscarCep;
 public class CadastroPF  extends Panel implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private String selectedEstadoCivil;
-    private String selectedStatus;
     FeedbackPanel fp;
     List<Endereco> listaDeEnderecos = new ArrayList<>();
     WebMarkupContainer formAddress = new WebMarkupContainer("formAddress");
