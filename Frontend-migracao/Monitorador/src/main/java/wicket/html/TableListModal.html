@@ -5,7 +5,60 @@
 </head>
 <body>
 <wicket:panel>
+    <div class="container" wicket:id="tableSection" style="padding: 0;">
+        <div class="divContentHeader" style="border: none;">
+            <div style="max-height: 270px; overflow-x: hidden; overflow-y: auto; border: none; ">
+                <table class="table table-striped" style="border: none;">
+                    <tr>
+                        <td colspan="11" style="background-color: #212429; color: #ECEBE9;"><h3>Dados Gerais
+                            Monitorador</h3></td>
+                    </tr>
+                    <tr class="table-dark">
+                        <th><i class="bi bi-check2-square" wicket:id="btnSelectAll"></i></th>
+                        <th scope="col">ID</th>
+                        <th scope="col">Tipo Pessoa</th>
+                        <th scope="col">CPF/CNPJ</th>
+                        <th scope="col">NOME/RAZÃO SOCIAL</th>
+                        <th scope="col">TELEFONE</th>
+                        <th scope="col">EMAIL</th>
+                        <th scope="col">RG/I.E</th>
+                        <th scope="col">DATA DE NASCIMENTO</th>
+                        <th scope="col">STATUS</th>
+                    </tr>
+                </table>
+            </div>
+            <div class="container" style="max-height: 420px; overflow-x: hidden; overflow-y: auto; border: none; padding: 0;" >
+                <table class="table table-striped" style="border: none black;">
+                    <!-- Repita as linhas abaixo conforme necessário -->
+                    <tr wicket:id="monitoradorList">
+                        <td><input type="checkbox" wicket:id="selected"></td>
+                        <td wicket:id="id"></td>
+                        <td wicket:id="tipoPessoa"></td>
+                        <td wicket:id="cpfOuCnpj"></td>
+                        <td wicket:id="nomeOuRazaoSocial"></td>
+                        <td wicket:id="telefone"></td>
+                        <td wicket:id="email"></td>
+                        <td wicket:id="rgOuInscricaoEstadual"></td>
+                        <td wicket:id="dataNascimento"></td>
+                        <td wicket:id="status"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="container" style="padding-top: 20px;">
+                <button class="btn btn-primary btn-dark btn-sm custom-button"><i class="bi bi-trash3-fill" wicket:id="btnDelete"></i>Excluir
+                    Selecionados
+                </button>
+                <button class="btn btn-primary btn-dark btn-sm custom-button" wicket:id="btnSave"><i
+                        class="bi bi-floppy"></i> Cadastrar Selecionados
+                </button>
+                <button class="btn btn-primary btn-dark btn-sm custom-button" wicket:id="btnClose"><i
+                        class="bi bi-x-square"></i>Sair
+                </button>
+            </div>
+        </div>
 
+    </div>
+    <div wicket:id="feedbackPanel"></div>
 </wicket:panel>
 </body>
 </html>
