@@ -1,4 +1,4 @@
-package backend.validators;
+package backend.exceptions;
 
 public class NomeRazaoSocialInvalidaException extends RuntimeException {
     public NomeRazaoSocialInvalidaException(String message) {

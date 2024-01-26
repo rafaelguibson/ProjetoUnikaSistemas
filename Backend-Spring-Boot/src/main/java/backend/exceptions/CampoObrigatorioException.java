@@ -1,4 +1,4 @@
-package backend.validators;
+package backend.exceptions;
 
 public class CampoObrigatorioException extends RuntimeException {
     public CampoObrigatorioException(String campo) {
