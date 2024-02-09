@@ -1,5 +1,6 @@
 package wicket.classes;
 
+import org.apache.poi.ss.formula.functions.T;
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
@@ -14,10 +15,7 @@ import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.list.PageableListView;
@@ -61,7 +59,8 @@ public class MonitoradorPJ extends BasePage implements Serializable {
         form.setOutputMarkupId(true);
         sectionForm.add(form);
 
-        WebMarkupContainer sectionFilters = new WebMarkupContainer("sectionFilters");
+        Form<Monitorador> sectionFilters = new Form<>("sectionFilters");
+        sectionFilters.setDefaultModel(new CompoundPropertyModel<>(monitorador));
         sectionFilters.setOutputMarkupId(true);
         sectionFilters.setVisible(false);
         form.add(sectionFilters);
@@ -201,28 +200,38 @@ public class MonitoradorPJ extends BasePage implements Serializable {
             }
         };
         btnRemove.add(new AjaxFormSubmitBehavior(form, "click") {});
-        add(btnRemove);
+        form.add(btnRemove);
 
         // Campos do Formulário de busca
 
-        TextField<String> razaoSocialFilter = new TextField<String>("razaoSocialFilter");
-        razaoSocialFilter.setOutputMarkupId(true);
-        TextField<String> cnpjFilter = new TextField<String>("cnpjFilter");
-        cnpjFilter.setOutputMarkupId(true);
+        TextField<String> razaoSocial = new TextField<String>("razaoSocial");
+        razaoSocial.setOutputMarkupId(true);
+        TextField<String> cnpj = new TextField<String>("cnpj");
+        cnpj.setOutputMarkupId(true);
         TextField<String> inscricaoEstadual = new TextField<String>("inscricaoEstadual");
         inscricaoEstadual.setOutputMarkupId(true);
-        List<String> listaDeStatus = Arrays.asList("Ativado", "Desativado");
-        DropDownChoice<String> statusFilter = new DropDownChoice<>("statusFilter", Model.ofList(listaDeStatus));
-        statusFilter.setOutputMarkupId(true);
-        sectionFilters.add(razaoSocialFilter,cnpjFilter,inscricaoEstadual,statusFilter);
+
+        DateTextField dataInicial = new DateTextField("dataInicial", "yyyy-MM-dd");
+        dataInicial.setOutputMarkupId(true);
+        DateTextField dataFinal = new DateTextField("dataFinal","yyyy-MM-dd");
+        dataFinal.setOutputMarkupId(true);
+
+        // Convertendo as enumerações de Status para uma lista
+        List<Status> listaDeStatus = Arrays.asList(Status.values());
+        DropDownChoice<Status> status = new DropDownChoice<>("status", new Model<Status>(), listaDeStatus, new ChoiceRenderer<>("status", "status"));
+        status.setOutputMarkupId(true);
+
+        sectionFilters.add(razaoSocial,cnpj,inscricaoEstadual,status, dataInicial, dataFinal);
 
         AjaxLink<Void> btnSearch = new AjaxLink<Void>("btnSearch") {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 Monitorador monitoradorSalvar = new Monitorador();
-                monitoradorSalvar.setRazaoSocial(razaoSocialFilter.getValue());
-                monitoradorSalvar.setCnpj(cnpjFilter.getValue());
+                monitoradorSalvar.setTipoPessoa(TipoPessoa.PJ);
+                monitoradorSalvar.setRazaoSocial(razaoSocial.getValue());
+                monitoradorSalvar.setCnpj(cnpj.getValue());
                 monitoradorSalvar.setInscricaoEstadual(inscricaoEstadual.getValue());
+                monitoradorSalvar.setStatus(status.getModelObject());
                 mntList.clear();
                 mntList.addAll(monitoradorHttpClient.filtrar(monitoradorSalvar));
                 target.add(sectionForm);

@@ -80,6 +80,11 @@ public class Monitorador implements Serializable {
     @Transient
     private boolean selected;
 
+    @Transient
+    private Date dataInicial;
+    @Transient
+    private Date dataFinal;
+
     @PrePersist
     protected void onCreate() {
         dataCadastro = new Date();

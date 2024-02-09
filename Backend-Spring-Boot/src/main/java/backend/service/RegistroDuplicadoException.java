@@ -1,2 +1,7 @@
-package backend.service;public class RegistroDuplicadoException {
+package backend.service;
+
+public class RegistroDuplicadoException extends RuntimeException {
+    public RegistroDuplicadoException(String message) {
+        super(message);
+    }
 }

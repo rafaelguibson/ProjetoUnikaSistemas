@@ -4,12 +4,13 @@ import backend.dto.EnderecoDTO;
 import backend.dto.MonitoradorDTO;
 import backend.entitie.Endereco;
 import backend.entitie.Monitorador;
+import backend.exceptions.DataNascimentoException;
 import backend.service.MonitoradorService;
-import backend.validators.CampoObrigatorioException;
-import backend.validators.EnderecoInvalidaException;
-import backend.validators.NomeRazaoSocialInvalidaException;
+import backend.service.RegistroDuplicadoException;
+import backend.exceptions.CampoObrigatorioException;
+import backend.exceptions.EnderecoInvalidaException;
+import backend.exceptions.NomeRazaoSocialInvalidaException;
 import net.sf.jasperreports.engine.JRException;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.util.HashMap;
@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping(value = "/api/monitoradores", produces = "application/json; charset=UTF-8")
 public class MonitoradorController {
 
@@ -51,8 +52,7 @@ public class MonitoradorController {
 
     @PostMapping("/saveAll")
     public ResponseEntity<Monitorador> saveAllMonitorador (@RequestBody List<Monitorador> monitorador) {
-        List<Monitorador> monitoradorSemMascara = monitoradorService.removerMascaraListaMonitorador(monitorador);
-        monitoradorService.saveAllMonitorador(monitoradorSemMascara);
+        monitoradorService.saveAllMonitorador(monitorador);
         return ResponseEntity.ok().build();
     }
 
@@ -193,6 +193,11 @@ public class MonitoradorController {
         return ResponseEntity.badRequest().body(e.getMessage());
     }
 
+    @ExceptionHandler(RegistroDuplicadoException.class)
+    public ResponseEntity<String> handleRegistroDuplicado(RegistroDuplicadoException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
+    }
+
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleCpfInvalido(IllegalArgumentException e) {
         return ResponseEntity.badRequest().body(e.getMessage());
@@ -205,6 +210,11 @@ public class MonitoradorController {
 
     @ExceptionHandler(CampoObrigatorioException.class)
     public ResponseEntity<String> handleCamposObrigatorios (CampoObrigatorioException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
+    }
+
+    @ExceptionHandler(DataNascimentoException.class)
+    public ResponseEntity<String> handleDataNascimento (DataNascimentoException e) {
         return ResponseEntity.badRequest().body(e.getMessage());
     }
 

@@ -1,18 +1,20 @@
 package wicket.classes;
 
 
+import org.apache.wicket.Component;
+import org.apache.wicket.Page;
+import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.extensions.ajax.markup.html.modal.theme.DefaultTheme;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.markup.html.link.ResourceLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PageableListView;
 import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
@@ -21,42 +23,15 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.request.IRequestCycle;
-import org.apache.wicket.request.IRequestHandler;
-import org.apache.wicket.request.handler.resource.ResourceStreamRequestHandler;
-import org.apache.wicket.request.http.WebResponse;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.request.resource.AbstractResource;
-import org.apache.wicket.request.resource.IResource;
-import org.apache.wicket.request.resource.ResourceReference;
-import org.apache.wicket.util.resource.FileResourceStream;
-import org.apache.wicket.util.resource.IResourceStream;
 import wicket.entities.Monitorador;
 import wicket.enums.TipoPessoa;
 import wicket.http.MonitoradorHttpClient;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.ExternalLink;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.Model;
 
 
 import java.io.*;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.text.ParseException;
-import java.util.Collections;
-import java.util.List;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -64,12 +39,23 @@ public class HomePage extends BasePage implements Serializable {
     private static final long serialVersionUID = 1L;
     MonitoradorHttpClient monitoradorHttpClient = new MonitoradorHttpClient("http://localhost:8080/api/monitoradores");
     List<Monitorador> mntList;
+    List<Monitorador> excelMonitoradorList;
     private ModalWindow modal = new ModalWindow("modal");
     private IModel<Monitorador> monitoradorModel = Model.of(new Monitorador());
-    FeedbackPanel fp;
+    final Class<? extends Page> currentPageClass = this.getPage().getClass();
 
-    public HomePage(final PageParameters parameters) {
+    FeedbackPanel fp = new FeedbackPanel("feedbackPanel");
+
+    public HomePage(final PageParameters parameters) throws IOException, InterruptedException {
         super(parameters);
+        String filePath = parameters.get("filePath").toString("");
+        if (!filePath.isEmpty()) {
+            File uploadedFile = new File(filePath);
+            excelMonitoradorList = monitoradorHttpClient.uploadFile(uploadedFile);
+
+        }
+
+
         Monitorador monitorador = new Monitorador();
 
         //Definições da janela modal de cadastrar pessoa Física
@@ -82,12 +68,43 @@ public class HomePage extends BasePage implements Serializable {
         modal.setCssClassName("style");
         modal.showUnloadConfirmation(true);
         modal.add(new DefaultTheme());
-        add(modal);
+        modal.add(new AbstractDefaultAjaxBehavior() {
+            @Override
+            protected void respond(AjaxRequestTarget target) {
+                if ("true".equals(parameters.get("showTableList").toString(""))) {
+                    if(!excelMonitoradorList.isEmpty()) {
+                        modal.setInitialHeight(650);
+                        modal.setInitialWidth(1150);
+                        TableListModal tableListModal = new TableListModal(modal.getContentId(), excelMonitoradorList, true);
+                        modal.setContent(tableListModal);
+                        modal.setTitle("Lista de Registros Excel");
+                        modal.show(target);
+                    } else {
+                        modal.setInitialHeight(70);
+                        modal.setInitialWidth(400);
+                        UploadError uploadError = new UploadError(modal.getContentId());
+                        modal.setContent(uploadError);
+                        modal.setTitle("Operação Cancelada");
+                        modal.show(target);
+                    }
 
-        /* declaração do feedback panel para notificações */
-        fp = new FeedbackPanel("feedbackPanel");
+                }
+            }
+
+            @Override
+            public void renderHead(Component component, IHeaderResponse response) {
+                super.renderHead(component, response);
+                if ("true".equals(parameters.get("showTableList").toString("")) && !modal.isShown()) {
+                    response.render(OnDomReadyHeaderItem.forScript(getCallbackScript()));
+                }
+            }
+        });
+        modal.setOutputMarkupId(true);
+        add(modal);
         fp.setOutputMarkupPlaceholderTag(true);
         add(fp);
+        /* declaração do feedback panel para notificações */
+
 
         WebMarkupContainer sectionForm = new WebMarkupContainer("sectionForm");
         sectionForm.setOutputMarkupId(true);
@@ -148,22 +165,25 @@ public class HomePage extends BasePage implements Serializable {
         btnRemove.add(new AjaxFormSubmitBehavior(form, "click") {});
         add(btnRemove);
 
-        AjaxLink<Void> btnUpload = new AjaxLink<Void>("btnUpload") {
 
+        AjaxLink<Void> btnUpload = new AjaxLink<Void>("btnUpload") {
             @Override
             public void onClick(AjaxRequestTarget target) {
-                UploadFile uploadModal = new UploadFile(modal.getContentId());
-                modal.setOutputMarkupPlaceholderTag(true);
-                modal.setInitialHeight(600);
-                modal.setInitialWidth(1250);
-                modal.setTitle("Envio de Arquivo");
-                modal.setContent(uploadModal);
+                UploadFile uploadFile = new UploadFile(modal.getContentId());
+                modal.setTitle("Upload de Arquivo");
+                modal.setInitialHeight(160);
+                modal.setInitialWidth(500);
+                modal.setEscapeModelStrings(true);
+                modal.setContent(uploadFile);
                 modal.show(target);
+//                modal.setWindowClosedCallback();
             }
         };
-        btnUpload.setOutputMarkupId(true);
+
         btnUpload.add(new AjaxFormSubmitBehavior(form, "click") {});
+        btnUpload.setOutputMarkupId(true);
         add(btnUpload);
+
 
         // Adicione o link de download na sua página
         ExternalLink btnExcel = new ExternalLink("btnExcel", "http://localhost:8080/api/monitoradores/export/excel");
@@ -225,12 +245,6 @@ public class HomePage extends BasePage implements Serializable {
                                 mntList.clear();
                                 mntList.addAll(monitoradorHttpClient.listarTodos());
                                 target.add(sectionForm);
-                            }
-                        });
-                        modal.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
-                            @Override
-                            public void onClose(AjaxRequestTarget target) {
-
                             }
                         });
                     }

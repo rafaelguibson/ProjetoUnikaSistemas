@@ -49,23 +49,29 @@
                 </tr>
             </table>
             <div wicket:id="pagingNavigator" style="justify-content: center; color: #313131; font-size: 22px; align-items: center; text-align: center"></div>
-            <div wicket:id="sectionFilters" class="bordered-div">
-                <fieldset>
+
+            <div class="content-panel">
+                <button type="button" class="btn btn-primary btn-dark" wicket:id="btnRemove"><i class="bi bi-trash3-fill"></i>
+                    Excluir
+                </button>
+            </div>
+            <form wicket:id="sectionFilters" class="bordered-div">
+                <fieldset style="text-align: left; justify-content: left; padding-bottom: 20px;">
                     <h4> Buscar Monitorador Pessoa Jurídica</h4>
-                    <div class="container container-sm" style="color: #0d0d11">
+                    <div class="container" style="color: #0d0d11; width: 650px;">
                         <div class="form-group">
                             <div style="flex-grow: 3; margin-right: 5px;">
-                                <label for="razaoSocialFilter" class="control-label"> <b>Razão Social:</b> </label>
-                                <input wicket:id="razaoSocialFilter" type="text" class="form-control">
+                                <label for="razaoSocial" class="control-label"> <b>Razão Social:</b> </label>
+                                <input wicket:id="razaoSocial" type="text" class="form-control">
                             </div>
-                            <div style="flex-grow: 8; margin-right: 5px;"></div>
+
                         </div>
 
                         <!-- CPF e RG -->
                         <div class="form-group" style="display: flex; justify-content: space-between;">
                             <div style="flex-grow: 3; margin-right: 5px;">
-                                <label for="cnpjFilter" class="control-label"><b>CNPJ: </b></label>
-                                <input wicket:id="cnpjFilter" type="text" class="form-control cpf">
+                                <label for="cnpj" class="control-label"><b>CNPJ: </b></label>
+                                <input wicket:id="cnpj" type="text" class="form-control cpf">
                             </div>
                             <div style="flex-grow: 1;">
                                 <label for="inscricaoEstadual" class="control-label"><b>Inscrição Estadual: </b></label>
@@ -74,26 +80,32 @@
 
                             <div style="flex-grow: 2; margin-right: 5px;">
                                 <label for="statusFilter" class="control-label"><b>Status: </b></label>
-                                <select wicket:id="statusFilter" class="form-select" id="statusFilter"></select>
+                                <select wicket:id="status" class="form-select" id="statusFilter"></select>
                             </div>
                         </div>
-                        <div class="form-group" style="display: flex; justify-content: space-between;">
-                            <div style="flex-grow: 2; margin-right: 5px; padding-top: 15px;">
+
+                        <div class="form-group" style="display: flex; justify-content: left; text-align: left;">
+                            <div style=" width: 175px; ">
+                                <label for="dataInicial" class="control-label"><b>Data Inicial: </b></label>
+                                <input wicket:id="dataInicial" type="date" class="form-control" style="width: 160px;">
+                            </div>
+                            <div style=" width: 175px; ">
+                                <label for="dataFinal" class="control-label"><b>Data Final: </b></label>
+                                <input wicket:id="dataFinal" type="date" class="form-control" style="width: 160px;">
+                            </div>
+                            <div style="flex-grow: 2; margin-right: 5px; padding-top: 25px;">
                                 <button type="button" class="btn btn-primary btn-dark"  wicket:id="btnSearch"><i class="bi bi-search"></i> Pesquisar
                                 </button>
                             </div>
                         </div>
+
                     </div>
                 </fieldset>
-            </div>
+            </form>
         </form>
 
     </div>
-    <div class="content-panel.">
-        <button type="button" class="btn btn-primary btn-dark" wicket:id="btnRemove"><i class="bi bi-trash3-fill"></i>
-            Excluir
-        </button>
-    </div>
+
 </wicket:extend>
 </body>
 </html>

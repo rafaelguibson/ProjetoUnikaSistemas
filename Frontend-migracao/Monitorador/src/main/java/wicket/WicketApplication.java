@@ -10,6 +10,8 @@ import com.google.common.collect.Lists;
 import wicket.classes.HomePage;
 import wicket.enums.Estado;
 import wicket.enums.EstadoConverter;
+import wicket.enums.Status;
+import wicket.enums.StatusConverter;
 
 /**
  * Application object for your web application.
@@ -39,9 +41,11 @@ public class WicketApplication extends WebApplication
 		//Desabilita o Bloqueio de segurança CSP Block
 		getCspSettings().blocking().disabled();
 
+
 		IConverterLocator converterLocator = getConverterLocator();
 		if (converterLocator instanceof ConverterLocator) {
 			((ConverterLocator) converterLocator).set(Estado.class, new EstadoConverter());
+			((ConverterLocator) converterLocator).set(Status.class, new StatusConverter());
 		}
 
 

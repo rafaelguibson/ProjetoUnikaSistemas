@@ -2,80 +2,33 @@
 <html xmlns:wicket="http://wicket.apache.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-
+    <title></title>
 </head>
 <body>
 <wicket:panel>
-        <div wicket:id="feedbackPanel"></div>
-    <div wicket:id="tableSection" style="overflow: hidden;">
-        <div class="container" style="display: flex;">
-            <div>
-                <div class="container">
-                    <div class="mb-3"
-                         style="background-color: #e0dfdf; display: flex;  justify-content: center; align-items: center; border: 3px solid black; border-radius: 9px;">
-                        <fieldset style="text-align: center; font-weight: bold; padding: 10px;">
+
+        <div class="container">
+            <div style="display: block;">
+                <div class="container" style=" overflow: hidden; ">
+                    <div class="mb-3" style=" display: flex;  justify-content: center; align-items: center;">
+                        <fieldset style="text-align: center; font-weight: bold;">
                             <legend>Selecione o Arquivo de Envio...</legend>
                             <div class="align-center">
                                 <form wicket:id="form" class="centered-container">
+                                    <div wicket:id="feedbackPanel"></div>
                                     <!-- Use a classe .centered-container aqui -->
-                                    <input class="form-control" type="file" wicket:id="fileUploadField">
-                                    <button class="btn btn-primary btn-dark btn-sm custom-button" wicket:id="btnUpload">Carregar Arquivo...</button>
+                                    <input class="form-control" type="file" wicket:id="fileUploadField" accept=".xlsx,.xls" >
+                                    <div class="container" style="padding-top: 10px;">
+                                        <button class="btn btn-primary btn-dark btn-sm custom-button" type="submit" >Enviar Arquivo</button>
+                                        <button class="btn btn-primary btn-dark btn-sm custom-button" type="button" wicket:id="btnClose">Cancelar</button>
+                                    </div>
                                 </form>
                             </div>
                         </fieldset>
                     </div>
                 </div>
-
-
-                <div class="container">
-                    <div class="divContentHeader" style="border: none;">
-                        <table class="table table-striped"   style="border: none;">
-                            <tr>
-                                <td colspan="11" style="background-color: #212429; color: #ECEBE9;"><h3>Dados Gerais Monitorador</h3></td>
-                            </tr>
-                            <tr class="table-dark">
-                                <th ><i class="bi bi-check2-square" wicket:id="btnSelectAll"></i></th>
-                                <th scope="col">ID</th>
-                                <th scope="col">Tipo Pessoa</th>
-                                <th scope="col">CPF/CNPJ</th>
-                                <th scope="col">NOME/RAZÃO SOCIAL</th>
-                                <th scope="col">TELEFONE</th>
-                                <th scope="col">EMAIL</th>
-                                <th scope="col">RG/I.E</th>
-                                <th scope="col">DATA DE NASCIMENTO</th>
-                                <th scope="col">STATUS</th>
-                            </tr>
-                        </table>
-                    </div>
-                    <div  style="max-height: 270px; overflow-x: hidden; overflow-y: auto; border: none; ">
-                        <table class="table table-striped"  style="border: none black;">
-                            <!-- Repita as linhas abaixo conforme necessário -->
-                            <tr wicket:id="monitoradorList">
-                                <td><input type="checkbox" wicket:id="selected"></td>
-                                <td wicket:id="id"></td>
-                                <td wicket:id="tipoPessoa"></td>
-                                <td wicket:id="cpfOuCnpj"></td>
-                                <td wicket:id="nomeOuRazaoSocial"></td>
-                                <td wicket:id="telefone"></td>
-                                <td wicket:id="email"></td>
-                                <td wicket:id="rgOuInscricaoEstadual"></td>
-                                <td wicket:id="dataNascimento"></td>
-                                <td wicket:id="status"></td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="container" style="padding-top: 10px;">
-                        <button class="btn btn-primary btn-dark btn-sm custom-button"><i class="bi bi-trash3-fill"></i>Excluir Selecionados</button>
-                        <button class="btn btn-primary btn-dark btn-sm custom-button" wicket:id="btnDelete"> <i class="bi bi-floppy"></i> Cadastrar Selecionados</button>
-                        <button class="btn btn-primary btn-dark btn-sm custom-button" wicket:id="btnClose"><i class="bi bi-x-square"></i>Sair</button>
-                    </div>
-                </div>
             </div>
-
         </div>
-        <div wicket:id="feedbackPanel"></div>
-    </div>
 </wicket:panel>
 </body>
 </html>

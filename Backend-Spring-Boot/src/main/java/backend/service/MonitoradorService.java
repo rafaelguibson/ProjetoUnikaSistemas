@@ -4,34 +4,23 @@ import backend.entitie.Endereco;
 import backend.entitie.Monitorador;
 import backend.enums.Status;
 import backend.enums.TipoPessoa;
+import backend.exceptions.DataNascimentoException;
 import backend.repository.EnderecoRepository;
 import backend.repository.MonitoradorRepository;
-import backend.validators.CampoObrigatorioException;
-import backend.validators.CpfCnpjInvalidoException;
-import backend.validators.EnderecoInvalidaException;
-import backend.validators.NomeRazaoSocialInvalidaException;
-import com.itextpdf.io.font.constants.StandardFonts;
-import com.itextpdf.kernel.font.PdfFontFactory;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Paragraph;
-import com.itextpdf.layout.property.TextAlignment;
+import backend.exceptions.CampoObrigatorioException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import net.sf.jasperreports.engine.JRException;
-import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -69,7 +58,8 @@ public class MonitoradorService {
     }
 
     public List<Monitorador> saveAllMonitorador(@Valid List<Monitorador> monitorador) {
-
+        validarDuplicadosLista(monitorador);
+        removerMascaraListaMonitorador(monitorador);
         return monitoradorRepository.saveAll(monitorador);
     }
 
@@ -120,7 +110,14 @@ public class MonitoradorService {
     }
 
     public List<Monitorador> filtrar(Monitorador filtro) {
-        return monitoradorRepository.filtrar(filtro);
+        if (todosOsCamposVazios(filtro) && filtro.getTipoPessoa().equals(TipoPessoa.PJ)) {
+            return monitoradorRepository.findByTipoPessoa(TipoPessoa.PJ);
+        } else if (todosOsCamposVazios(filtro) && filtro.getTipoPessoa().equals(TipoPessoa.PF)) {
+            return monitoradorRepository.findByTipoPessoa(TipoPessoa.PF);
+        } else {
+            return monitoradorRepository.filtrar(filtro);
+        }
+
     }
 
     public void deleteAllMonitoradores(List<Monitorador> list) {
@@ -143,12 +140,12 @@ public class MonitoradorService {
         for (Monitorador item: monitoradorList) {
             if(item.getTipoPessoa().equals(TipoPessoa.PF)) {
                 item.setCpf(item.getCpf().replaceAll("\\D", ""));
+                item.setRg(item.getRg().replaceAll("\\D", ""));
             }
             if(item.getTipoPessoa().equals(TipoPessoa.PJ)) {
                 item.setCnpj(item.getCnpj().replaceAll("\\D", ""));
                 item.setInscricaoEstadual(item.getInscricaoEstadual().replaceAll("\\D", ""));
             }
-            item.setRg(item.getRg().replaceAll("\\D", ""));
             item.setTelefone(item.getTelefone().replaceAll("\\D", ""));
         }
         return monitoradorList;
@@ -162,6 +159,7 @@ public class MonitoradorService {
             validarCampoObrigatorio(monitorador.getRg(), "RG");
             validarCampoObrigatorio(monitorador.getTelefone(), "Telefone");
             validarCampoObrigatorio(monitorador.getDataNascimento(), "Data de Nascimento");
+            validarIdade(monitorador.getDataNascimento());
             validarCampoObrigatorio(monitorador.getStatus(), "Status");
         } else if (monitorador.getTipoPessoa() == TipoPessoa.PJ) {
             validarCampoObrigatorio(monitorador.getRazaoSocial(), "Razão Social");
@@ -188,6 +186,35 @@ public class MonitoradorService {
         // Aqui você pode adicionar lógica adicional para validar os dígitos verificadores do CPF, se necessário.
     }
 
+    public void validarDuplicadosLista(List<Monitorador> monitoradorList) throws RegistroDuplicadoException {
+        // Verifique se os es monitorador já existem pelo ID ou outro campo único, por exemplo, CPF ou CNPJ
+        for(Monitorador item: monitoradorList) {
+            if (item.getCpf() != null && monitoradorRepository.existsByCpf(item.getCpf())) {
+                throw new RegistroDuplicadoException("O monitorador  CPF " + item.getCpf() + " já existe.");
+            }
+        }
+    }
+
+    public static void validarIdade(Date dataNascimento) throws DataNascimentoException {
+        // Converte Date para LocalDate
+        LocalDate dataNascLocalDate = dataNascimento.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        // Obtem a data atual
+        LocalDate dataAtual = LocalDate.now();
+
+        // Verifica se a data de nascimento é maior que a data atual
+        if (dataNascLocalDate.isAfter(dataAtual)) {
+            throw new DataNascimentoException("A data de nascimento não pode ser no futuro!");
+        }
+
+        // Calcula a diferença em anos
+        int idade = Period.between(dataNascLocalDate, dataAtual).getYears();
+
+        // Verifica se a idade é menor que 18
+        if (idade < 18) {
+            throw new DataNascimentoException("É preciso ter mais de 18 anos para se cadastrar !");
+        }
+    }
 
 
 
@@ -199,13 +226,14 @@ public class MonitoradorService {
         return (isNullOrEmpty(filtro.getNome()) &&
                 isNullOrEmpty(filtro.getCpf()) &&
                 isNullOrEmpty(filtro.getCnpj()) &&
+                isNullOrEmpty(filtro.getRazaoSocial()) &&
                 isNullOrEmpty(filtro.getTelefone()) &&
                 isNullOrEmpty(filtro.getEmail()) &&
                 isNullOrEmpty(filtro.getRg()) &&
                 isNullOrEmpty(filtro.getInscricaoEstadual()) &&
-                filtro.getDataNascimento() == null &&
-                filtro.getTipoPessoa() == null &&
-                filtro.getStatus() == null);
+                Objects.isNull(filtro.getDataNascimento()) &&
+                Objects.isNull(filtro.getTipoPessoa())  &&
+                Objects.isNull(filtro.getStatus()));
     }
 
     private boolean isNullOrEmpty(String str) {
@@ -266,7 +294,7 @@ public class MonitoradorService {
             if ("Física".equalsIgnoreCase(tipoPessoa)) {
                 monitorador.setTipoPessoa(TipoPessoa.PF);
                 monitorador.setNome(row.getCell(3).getStringCellValue()); // Nome
-                monitorador.setCnpj(row.getCell(2).getStringCellValue()); // CPF
+                monitorador.setCpf(row.getCell(2).getStringCellValue()); // CPF
                 monitorador.setTelefone(row.getCell(4).getStringCellValue()); // Telefone
                 monitorador.setEmail(row.getCell(5).getStringCellValue()); // Email
                 monitorador.setRg(row.getCell(6).getStringCellValue()); // RG

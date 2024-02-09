@@ -8,6 +8,7 @@ import wicket.enums.EstadoCivil;
 import wicket.enums.Status;
 import wicket.enums.TipoPessoa;
 
+import java.beans.Transient;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -34,7 +35,8 @@ public class Monitorador implements Serializable {
     private Date dataCadastro; // Adicionado o campo dataCadastro
     private List<Endereco> enderecos;
     private boolean selected;
-
+    private Date dataInicial;
+    private Date dataFinal;
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -1,0 +1,68 @@
+/* Estilo para o painel de feedback */
+.feedback-panel {
+    border-radius: 9px;
+}
+
+/* Estilo para a tabela principal */
+.table-main {
+    color: #0d0d11;
+}
+
+/* Estilo para o cabeçalho da tabela */
+.table-header {
+    background-color: #212429;
+    color: #ECEBE9;
+}
+
+/* Estilo para o navegador de paginação */
+.paging-navigator {
+    justify-content: center;
+    color: #313131;
+    font-size: 22px;
+    align-items: center;
+    text-align: center;
+}
+
+/* Estilo para o grupo de formulários */
+.form-group-custom {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Estilo para o campo de entrada no grupo de formulários */
+.form-control-custom {
+    flex-grow: 5;
+    margin-right: 5px;
+}
+
+/* Estilo para o campo CPF e RG */
+.cpf-rg-field {
+    display: inline-flex;
+    justify-content: space-between;
+}
+
+.cpf-rg-input {
+    flex-grow: 3;
+}
+
+/* Estilo para o campo de data */
+.date-field {
+    flex-grow: 1;
+}
+
+.date-input {
+    width: 160px;
+}
+
+/* Estilo para os botões */
+.btn-custom {
+    flex-grow: 2;
+    margin-right: 5px;
+    padding-top: 15px;
+}
+
+/* Estilo para o painel de conteúdo */
+.content-panel-custom {
+    text-align: left;
+    justify-content: left;
+}

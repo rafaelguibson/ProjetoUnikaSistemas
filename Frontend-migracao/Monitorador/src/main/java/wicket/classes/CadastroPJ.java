@@ -18,6 +18,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import wicket.entities.Endereco;
 import wicket.entities.Monitorador;
+import wicket.enums.Estado;
 import wicket.enums.Status;
 import wicket.enums.TipoPessoa;
 import wicket.http.MonitoradorHttpClient;
@@ -171,7 +172,7 @@ public class CadastroPJ  extends Panel implements Serializable {
                 endereco.setLogradouro(logradouro.getValue());
                 endereco.setCidade(cidade.getValue());
                 endereco.setBairro(bairro.getValue());
-//                endereco.setEstado(estado.getValue());
+                endereco.setEstado(Estado.valueOf(estado.getValue()));
                 listaDeEnderecos.add(endereco);
                 formAddress.setVisible(false);;
                 target.add(formAddress, tableAddress);

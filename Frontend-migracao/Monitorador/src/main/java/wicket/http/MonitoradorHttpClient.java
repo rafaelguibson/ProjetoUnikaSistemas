@@ -19,6 +19,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class MonitoradorHttpClient implements Serializable {
@@ -221,5 +222,30 @@ public class MonitoradorHttpClient implements Serializable {
             throw new RuntimeException(e);
         }
     }
+
+    public void saveAll(List<Monitorador> monitoradorList) throws RuntimeException {
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            HttpPost request = new HttpPost(baseUrl + "/saveAll");
+            request.setHeader("Content-Type", "application/json; charset=UTF-8");
+
+            // Converte a lista de Monitorador para JSON
+            String requestBody = objectMapper.writeValueAsString(monitoradorList);
+            request.setEntity(new StringEntity(requestBody, ContentType.APPLICATION_JSON));
+            CloseableHttpResponse response = httpClient.execute(request);
+
+            int statusCode = response.getStatusLine().getStatusCode();
+
+            if (statusCode != HttpStatus.SC_OK) {
+                String responseBody = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+
+                // Lança uma exceção com a mensagem do corpo da resposta do backend
+                throw new RuntimeException(responseBody);
+            }
+        } catch (IOException e) {
+            // Trate exceções de E/S, como falha na comunicação com o servidor
+            throw new RuntimeException("Erro durante a chamada do endpoint.", e);
+        }
+    }
+
 }
 

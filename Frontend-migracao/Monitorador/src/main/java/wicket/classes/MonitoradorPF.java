@@ -14,10 +14,7 @@ import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.list.PageableListView;
@@ -28,6 +25,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import wicket.entities.Monitorador;
+import wicket.enums.Status;
 import wicket.enums.TipoPessoa;
 import wicket.http.MonitoradorHttpClient;
 
@@ -66,7 +64,8 @@ public class MonitoradorPF extends BasePage implements Serializable {
         form.setOutputMarkupId(true);
         sectionForm.add(form);
 
-        WebMarkupContainer sectionFilters = new WebMarkupContainer("sectionFilters");
+        Form<Monitorador> sectionFilters = new Form<>("sectionFilters");
+        sectionFilters.setDefaultModel(new CompoundPropertyModel<>(monitorador));
         sectionFilters.setOutputMarkupId(true);
         sectionFilters.setVisible(false);
         form.add(sectionFilters);
@@ -117,6 +116,9 @@ public class MonitoradorPF extends BasePage implements Serializable {
             }
         });
         add(modal);
+        AjaxLink<Void> btnRemove = getComponents();
+        btnRemove.add(new AjaxFormSubmitBehavior(form, "click") {});
+        form.add(btnRemove);
 
         //Verificação de carregamento do section filter na tela de busca
         add(new AbstractDefaultAjaxBehavior() {
@@ -124,6 +126,7 @@ public class MonitoradorPF extends BasePage implements Serializable {
             protected void respond(AjaxRequestTarget target) {
                 if ("true".equals(parameters.get("showFilter").toString(""))) {
                     sectionFilters.setVisible(true);
+                    btnRemove.setVisible(false);
                     target.add(sectionFilters);
                     target.add(form);
                 }
@@ -164,7 +167,61 @@ public class MonitoradorPF extends BasePage implements Serializable {
         };
         form.add(checkBox);
 
-        AjaxLink<Void> btnRemove = new AjaxLink<Void>("btnRemove") {
+
+
+
+        // Campos do Formulário de busca
+        TextField<String> nome = new TextField<>("nome");
+        nome.setOutputMarkupId(true);
+        TextField<String> cpf = new TextField<>("cpf");
+        cpf.setOutputMarkupId(true);
+        TextField<String> rg = new TextField<>("rg");
+        rg.setOutputMarkupId(true);
+        DateTextField dataNascimento = new DateTextField("dataNascimento", "yyyy-MM-dd");
+        dataNascimento.setOutputMarkupId(true);
+        DateTextField dataInicial = new DateTextField("dataInicial", "yyyy-MM-dd");
+        dataInicial.setOutputMarkupId(true);
+        DateTextField dataFinal = new DateTextField("dataFinal","yyyy-MM-dd");
+        dataFinal.setOutputMarkupId(true);
+
+        List<Status> listaDeStatus = Arrays.asList(Status.values());
+        DropDownChoice<Status> status = new DropDownChoice<>("status", new Model<Status>(), listaDeStatus, new ChoiceRenderer<>("status", "status"));
+        status.setOutputMarkupId(true);
+
+        // Adicione os campos de filtro ao formFilter
+        sectionFilters.add(nome, cpf, rg, dataNascimento, status, dataInicial, dataFinal);
+
+        AjaxLink<Void> btnSearch = new AjaxLink<Void>("btnSearch") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                Monitorador monitoradorBuscar = new Monitorador();
+                monitoradorBuscar.setTipoPessoa(TipoPessoa.PF);
+                monitoradorBuscar.setNome(nome.getValue());
+                monitoradorBuscar.setCpf(cpf.getValue());
+                monitoradorBuscar.setRg(rg.getValue());
+                monitoradorBuscar.setDataNascimento(dataNascimento.getModelObject());
+                monitoradorBuscar.setDataInicial(dataInicial.getModelObject());
+                monitoradorBuscar.setDataFinal(dataFinal.getModelObject());
+                monitoradorBuscar.setStatus(status.getModelObject());
+                mntList.clear();
+                mntList.addAll(monitoradorHttpClient.filtrar(monitoradorBuscar));
+                target.add(sectionForm);
+            }
+        };
+        btnSearch.add(new AjaxFormSubmitBehavior(form, "click") {});
+        btnSearch.setOutputMarkupId(true);
+        sectionFilters.add(btnSearch);
+
+        String message = parameters.get("message").toString("");
+        if (!message.isEmpty()) {
+            info(message);
+        }
+
+
+    }
+
+    private AjaxLink<Void> getComponents() {
+        return new AjaxLink<Void>("btnRemove") {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 List<Monitorador> monitoradorRemove = mntList.stream().
@@ -186,36 +243,9 @@ public class MonitoradorPF extends BasePage implements Serializable {
 
             }
         };
-        btnRemove.add(new AjaxFormSubmitBehavior(form, "click") {});
-        add(btnRemove);
-
-
-        // Campos do Formulário de busca
-        TextField<String> nomeFilter = new TextField<>("nomeFilter");
-        nomeFilter.setOutputMarkupId(true);
-        TextField<String> cpfFilter = new TextField<>("cpfFilter");
-        cpfFilter.setOutputMarkupId(true);
-        TextField<String> rgFilter = new TextField<>("rgFilter");
-        rgFilter.setOutputMarkupId(true);
-        DateTextField dataNascimentoFilter = new DateTextField("dataNascimentoFilter", "yyyy-MM-dd");
-        dataNascimentoFilter.setOutputMarkupId(true);
-        List<String> listaDeStatus = Arrays.asList("Ativado", "Desativado");
-        DropDownChoice<String> statusFilter = new DropDownChoice<>("statusFilter", Model.ofList(listaDeStatus));
-        statusFilter.setOutputMarkupId(true);
-
-        // Adicione os campos de filtro ao formFilter
-        sectionFilters.add(nomeFilter, cpfFilter, rgFilter, dataNascimentoFilter, statusFilter);
-
-
-        String message = parameters.get("message").toString("");
-        if (!message.isEmpty()) {
-            info(message);
-        }
-
-
     }
 
-        public PageableListView<Monitorador> getMonitoradorPageableList(List<Monitorador> mntListPF) {
+    public PageableListView<Monitorador> getMonitoradorPageableList(List<Monitorador> mntListPF) {
             return new PageableListView<Monitorador>("monitoradorList", mntListPF, itemsPerPage) {
                 @Override
                 protected void populateItem(ListItem<Monitorador> item) {

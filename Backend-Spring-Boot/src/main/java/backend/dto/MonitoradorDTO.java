@@ -28,6 +28,8 @@ public class MonitoradorDTO {
     private String estadoCivil;
     private Status status;
     private Date dataCadastro;
+    private Date dataInicial;
+    private Date dataFinal;
     private List<EnderecoDTO> enderecos; // Supondo que você tenha um EnderecoDTO
     private boolean selected;
 }

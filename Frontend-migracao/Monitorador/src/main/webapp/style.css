@@ -298,7 +298,7 @@ td {
 
 
 .w_content_container {
-    padding: 5px;
+    padding: 0px;
     background-color: #ECEBE9;
     border: 2px #3f4450 solid;
     border-radius: 5px;
@@ -322,7 +322,7 @@ td {
 }
 .bordered-div {
     border: 2px solid #000; /* Cor e estilo da borda */
-    padding: 10px; /* Espaçamento interno para dar espaço à borda */
+    padding: 0px; /* Espaçamento interno para dar espaço à borda */
     border-radius: 10px; /* Borda arredondada (opcional) */
 }
 .feedback-panel {
@@ -359,8 +359,7 @@ a:active {
     color: #3f4450;
 }
 fieldset {
-    border: 2px solid #000;
-    border-radius: 9px;
+    border: none;
     padding: 10px;
     text-align: center;
 }

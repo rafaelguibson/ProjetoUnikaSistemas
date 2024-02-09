@@ -35,6 +35,8 @@ import static wicket.entities.Endereco.buscarCep;
 public class CadastroPF  extends Panel implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    private String selectedEstadoCivil;
+    private String selectedStatus;
     FeedbackPanel fp;
     List<Endereco> listaDeEnderecos = new ArrayList<>();
     WebMarkupContainer formAddress = new WebMarkupContainer("formAddress");
@@ -118,8 +120,10 @@ public class CadastroPF  extends Panel implements Serializable {
 
         TextField<String> cep = new TextField<String>("cep");
         cep.setOutputMarkupId(true);
+
         TextField<String> logradouro = new TextField<String>("logradouro");
         logradouro.setOutputMarkupId(true);
+        logradouro.setEnabled(false);
         TextField<String> numero = new TextField<String>("numero");
         numero.setOutputMarkupId(true);
         TextField<String> bairro = new TextField<String>("bairro");
@@ -142,15 +146,15 @@ public class CadastroPF  extends Panel implements Serializable {
                 monitoradorSalvar.setEmail(email.getValue());
                 monitoradorSalvar.setRg(rg.getValue());
                 monitoradorSalvar.setDataNascimento(dataNascimento.getModelObject());
-                monitoradorSalvar.setStatus(Status.ATIVO);
+                monitoradorSalvar.setStatus(Status.INATIVO);
                 monitoradorSalvar.setEnderecos(listaDeEnderecos);
                 try {
                     monitoradorHttpClient.salvar(monitoradorSalvar);
                     info("Cadastro realizado com sucesso.");
                 } catch (RuntimeException e) {
-                    error(e.getMessage()); // Exibe a mensagem de erro
+                    error(e.getMessage());
                 }
-                target.add(fp); // Atualiza o FeedbackPanel na página
+                target.add(fp);
             }
         };
         saveMonitorador.add(new AjaxFormSubmitBehavior(form,"click") {});
