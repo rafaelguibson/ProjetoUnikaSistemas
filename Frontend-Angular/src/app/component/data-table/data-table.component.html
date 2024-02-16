@@ -1,0 +1,39 @@
+<!-- data-table.component.html -->
+
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" matSort aria-label="Elements">
+    <!-- Id Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
+      <td mat-cell *matCellDef="let row">{{ row.id }}</td>
+    </ng-container>
+
+    <!-- Outras colunas necessárias (substitua pelo nome das suas colunas) -->
+    <ng-container matColumnDef="nomeRazaoSocial">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Nome / Razão Social</th>
+      <td mat-cell *matCellDef="let row">{{ row.nomeRazaoSocial }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="cpfCnpj">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>CPF / CNPJ</th>
+      <td mat-cell *matCellDef="let row">{{ row.cpfCnpj }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="telefone">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Telefone</th>
+      <td mat-cell *matCellDef="let row">{{ row.telefone }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+      <td mat-cell *matCellDef="let row">{{ row.email }}</td>
+    </ng-container>
+
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>

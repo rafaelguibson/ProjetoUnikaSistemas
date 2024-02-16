@@ -1,0 +1,46 @@
+<mat-toolbar class="mat-elevation-z8 custom-toolbar">
+  <button mat-icon-button (click)="drawer.toggle()"><mat-icon>menu</mat-icon></button>
+  <span class="header-title">Projeto Monitorador</span>
+  <span class="header-space"></span>
+  <button mat-button routerLink="dataTable"><span class="header-home">Pagina Inicial</span> </button>
+  <a href="#" mat-raised-button >Cadastre-se</a>
+</mat-toolbar>
+
+<mat-drawer-container autosize >
+  <mat-drawer #drawer opened="true" mode="side" position="start">
+    <mat-nav-list>
+      <mat-list-item class="navbar-list-item">
+        <a href="#" routerLink=""><i class="bi bi-house-fill header-icon"></i> <span class="header-text"><b>Home</b>  </span></a>
+      </mat-list-item>
+      <mat-list-item>
+        <a href="#" routerLink=""><i class="bi bi-person-workspace header-icon"></i> <span class="header-text"><b>Monitorador</b>  </span></a>
+      </mat-list-item>
+      <mat-list-item>
+        <a href="#" routerLink=""><i class="bi bi bi-graph-up-arrow header-icon"></i> <span class="header-text"><b>Relatórios</b>  </span></a>
+      </mat-list-item>
+      <mat-list-item (click)="showSubmenu = !showSubmenu" class="parent">
+        <span class="full-width" *ngIf="isExpanded || isShowing">Parent Menu</span>
+        <mat-icon mat-list-icon>home</mat-icon>
+        <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubmenu}" *ngIf="isExpanded || isShowing">expand_more</mat-icon>
+      </mat-list-item>
+      <div class="submenu" [ngClass]="{'expanded' : showSubmenu}" *ngIf="isShowing || isExpanded">
+        <a mat-list-item href="#">Submenu Item 1</a>
+        <a mat-list-item href="#">Submenu Item 2</a>
+        <mat-list-item (click)="showSubSubMenu = !showSubSubMenu" class="parent">
+          <span class="full-width" *ngIf="isExpanded || isShowing">Nested Menu</span>
+          <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubSubMenu}" *ngIf="isExpanded || isShowing">expand_more</mat-icon>
+        </mat-list-item>
+        <div class="submenu" [ngClass]="{'expanded' : showSubSubMenu}" *ngIf="isShowing || isExpanded">
+          <mat-list-item>SubSubmenu Item 1</mat-list-item>
+          <mat-list-item>SubSubmenu Item 2</mat-list-item>
+        </div>
+      </div>
+    </mat-nav-list>
+  </mat-drawer>
+  <mat-drawer-content>
+    <div>
+
+      <router-outlet></router-outlet>
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>
