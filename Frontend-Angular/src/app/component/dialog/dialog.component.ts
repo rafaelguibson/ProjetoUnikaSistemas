@@ -1,25 +1,26 @@
-import { Component } from '@angular/core';
-import {
-  MatDialogActions,
-  MatDialogClose,
-  MatDialogContent,
-  MatDialogRef,
-  MatDialogTitle
-} from "@angular/material/dialog";
-import {MatButtonModule} from "@angular/material/button";
+import {Component, Inject, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {FormControl, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
-import {MatFormFieldModule} from "@angular/material/form-field";
-import {MatInputModule} from "@angular/material/input";
+import {MaterialModule} from "../../material/material.module";
+
+import {MatTooltipModule} from "@angular/material/tooltip";
+import {TipoPessoa} from "../../model/enum/tipo-pessoa";
 
 @Component({
   selector: 'app-dialog',
   templateUrl: './dialog.component.html',
   styleUrl: './dialog.component.css',
   standalone: true,
-  imports: [MatButtonModule, MatDialogActions, MatDialogClose, MatDialogTitle, MatDialogContent,FormsModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule],
+  imports: [MaterialModule, ReactiveFormsModule,MatTooltipModule],
 })
-export class DialogComponent {
-  constructor(public dialogRef: MatDialogRef<DialogComponent>) {}
+export class DialogComponent  implements OnInit{
+  constructor(public dialogRef: MatDialogRef<DialogComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: { tipoPessoa: TipoPessoa }
+  ) {}
+  ngOnInit() {
+    // Acesse o tipoPessoa aqui
+    console.log('Tipo de Pessoa:', this.data.tipoPessoa);
+  }
 
   emailFormControl = new FormControl('', [Validators.required, Validators.email]);
 }

@@ -6,16 +6,21 @@
 
 <form class="form-horizontal">
   <fieldset>
-    <div class="panel panel-primary">
-      <div class="panel-heading">Cadastro de Cliente</div>
+    <div class="panel panel-primary" style="border: none;">
+      <div class="panel-heading" style=" display: flex; justify-content: space-between; align-items: center;">
+        <span class="header-space">Cadastro de Pessoa {{data.tipoPessoa}} </span>
+        <span ></span>
+        <i class="bi bi-x-circle-fill" matTooltip="Fechar Modal" ></i>
+      </div>
 
       <div class="panel-body">
-        <div class="form-group">
+        <div class="form-group form-content">
 
           <form class="example-form">
-            <mat-form-field class="example-full-width">
+            <mat-form-field class="example-full-width" appearance="outline">
               <mat-label>Email</mat-label>
               <input type="email" matInput [formControl]="emailFormControl" placeholder="Ex. contato@email.com">
+              <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
               @if (emailFormControl.hasError('email') && !emailFormControl.hasError('required')) {
                 <mat-error>Please enter a valid email address</mat-error>
               }
@@ -23,6 +28,7 @@
                 <mat-error>Email is <strong>required</strong></mat-error>
               }
             </mat-form-field>
+
           </form>
 
 

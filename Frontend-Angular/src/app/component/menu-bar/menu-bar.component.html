@@ -18,7 +18,7 @@
       <div *ngIf="!toggle_pf_menu">
         <ul style="background: #d7d6d4">
           <li><a mat-list-item href="#"><i class="bi bi-eye header-icon"></i><span class="header-text"> Vizualizar</span></a></li>
-          <li><a mat-list-item href="#"><i class="bi bi-plus-square header-icon"></i><span class="header-text"> Cadastrar</span></a></li>
+          <li><a mat-list-item  (click)="openDialog(TipoPessoa.PF)"><i class="bi bi-plus-square header-icon"></i><span class="header-text"> Cadastrar</span></a></li>
           <li><a mat-list-item href="#"><i class="bi bi-search header-icon"></i><span class="header-text"> Buscar</span></a></li>
         </ul>
       </div>
@@ -28,7 +28,7 @@
       <div *ngIf="!toggle_pj_menu">
         <ul style="background: #d7d6d4">
           <li><a mat-list-item href="#"><i class="bi bi-eye header-icon"></i><span class="header-text"> Vizualizar</span></a></li>
-          <li><a mat-list-item  (click)="openDialog()"><i class="bi bi-plus-square header-icon"></i><span class="header-text"> Cadastrar</span></a></li>
+          <li><a mat-list-item  (click)="openDialog(TipoPessoa.PJ)"><i class="bi bi-plus-square header-icon"></i><span class="header-text"> Cadastrar</span></a></li>
           <li><a mat-list-item href="#"><i class="bi bi-search header-icon"></i><span class="header-text"> Buscar</span></a></li>
         </ul>
       </div>

@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {MatDialog} from "@angular/material/dialog";
 import {DialogComponent} from "../dialog/dialog.component";
+import {TipoPessoa} from "../../model/enum/tipo-pessoa";
 
 @Component({
   selector: 'app-menu-bar',
@@ -8,6 +9,7 @@ import {DialogComponent} from "../dialog/dialog.component";
   styleUrl: './menu-bar.component.css'
 })
 export class MenuBarComponent {
+
   //Variavel de controle dos toggle menu PF e PJ
   toggle_pf_menu: boolean = true;
   toggle_pj_menu: boolean = true;
@@ -23,11 +25,17 @@ export class MenuBarComponent {
 
   constructor(public dialog:MatDialog) {
   }
-  openDialog() {
+
+  openDialog(tipoPessoa: TipoPessoa) {
+  if(tipoPessoa === TipoPessoa.PF)  this.toggle_pf_menu = !this.toggle_pf_menu;
+  if(tipoPessoa === TipoPessoa.PJ)  this.toggle_pj_menu = !this.toggle_pj_menu;
     this.dialog.open(DialogComponent,
       {
         height: '600px',
         width: '800px',
+        data: {tipoPessoa }
       });
   }
+
+  protected readonly TipoPessoa = TipoPessoa;
 }

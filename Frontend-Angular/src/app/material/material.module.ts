@@ -20,7 +20,7 @@ import {MatRadioModule} from "@angular/material/radio"
 import {MatCheckboxModule} from "@angular/material/checkbox"
 import {MatDialogModule} from "@angular/material/dialog"
 import  { MatFormFieldModule} from "@angular/material/form-field";
-
+import { MatTooltipModule} from "@angular/material/tooltip";
 
 @NgModule({
   exports:[
@@ -48,6 +48,8 @@ import  { MatFormFieldModule} from "@angular/material/form-field";
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
+    MatTooltipModule,
+
   ]
 })
 export class MaterialModule { }
