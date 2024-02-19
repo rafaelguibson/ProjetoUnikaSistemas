@@ -1,13 +1,35 @@
 <mat-toolbar class="mat-elevation-z8 custom-toolbar">
-  <button mat-icon-button (click)="drawer.toggle()"><mat-icon>menu</mat-icon></button>
+  <button mat-icon-button (click)="drawer.toggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
   <span class="header-title">Projeto Monitorador</span>
   <span class="header-space"></span>
-  <button mat-button routerLink="dataTable"><span class="header-home">Pagina Inicial</span> </button>
-  <a href="#" mat-raised-button >Cadastre-se</a>
+  <button mat-button routerLink="dataTable"><span class="header-home">Pagina Inicial</span></button>
+  <a href="#" mat-raised-button>Cadastre-se</a>
 </mat-toolbar>
 
-<mat-drawer-container autosize >
+<mat-drawer-container autosize>
   <mat-drawer #drawer opened="true" mode="side" position="start">
+
+    <div class="sidebar-header">
+
+      <div class="user-pic">
+        <img class="img-responsive img-rounded" src="assets/espiao.png"
+             alt="User picture">
+
+      </div>
+    </div>
+    <div class="user-info">
+          <span class="user-name">
+            <strong>Rafael Guibson</strong>
+          </span>
+      <span class="user-role">Administrator</span>
+      <span class="user-status">
+            <i class="bi bi-circle-fill" style="color: green"></i>
+            <span>Online</span>
+          </span>
+    </div>
+    <mat-divider></mat-divider>
     <mat-nav-list>
       <mat-list-item>
         <a href="#" routerLink=""><i class="bi bi-person-workspace header-icon"></i> <span class="header-text"><b>Monitorador</b>  </span></a>
@@ -17,9 +39,12 @@
       </mat-list-item>
       <div *ngIf="!toggle_pf_menu">
         <ul style="background: #d7d6d4">
-          <li><a mat-list-item href="#"><i class="bi bi-eye header-icon"></i><span class="header-text"> Vizualizar</span></a></li>
-          <li><a mat-list-item  (click)="openDialog(TipoPessoa.PF)"><i class="bi bi-plus-square header-icon"></i><span class="header-text"> Cadastrar</span></a></li>
-          <li><a mat-list-item href="#"><i class="bi bi-search header-icon"></i><span class="header-text"> Buscar</span></a></li>
+          <li><a mat-list-item href="#"><i class="bi bi-eye header-icon"></i><span
+            class="header-text"> Vizualizar</span></a></li>
+          <li><a mat-list-item (click)="openDialog(TipoPessoa.PF)"><i class="bi bi-plus-square header-icon"></i><span
+            class="header-text"> Cadastrar</span></a></li>
+          <li><a mat-list-item href="#"><i class="bi bi-search header-icon"></i><span class="header-text"> Buscar</span></a>
+          </li>
         </ul>
       </div>
       <mat-list-item class="dropdown-btn" (click)="toggPJ()">
@@ -27,9 +52,12 @@
       </mat-list-item>
       <div *ngIf="!toggle_pj_menu">
         <ul style="background: #d7d6d4">
-          <li><a mat-list-item href="#"><i class="bi bi-eye header-icon"></i><span class="header-text"> Vizualizar</span></a></li>
-          <li><a mat-list-item  (click)="openDialog(TipoPessoa.PJ)"><i class="bi bi-plus-square header-icon"></i><span class="header-text"> Cadastrar</span></a></li>
-          <li><a mat-list-item href="#"><i class="bi bi-search header-icon"></i><span class="header-text"> Buscar</span></a></li>
+          <li><a mat-list-item href="#"><i class="bi bi-eye header-icon"></i><span
+            class="header-text"> Vizualizar</span></a></li>
+          <li><a mat-list-item (click)="openDialog(TipoPessoa.PJ)"><i class="bi bi-plus-square header-icon"></i><span
+            class="header-text"> Cadastrar</span></a></li>
+          <li><a mat-list-item href="#"><i class="bi bi-search header-icon"></i><span class="header-text"> Buscar</span></a>
+          </li>
         </ul>
       </div>
       <mat-list-item>

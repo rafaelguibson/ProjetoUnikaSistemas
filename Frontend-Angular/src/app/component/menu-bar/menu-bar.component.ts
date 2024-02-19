@@ -32,7 +32,7 @@ export class MenuBarComponent {
     this.dialog.open(DialogComponent,
       {
         height: '600px',
-        width: '800px',
+        width: '530px',
         data: {tipoPessoa }
       });
   }

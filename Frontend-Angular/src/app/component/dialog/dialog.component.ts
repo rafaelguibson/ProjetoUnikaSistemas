@@ -14,6 +14,7 @@ import {TipoPessoa} from "../../model/enum/tipo-pessoa";
   imports: [MaterialModule, ReactiveFormsModule,MatTooltipModule],
 })
 export class DialogComponent  implements OnInit{
+  valorToggle = false; // Valor padrão é false (desativado).
   constructor(public dialogRef: MatDialogRef<DialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: { tipoPessoa: TipoPessoa }
   ) {}
@@ -22,5 +23,12 @@ export class DialogComponent  implements OnInit{
     console.log('Tipo de Pessoa:', this.data.tipoPessoa);
   }
 
+  fecharModal() {
+    // Use o MatDialogRef para fechar o modal
+    this.dialogRef.close();
+  }
+
   emailFormControl = new FormControl('', [Validators.required, Validators.email]);
+  protected readonly TipoPessoa = TipoPessoa;
+  protected readonly status = status;
 }

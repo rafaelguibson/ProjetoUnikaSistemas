@@ -1,12 +1,6 @@
-h11 {
-  color:red;
+td {
+  padding-right: 5px;
 }
-
-#logo {
-  width:50%;
-  height:50%;
-}
-
 .panel-heading{
   font-size:150%;
 }
@@ -15,4 +9,13 @@ h11 {
 }
 .header-space {
   flex: 1 1 auto;
+}
+.dialog-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #212129;
+  color: #ECEBE9;
+  padding-left: 10px;
+  padding-right: 10px
 }

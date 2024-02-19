@@ -1,6 +1,6 @@
 
 <div class="mat-elevation-z8 table-title-container">
-  <H1 class="table-title"> Dados Gerais Monitorador</H1>
+  <h3 class="table-title"> Dados Gerais Monitorador</h3>
 </div>
 <!-- data-table -->
 
@@ -45,6 +45,16 @@
     <ng-container matColumnDef="email">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
       <td mat-cell *matCellDef="let row">{{ row.email }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="dataNascimento">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Data Nascimento</th>
+      <td mat-cell *matCellDef="let row">{{ row.dataNascimento }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="dataCadastro">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Data Cadastro</th>
+      <td mat-cell *matCellDef="let row">{{ row.dataCadastro }}</td>
     </ng-container>
 
     <ng-container matColumnDef="menus">

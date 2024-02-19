@@ -21,7 +21,7 @@ import {MatCheckboxModule} from "@angular/material/checkbox"
 import {MatDialogModule} from "@angular/material/dialog"
 import  { MatFormFieldModule} from "@angular/material/form-field";
 import { MatTooltipModule} from "@angular/material/tooltip";
-
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 @NgModule({
   exports:[
     MatInputModule,
@@ -49,6 +49,7 @@ import { MatTooltipModule} from "@angular/material/tooltip";
     MatPaginatorModule,
     MatSortModule,
     MatTooltipModule,
+    MatSlideToggleModule,
 
   ]
 })

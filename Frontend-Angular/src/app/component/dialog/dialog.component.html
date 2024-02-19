@@ -1,33 +1,94 @@
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<!------ Include the above in your HEAD tag ---------->
-
 
 <form class="form-horizontal">
   <fieldset>
     <div class="panel panel-primary" style="border: none;">
-      <div class="panel-heading" style=" display: flex; justify-content: space-between; align-items: center;">
-        <span class="header-space">Cadastro de Pessoa {{data.tipoPessoa}} </span>
-        <span ></span>
-        <i class="bi bi-x-circle-fill" matTooltip="Fechar Modal" ></i>
+      <div class="panel-heading dialog-title" >
+        <span class="header-space">Cadastro Pessoa {{data.tipoPessoa}} </span>
+        <a (click)="fecharModal()"><i class="bi bi-x-circle-fill" matTooltip="Fechar Modal" ></i></a>
       </div>
 
       <div class="panel-body">
         <div class="form-group form-content">
-
           <form class="example-form">
-            <mat-form-field class="example-full-width" appearance="outline">
-              <mat-label>Email</mat-label>
-              <input type="email" matInput [formControl]="emailFormControl" placeholder="Ex. contato@email.com">
-              <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-              @if (emailFormControl.hasError('email') && !emailFormControl.hasError('required')) {
-                <mat-error>Please enter a valid email address</mat-error>
-              }
-              @if (emailFormControl.hasError('required')) {
-                <mat-error>Email is <strong>required</strong></mat-error>
-              }
-            </mat-form-field>
+            <table class="example-full-width">
+              <tr>
+                <td colspan="2">
+                  <mat-form-field class="example-full-width" appearance="outline" style="width: 100%">
+                    @if(data.tipoPessoa === TipoPessoa.PF) {
+                      <mat-label>Nome Completo</mat-label>
+
+                    }
+                    @if(data.tipoPessoa === TipoPessoa.PJ) {
+                      <mat-label>Razão Social</mat-label>
+                    }
+                    <input matInput>
+                    <mat-icon matSuffix>toc</mat-icon>
+                  </mat-form-field>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    @if(data.tipoPessoa === TipoPessoa.PF) {
+                      <mat-label>CPF</mat-label>
+                    }
+                    @if(data.tipoPessoa === TipoPessoa.PJ) {
+                      <mat-label>CNPJ</mat-label>
+                    }
+                    <input matInput>
+                    <mat-icon matSuffix>assignment_ind</mat-icon>
+                  </mat-form-field>
+                </td>
+                <td>
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    @if(data.tipoPessoa === TipoPessoa.PF) {
+                      <mat-label>RG</mat-label>
+                    }
+                    @if(data.tipoPessoa === TipoPessoa.PJ) {
+                      <mat-label>Inscrição Estadual</mat-label>
+                    }
+                    <input matInput>
+                    <mat-icon matSuffix>fingerprint</mat-icon>
+                  </mat-form-field>
+                </td>
+
+              </tr>
+
+              <tr>
+                <td>
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Email</mat-label>
+                    <input type="email" matInput [formControl]="emailFormControl" placeholder="Ex. contato@email.com">
+                    <mat-icon matSuffix>email</mat-icon>
+                    @if (emailFormControl.hasError('email') && !emailFormControl.hasError('required')) {
+                      <mat-error>Please enter a valid email address</mat-error>
+                    }
+                    @if (emailFormControl.hasError('required')) {
+                      <mat-error>Email is <strong>required</strong></mat-error>
+                    }
+                  </mat-form-field>
+                </td>
+                <td>
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Telefone</mat-label>
+                    <input matInput>
+                    <mat-icon matSuffix>phone</mat-icon>
+                  </mat-form-field>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span>Status: </span>
+                  <mat-slide-toggle >
+                    <!--[(ngModel)]="status"-->
+                    <!--{{ ativo ? 'Ativo' : 'Inativo' }}-->
+                  </mat-slide-toggle>
+                </td>
+                <td>
+
+                </td>
+              </tr>
+            </table>
 
           </form>
 
