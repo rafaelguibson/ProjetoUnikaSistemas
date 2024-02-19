@@ -6,3 +6,26 @@ table {
   font-size: 14px;
   width: 20%;
 }
+.table-title-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: left;
+  padding: 10px;
+  border-radius: 9px;
+  margin-bottom: 10px;
+}
+.table-data {
+  margin-top: 10px;
+}
+.container-btn {
+  display: flex;
+  justify-content: left;
+  margin: 10px;
+}
+.content-btn {
+  margin-right: 5px ;
+}
+.filter-container {
+  padding: 10px;
+}

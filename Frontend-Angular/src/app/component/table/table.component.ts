@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import {Component, input, ViewChild} from '@angular/core';
 import {MonitoradorHttpClientService} from "../../service/monitorador-http-client.service";
 import { MatPaginator} from "@angular/material/paginator";
 import { MatSort} from "@angular/material/sort";
@@ -25,8 +25,17 @@ export class TableComponent {
       this.dataSource = new MatTableDataSource(this.data);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-    })
+    });
   }
 
+  applyFilter(event : Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase()
 
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage()
+    }
+  }
+
+  protected readonly input = input;
 }

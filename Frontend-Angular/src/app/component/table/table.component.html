@@ -1,14 +1,10 @@
-<!-- data-filter -->
-<div class="mat-elevation-z8">
-<mat-form-field>
-  <mat-label> Filtro da Tabela</mat-label>
-  <input matInput placeholder="serch">
-</mat-form-field>
-</div>
 
+<div class="mat-elevation-z8 table-title-container">
+  <H1 class="table-title"> Dados Gerais Monitorador</H1>
+</div>
 <!-- data-table -->
 
-<div class="mat-elevation-z8">
+<div class="mat-elevation-z8 table-data">
   <table mat-table  matSort [dataSource]="dataSource" >
     <!-- Id Column -->
     <ng-container matColumnDef="id">
@@ -41,8 +37,37 @@
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    <!-- Mensagem quando não existe o dado buscado no Filtro-->
+    <tr *matNoDataRow>
+      <td class="mat-cell" colspan="4"> Nenhum dado encontrado na tabela.</td>
+    </tr>
   </table>
 
   <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select Page of Monitoradores"></mat-paginator>
 
 </div>
+<!-- data-buttons -->
+<div class="demo-button-container container-btn">
+  <div class="d-inline-flex content-btn">
+    <button mat-raised-button  class="demo-button">
+      Add data
+    </button>
+  </div>
+
+  <div class="d-inline-flex content-btn">
+  <button
+    mat-raised-button
+    class="demo-button">
+    Remove data
+  </button>
+  </div>
+</div>
+<!-- data-filter -->
+  <div class="mat-elevation-z8 filter-container" style="display: flex; text-align: left; padding-top: 10px">
+    <mat-form-field>
+      <mat-label> Filtro da Tabela</mat-label>
+      <input matInput placeholder="serch" (keyup)="applyFilter($event)">
+    </mat-form-field>
+  </div>
+
