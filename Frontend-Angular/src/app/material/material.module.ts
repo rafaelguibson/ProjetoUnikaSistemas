@@ -19,7 +19,7 @@ import {MatNativeDateModule} from "@angular/material/core"
 import {MatRadioModule} from "@angular/material/radio"
 import {MatCheckboxModule} from "@angular/material/checkbox"
 import {MatDialogModule} from "@angular/material/dialog"
-
+import  { MatFormFieldModule} from "@angular/material/form-field";
 
 
 @NgModule({
@@ -43,7 +43,11 @@ import {MatDialogModule} from "@angular/material/dialog"
     MatNativeDateModule,
     MatRadioModule,
     MatCheckboxModule,
-    MatDialogModule
+    MatDialogModule,
+    MatFormFieldModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
   ]
 })
 export class MaterialModule { }

@@ -5,34 +5,28 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MaterialModule} from "./material/material.module";
-import { DataTableComponent } from './component/data-table/data-table.component';
-import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatSortModule } from '@angular/material/sort';
 import { MenuBarComponent } from './component/menu-bar/menu-bar.component';
-import {MonitoradorHttpServiceService} from "./service/monitorador-http-service.service";
+import { MonitoradorHttpClientService} from "./service/monitorador-http-client.service";
 import {HttpClientModule} from "@angular/common/http";
+import { TableComponent } from './component/table/table.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    DataTableComponent,
     MenuBarComponent,
     MenuBarComponent,
+    TableComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     MaterialModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
     HttpClientModule
   ],
   providers: [
     provideAnimationsAsync(),
-    MonitoradorHttpServiceService
+    MonitoradorHttpClientService
   ],
   bootstrap: [AppComponent]
 })

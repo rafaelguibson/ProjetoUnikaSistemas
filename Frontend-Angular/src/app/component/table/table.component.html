@@ -1,7 +1,15 @@
-<!-- data-table.component.html -->
+<!-- data-filter -->
+<div class="mat-elevation-z8">
+<mat-form-field>
+  <mat-label> Filtro da Tabela</mat-label>
+  <input matInput placeholder="serch">
+</mat-form-field>
+</div>
+
+<!-- data-table -->
 
 <div class="mat-elevation-z8">
-  <table mat-table [dataSource]="dataSource" matSort aria-label="Elements">
+  <table mat-table  matSort [dataSource]="dataSource" >
     <!-- Id Column -->
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
@@ -35,5 +43,5 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
-  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+<!--  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>-->
 </div>
