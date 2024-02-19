@@ -6,20 +6,16 @@ import { Component } from '@angular/core';
   styleUrl: './menu-bar.component.css'
 })
 export class MenuBarComponent {
-  isExpanded = true;
-  showSubmenu: boolean = false;
-  isShowing = false;
-  showSubSubMenu: boolean = false;
+  //Variavel de controle dos toggle menu PF e PJ
+  toggle_pf_menu: boolean = true;
+  toggle_pj_menu: boolean = true;
 
-  mouseenter() {
-    if (!this.isExpanded) {
-      this.isShowing = true;
-    }
+  //Variavel de controle dos toggle menu PF
+  toggPF() {
+    return this.toggle_pf_menu = !this.toggle_pf_menu;
   }
-
-  mouseleave() {
-    if (!this.isExpanded) {
-      this.isShowing = false;
-    }
+  //Variavel de controle dos toggle menu PJ
+  toggPJ() {
+    return this.toggle_pj_menu = !this.toggle_pj_menu;
   }
 }
