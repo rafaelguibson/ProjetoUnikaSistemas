@@ -29,3 +29,9 @@ table {
 .filter-container {
   padding: 10px;
 }
+.menu-icon {
+  font-size: 1.35em;
+  text-shadow: 2px 2px 4px rgb(48, 48, 58);
+  color: #212129;
+  padding-right: 7px;
+}

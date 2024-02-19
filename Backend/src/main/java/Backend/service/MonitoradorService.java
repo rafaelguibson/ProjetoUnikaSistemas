@@ -191,6 +191,7 @@ public class MonitoradorService {
     }
 
     public List<Monitorador> getAllMonitoradores() {
+
         return monitoradorRepository.findAll();
     }
 

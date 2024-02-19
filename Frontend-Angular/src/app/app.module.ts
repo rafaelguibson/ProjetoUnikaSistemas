@@ -11,12 +11,14 @@ import {HttpClientModule} from "@angular/common/http";
 import { TableComponent } from './component/table/table.component';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
     MenuBarComponent,
     MenuBarComponent,
     TableComponent,
+
   ],
   imports: [
     BrowserModule,

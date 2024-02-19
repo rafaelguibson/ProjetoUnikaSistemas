@@ -11,7 +11,7 @@ import {Monitorador} from "../../model/monitorador";
   styleUrl: './table.component.css'
 })
 export class TableComponent {
-  displayedColumns = ['id', 'nomeRazaoSocial', 'cpfCnpj', 'telefone', 'email'];
+  displayedColumns = ['id', 'tipoPessoa', 'nomeRazaoSocial', 'cpfCnpj','rgIe', 'telefone', 'email','menus'];
   dataSource!:MatTableDataSource<Monitorador>;
   @ViewChild(MatPaginator) paginator!:MatPaginator
   @ViewChild(MatSort) sort!:MatSort
@@ -38,4 +38,7 @@ export class TableComponent {
   }
 
   protected readonly input = input;
+
+
+
 }

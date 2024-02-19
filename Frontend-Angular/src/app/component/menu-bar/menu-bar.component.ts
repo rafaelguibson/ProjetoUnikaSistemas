@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import {MatDialog} from "@angular/material/dialog";
+import {DialogComponent} from "../dialog/dialog.component";
 
 @Component({
   selector: 'app-menu-bar',
@@ -17,5 +19,15 @@ export class MenuBarComponent {
   //Variavel de controle dos toggle menu PJ
   toggPJ() {
     return this.toggle_pj_menu = !this.toggle_pj_menu;
+  }
+
+  constructor(public dialog:MatDialog) {
+  }
+  openDialog() {
+    this.dialog.open(DialogComponent,
+      {
+        height: '600px',
+        width: '800px',
+      });
   }
 }
