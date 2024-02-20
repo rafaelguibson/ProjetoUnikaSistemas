@@ -3,9 +3,9 @@ import {TipoPessoa} from "./enum/tipo-pessoa";
 import {EstadoCivil} from "./enum/estado-civil";
 
 export interface Monitorador {
-  id: number;
+  id?: number;
   tipoPessoa: TipoPessoa;
-  estadoCivil: EstadoCivil;
+  estadoCivil?: EstadoCivil;
   nomeRazaoSocial: string;
   cpfCnpj: string;
   rgIe: string;
@@ -13,7 +13,7 @@ export interface Monitorador {
   email: string;
   dataNascimento: Date;
   status: boolean;
-  dataCadastro: Date;
+  dataCadastro?: Date;
   dataInicial?: Date;
   dataFinal?: Date;
   selected?: boolean;

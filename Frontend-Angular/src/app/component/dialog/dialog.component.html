@@ -1,6 +1,4 @@
-
-<form class="form-horizontal">
-  <fieldset>
+<fieldset>
     <div class="panel panel-primary" style="border: none;">
       <div class="panel-heading dialog-title" >
         <span class="header-space">Cadastro Pessoa {{data.tipoPessoa}} </span>
@@ -9,7 +7,9 @@
 
       <div class="panel-body">
         <div class="form-group form-content">
-          <form class="example-form">
+
+          <form [formGroup]="monitoradorForm">
+            <div></div>
             <table class="example-full-width">
               <tr>
                 <td colspan="2">
@@ -21,7 +21,7 @@
                     @if(data.tipoPessoa === TipoPessoa.PJ) {
                       <mat-label>Razão Social</mat-label>
                     }
-                    <input matInput>
+                    <input matInput required formControlName="nomeRazaoSocial" name="nomeRazaoSocial">
                     <mat-icon matSuffix>toc</mat-icon>
                   </mat-form-field>
                 </td>
@@ -35,7 +35,7 @@
                     @if(data.tipoPessoa === TipoPessoa.PJ) {
                       <mat-label>CNPJ</mat-label>
                     }
-                    <input matInput>
+                    <input matInput formControlName="cpfCnpj" name="cpfCnpj">
                     <mat-icon matSuffix>assignment_ind</mat-icon>
                   </mat-form-field>
                 </td>
@@ -47,7 +47,7 @@
                     @if(data.tipoPessoa === TipoPessoa.PJ) {
                       <mat-label>Inscrição Estadual</mat-label>
                     }
-                    <input matInput>
+                    <input matInput formControlName="rgIe" name="rgIe">
                     <mat-icon matSuffix>fingerprint</mat-icon>
                   </mat-form-field>
                 </td>
@@ -58,20 +58,14 @@
                 <td>
                   <mat-form-field class="example-full-width" appearance="outline">
                     <mat-label>Email</mat-label>
-                    <input type="email" matInput [formControl]="emailFormControl" placeholder="Ex. contato@email.com">
+                    <input type="email" matInput formControlName="email" name="email" placeholder="Ex. contato@email.com">
                     <mat-icon matSuffix>email</mat-icon>
-                    @if (emailFormControl.hasError('email') && !emailFormControl.hasError('required')) {
-                      <mat-error>Please enter a valid email address</mat-error>
-                    }
-                    @if (emailFormControl.hasError('required')) {
-                      <mat-error>Email is <strong>required</strong></mat-error>
-                    }
                   </mat-form-field>
                 </td>
                 <td>
                   <mat-form-field class="example-full-width" appearance="outline">
                     <mat-label>Telefone</mat-label>
-                    <input matInput>
+                    <input matInput formControlName="telefone" name="telefone">
                     <mat-icon matSuffix>phone</mat-icon>
                   </mat-form-field>
                 </td>
@@ -80,7 +74,7 @@
                 <td *ngIf="data.tipoPessoa === TipoPessoa.PF">
                   <mat-form-field class="example-full-width">
                     <mat-label>Data de Nascimento</mat-label>
-                    <input matInput [matDatepicker]="picker">
+                    <input matInput [matDatepicker]="picker" formControlName="dataNascimento" name="dataNascimento">
                     <mat-hint>MM/DD/YYYY</mat-hint>
                     <mat-datepicker-toggle matIconSuffix [for]="picker">
                       <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
@@ -90,17 +84,22 @@
                 </td>
                 <td>
                   <span>Status: </span>
-                  <mat-slide-toggle >
-                    <!--[(ngModel)]="status"-->
-                    <!--{{ ativo ? 'Ativo' : 'Inativo' }}-->
-                  </mat-slide-toggle>
+                  <mat-slide-toggle formControlName="status" name="status"></mat-slide-toggle>
+                  {{ monitoradorForm.get('status')!.value ? 'Ativo' : 'Inativo' }}
                 </td>
                 <td>
 
                 </td>
               </tr>
             </table>
+            <mat-card-actions>
+              <button mat-raised-button color="primary" (click)=" CadastrarMonitorador(monitoradorForm.value)"> Save</button>
+            </mat-card-actions>
 
+            <div >
+              {{monitoradorForm.value |json}}
+
+            </div>
           </form>
 
 
@@ -109,4 +108,4 @@
     </div>
 
   </fieldset>
-</form>
+

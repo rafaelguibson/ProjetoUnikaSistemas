@@ -15,7 +15,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import java.io.*;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -30,7 +29,7 @@ public class MonitoradorController {
     }
 
     @PostMapping
-    public ResponseEntity<Monitorador> createMonitorador(@RequestBody Monitorador monitorador) {
+    public ResponseEntity<Monitorador> save(@RequestBody Monitorador monitorador) {
         Monitorador savedMonitorador = monitoradorService.salvarMonitoradorComEnderecos(monitorador);
         return ResponseEntity.ok(savedMonitorador);
     }
