@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
@@ -26,6 +27,7 @@ import java.util.regex.Pattern;
 public class MonitoradorService {
     private static final Pattern CPF_PATTERN =
             Pattern.compile("[0-9]{3}\\.?[0-9]{3}\\.?[0-9]{3}\\-?[0-9]{2}");
+    private static final String DATE_FORMAT = "dd/MM/yyyy";
     private final MonitoradorRepository monitoradorRepository;
     private final ExcelService excelService;
     private final ReportService reportService;
@@ -61,7 +63,6 @@ public class MonitoradorService {
         if (enderecos != null && !enderecos.isEmpty()) {
             for (Endereco endereco : enderecos) {
                 endereco.setMonitorador(monitoradorSalvo);
-                // Aqui você poderia usar o EnderecoRepository.save() diretamente se necessário
             }
         }
 
@@ -190,8 +191,8 @@ public class MonitoradorService {
         return excelService.exportMonitoradoresToExcel(monitoradorRepository.findAll());
     }
 
-    public List<Monitorador> getAllMonitoradores() {
 
+    public List<Monitorador> getAllMonitoradores() {
         return monitoradorRepository.findAll();
     }
 

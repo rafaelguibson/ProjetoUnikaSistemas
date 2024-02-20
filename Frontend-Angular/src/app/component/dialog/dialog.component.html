@@ -77,6 +77,17 @@
                 </td>
               </tr>
               <tr>
+                <td *ngIf="data.tipoPessoa === TipoPessoa.PF">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Data de Nascimento</mat-label>
+                    <input matInput [matDatepicker]="picker">
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker">
+                      <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
+                </td>
                 <td>
                   <span>Status: </span>
                   <mat-slide-toggle >

@@ -9,6 +9,7 @@ import { MenuBarComponent } from './component/menu-bar/menu-bar.component';
 import { MonitoradorHttpClientService} from "./service/monitorador-http-client.service";
 import {HttpClientModule} from "@angular/common/http";
 import { TableComponent } from './component/table/table.component';
+import {MAT_DATE_LOCALE} from "@angular/material/core";
 
 
 
@@ -27,6 +28,7 @@ import { TableComponent } from './component/table/table.component';
     HttpClientModule
   ],
   providers: [
+    {provide: MAT_DATE_LOCALE, useValue: `pt-BR`},
     provideAnimationsAsync(),
     MonitoradorHttpClientService
   ],

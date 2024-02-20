@@ -71,7 +71,7 @@ ul {
 .sidebar-header {
   justify-content: center;
   padding-top: 20px;
-  padding-bottom: 20px;
+  padding-bottom: 10px;
   overflow: hidden;
   display: flex;
   align-items: center;

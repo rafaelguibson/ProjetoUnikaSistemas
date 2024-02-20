@@ -5,13 +5,14 @@ import {MaterialModule} from "../../material/material.module";
 
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {TipoPessoa} from "../../model/enum/tipo-pessoa";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-dialog',
   templateUrl: './dialog.component.html',
   styleUrl: './dialog.component.css',
   standalone: true,
-  imports: [MaterialModule, ReactiveFormsModule,MatTooltipModule],
+  imports: [MaterialModule, ReactiveFormsModule, MatTooltipModule, NgIf],
 })
 export class DialogComponent  implements OnInit{
   valorToggle = false; // Valor padrão é false (desativado).
