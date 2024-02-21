@@ -10,6 +10,8 @@ import { MonitoradorHttpClientService} from "./service/monitorador-http-client.s
 import {HttpClientModule} from "@angular/common/http";
 import { TableComponent } from './component/table/table.component';
 import {MAT_DATE_LOCALE} from "@angular/material/core";
+import { DataViewComponent } from './component/data-view/data-view.component';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 
 
@@ -19,13 +21,16 @@ import {MAT_DATE_LOCALE} from "@angular/material/core";
     MenuBarComponent,
     MenuBarComponent,
     TableComponent,
+    DataViewComponent,
 
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     MaterialModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: `pt-BR`},

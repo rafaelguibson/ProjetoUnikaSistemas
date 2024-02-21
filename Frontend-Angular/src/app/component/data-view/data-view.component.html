@@ -1,0 +1,47 @@
+<fieldset>
+  <div class="panel panel-primary" style="border: none;">
+    <div class="panel-heading dialog-title">
+      <span class="header-space">Detalhamento Monitorador</span>
+      <a (click)="fecharModal()" style="cursor: pointer;"><i class="bi bi-x-circle-fill" matTooltip="Fechar Modal"></i></a>
+    </div>
+
+    <div class="panel-body">
+      <div class="form-group form-content">
+        <table>
+          <tr>
+            <td style="width: 25%;"><strong>Tipo:</strong> {{data.monitorador.tipoPessoa == TipoPessoa.PF ? 'Física':'Jurídica'}}</td>
+            <td style="width: 25%;"></td>
+            <td *ngIf="data.monitorador.tipoPessoa === TipoPessoa.PJ" style="width: 25%;"><strong>CNPJ:</strong> {{data.monitorador.cpfCnpj}}</td>
+            <td *ngIf="data.monitorador.tipoPessoa === TipoPessoa.PF" style="width: 25%;"><strong>CPF:</strong> {{data.monitorador.cpfCnpj}}</td>
+          </tr>
+
+          <tr *ngIf="data.monitorador.tipoPessoa == TipoPessoa.PF">
+            <td style="width: 25%;"><strong>Nome:</strong> {{data.monitorador.nomeRazaoSocial}}</td>
+            <td style="width: 25%;"></td>
+            <td style="width: 25%;"><strong>RG:</strong> {{data.monitorador.rgIe}}</td>
+          </tr>
+          <tr *ngIf="data.monitorador.tipoPessoa === TipoPessoa.PJ">
+            <td style="width: 25%;"><strong>Razão Social:</strong> {{data.monitorador.nomeRazaoSocial}}</td>
+            <td style="width: 25%;"></td>
+            <td style="width: 25%;"><strong>I.E:</strong> {{data.monitorador.rgIe}}</td>
+          </tr>
+          <tr>
+            <td style="width: 50%;" colspan="2"><strong>Email:</strong> {{data.monitorador.email}}</td>
+            <td style="width: 25%;"><strong>Telefone:</strong> {{data.monitorador.telefone}}</td>
+          </tr>
+
+          <tr>
+            <td *ngIf="data.monitorador.tipoPessoa == TipoPessoa.PF" colspan="2" style="width: 25%;"><strong>Data de Nascimento:</strong> {{data.monitorador.dataNascimento | date:'dd/MM/yyyy'}}</td>
+
+            <td *ngIf="data.monitorador.tipoPessoa == TipoPessoa.PF" colspan="2" style="width: 25%;"><strong>Status: </strong> {{data.monitorador.status ? 'Ativo': 'Inativo'}}</td>
+          </tr>
+          <tr>
+            <td style="width: 25%;"><strong>Data de Cadastro:</strong> {{data.monitorador.dataCadastro | date:'dd/MM/yyyy'}}</td>
+            <td style="width: 25%;"></td>
+            <td *ngIf="data.monitorador.tipoPessoa != TipoPessoa.PF" colspan="2" style="width: 25%;"><strong>Status: </strong> {{data.monitorador.status ? 'Ativo': 'Inativo'}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</fieldset>

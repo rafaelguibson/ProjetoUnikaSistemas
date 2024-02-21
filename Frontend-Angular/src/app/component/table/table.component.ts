@@ -4,6 +4,10 @@ import { MatPaginator} from "@angular/material/paginator";
 import { MatSort} from "@angular/material/sort";
 import { MatTableDataSource} from "@angular/material/table";
 import {Monitorador} from "../../model/monitorador";
+import {TipoPessoa} from "../../model/enum/tipo-pessoa";
+import {MatDialog} from "@angular/material/dialog";
+import {DialogComponent} from "../dialog/dialog.component";
+import {DataViewComponent} from "../data-view/data-view.component";
 
 @Component({
   selector: 'app-table',
@@ -17,7 +21,7 @@ export class TableComponent {
   @ViewChild(MatSort) sort!:MatSort
 
   data:any;
-  constructor(private httpService : MonitoradorHttpClientService) {
+  constructor(private httpService : MonitoradorHttpClientService,public dialog:MatDialog) {
     this.httpService.getData().subscribe(data => {
       console.log(data);
       this.data = data;
@@ -26,6 +30,15 @@ export class TableComponent {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
+  }
+
+  openDialog(monitorador: Monitorador) {
+    this.dialog.open(DataViewComponent,
+        {
+          height: '300px',
+          width: '700px',
+          data: {monitorador }
+        });
   }
 
   applyFilter(event : Event) {
@@ -56,5 +69,5 @@ export class TableComponent {
   protected readonly input = input;
 
 
-
+    protected readonly TipoPessoa = TipoPessoa;
 }

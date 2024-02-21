@@ -23,8 +23,7 @@ export class MenuBarComponent {
     return this.toggle_pj_menu = !this.toggle_pj_menu;
   }
 
-  constructor(public dialog:MatDialog) {
-  }
+  constructor(public dialog:MatDialog) { }
 
   openDialog(tipoPessoa: TipoPessoa) {
   if(tipoPessoa === TipoPessoa.PF)  this.toggle_pf_menu = !this.toggle_pf_menu;
