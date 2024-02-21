@@ -58,5 +58,7 @@ export class DialogComponent implements OnInit {
     }, (error) => {
       console.error('Erro ao salvar o monitorador:', error);
     });
+    this.fecharModal();
+    this.monitoradorForm.reset();
   }
 }

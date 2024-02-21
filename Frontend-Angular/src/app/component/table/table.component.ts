@@ -37,6 +37,22 @@ export class TableComponent {
     }
   }
 
+  deleteMonitorador(id: number) {
+    this.httpService.deleteMonitorador(id).subscribe(
+        (response) => {
+          console.log('Monitorador excluído com sucesso:', response);
+          // Atualize os dados após a exclusão
+          this.httpService.getData().subscribe((data) => {
+            this.data = data;
+            this.dataSource.data = this.data;
+          });
+        },
+        (error) => {
+          console.error('Erro ao excluir o monitorador:', error);
+        }
+    );
+  }
+
   protected readonly input = input;
 
 
