@@ -29,7 +29,7 @@ public class MonitoradorController {
     }
 
     @PostMapping
-    public ResponseEntity<Monitorador> save(@RequestBody Monitorador monitorador) {
+    public ResponseEntity<Monitorador> createMonitorador(@RequestBody Monitorador monitorador) {
         Monitorador savedMonitorador = monitoradorService.salvarMonitoradorComEnderecos(monitorador);
         return ResponseEntity.ok(savedMonitorador);
     }

@@ -12,6 +12,7 @@ import { TableComponent } from './component/table/table.component';
 import {MAT_DATE_LOCALE} from "@angular/material/core";
 import { DataViewComponent } from './component/data-view/data-view.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { DeleteConfirmComponent } from './component/delete-confirm/delete-confirm.component';
 
 
 
@@ -22,6 +23,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     MenuBarComponent,
     TableComponent,
     DataViewComponent,
+    DeleteConfirmComponent,
 
   ],
   imports: [

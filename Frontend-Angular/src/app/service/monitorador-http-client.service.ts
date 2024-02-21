@@ -58,7 +58,7 @@ export class MonitoradorHttpClientService {
     return this.http.patch<Monitorador>(url, monitorador);
   }
 
-  deleteMonitorador(id: number): Observable<void> {
+  deleteMonitorador(id: number | undefined): Observable<void> {
     const url = `${this.baseUrl}/${id}`;
     return this.http.delete<void>(url);
   }

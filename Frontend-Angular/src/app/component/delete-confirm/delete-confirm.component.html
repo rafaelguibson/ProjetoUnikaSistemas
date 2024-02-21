@@ -1,0 +1,33 @@
+  <div class="panel panel-primary">
+    <div class="panel-heading dialog-title">
+      <span class="header-space">Deletar Monitorador</span>
+      <a (click)="fecharModal()" style="cursor: pointer;"><i class="bi bi-x-circle-fill" matTooltip="Fechar Modal"></i></a>
+    </div>
+
+    <div class="panel-body">
+
+        <mat-dialog-content>
+          <table>
+            <tr>
+              <td>Tem certeza que deseja excluir o monitorador</td>
+            </tr>
+            <tr>
+              <td><strong>{{data.monitorador.nomeRazaoSocial}}?</strong></td>
+            </tr>
+          </table>
+
+        </mat-dialog-content>
+        <div class="central-div">
+          <mat-dialog-actions>
+            <button mat-button mat-dialog-close>
+              <span>Não</span>
+              <i class="bi bi-x-lg"></i></button>
+            <button mat-button (click)="deleteMonitorador(data.monitorador)" cdkFocusInitial>
+              <span>Sim</span>
+              <i class="bi bi-check-circle"></i></button>
+          </mat-dialog-actions>
+        </div>
+      </div>
+
+  </div>
+

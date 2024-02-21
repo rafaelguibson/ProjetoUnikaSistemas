@@ -6,9 +6,11 @@ import Backend.enums.TipoPessoa;
 import Backend.exceptions.CampoObrigatorioException;
 import Backend.exceptions.DataNascimentoException;
 import Backend.exceptions.RegistroDuplicadoException;
+import Backend.repository.EnderecoRepository;
 import Backend.repository.MonitoradorRepository;
 import Backend.service.ExcelService;
 
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import net.sf.jasperreports.engine.JRException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +33,14 @@ public class MonitoradorService {
     private final MonitoradorRepository monitoradorRepository;
     private final ExcelService excelService;
     private final ReportService reportService;
-
+    private final EnderecoRepository enderecoRepository;
 
     @Autowired
-    public MonitoradorService(MonitoradorRepository monitoradorRepository, ExcelService excelService,ReportService reportService) {
+    public MonitoradorService(MonitoradorRepository monitoradorRepository, ExcelService excelService, ReportService reportService, EnderecoRepository enderecoRepository) {
         this.monitoradorRepository = monitoradorRepository;
         this.excelService = excelService;
         this.reportService = reportService;
+        this.enderecoRepository = enderecoRepository;
     }
 
     public Monitorador saveMonitorador(@Valid Monitorador monitorador) {
@@ -46,7 +49,10 @@ public class MonitoradorService {
 
     public List<Monitorador> saveAllMonitorador(@Valid List<Monitorador> monitorador) {
         validarDuplicadosLista(monitorador);
-        return monitoradorRepository.saveAll(monitorador);
+        for(Monitorador item: monitorador) {
+            salvarMonitoradorComEnderecos(item);
+        }
+        return monitorador;
     }
 
     public Monitorador getMonitoradorById(Long id) {
@@ -55,17 +61,24 @@ public class MonitoradorService {
     }
 
 
+    @Transactional
     public Monitorador salvarMonitoradorComEnderecos(@Valid Monitorador monitorador) {
+        //validação monitorador
         validarMonitorador(monitorador);
+
+        //salva o monitorador
         Monitorador monitoradorSalvo = monitoradorRepository.save(monitorador);
 
+        //associa os endereços ao monitorador e salve os endereços
         List<Endereco> enderecos = monitorador.getEnderecos();
         if (enderecos != null && !enderecos.isEmpty()) {
             for (Endereco endereco : enderecos) {
                 endereco.setMonitorador(monitoradorSalvo);
+                enderecoRepository.save(endereco);
             }
         }
 
+        // a o monitorador salvo com os endereços associados
         return monitoradorSalvo;
     }
 

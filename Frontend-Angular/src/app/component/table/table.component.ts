@@ -8,6 +8,7 @@ import {TipoPessoa} from "../../model/enum/tipo-pessoa";
 import {MatDialog} from "@angular/material/dialog";
 import {DialogComponent} from "../dialog/dialog.component";
 import {DataViewComponent} from "../data-view/data-view.component";
+import {DeleteConfirmComponent} from "../delete-confirm/delete-confirm.component";
 
 @Component({
   selector: 'app-table',
@@ -22,23 +23,39 @@ export class TableComponent {
 
   data:any;
   constructor(private httpService : MonitoradorHttpClientService,public dialog:MatDialog) {
-    this.httpService.getData().subscribe(data => {
-      console.log(data);
-      this.data = data;
-
-      this.dataSource = new MatTableDataSource(this.data);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    });
+    this.loadDataTable();
   }
 
-  openDialog(monitorador: Monitorador) {
+  loadDataTable() {
+      this.httpService.getData().subscribe(data => {
+          console.log(data);
+          this.data = data;
+
+          this.dataSource = new MatTableDataSource(this.data);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+      });
+  }
+  openDialogDetails(monitorador: Monitorador) {
     this.dialog.open(DataViewComponent,
         {
-          height: '300px',
+          height: '500px',
           width: '700px',
           data: {monitorador }
         });
+  }
+
+  openDialogDelete(monitorador: Monitorador) {
+      const dialogRef = this.dialog.open(DeleteConfirmComponent,
+          {
+              height: '200px',
+              width: '400px',
+              data: { monitorador }
+          });
+
+      dialogRef.afterClosed().subscribe(result => {
+          this.loadDataTable();
+      });
   }
 
   applyFilter(event : Event) {
@@ -50,24 +67,6 @@ export class TableComponent {
     }
   }
 
-  deleteMonitorador(id: number) {
-    this.httpService.deleteMonitorador(id).subscribe(
-        (response) => {
-          console.log('Monitorador excluído com sucesso:', response);
-          // Atualize os dados após a exclusão
-          this.httpService.getData().subscribe((data) => {
-            this.data = data;
-            this.dataSource.data = this.data;
-          });
-        },
-        (error) => {
-          console.error('Erro ao excluir o monitorador:', error);
-        }
-    );
-  }
-
   protected readonly input = input;
-
-
-    protected readonly TipoPessoa = TipoPessoa;
+  protected readonly TipoPessoa = TipoPessoa;
 }
