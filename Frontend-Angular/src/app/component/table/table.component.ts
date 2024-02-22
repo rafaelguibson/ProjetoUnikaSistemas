@@ -39,7 +39,7 @@ export class TableComponent {
   openDialogDetails(monitorador: Monitorador) {
     this.dialog.open(DataViewComponent,
         {
-          height: '500px',
+          height: '420px',
           width: '700px',
           data: {monitorador }
         });

@@ -12,6 +12,7 @@ import {MatTableDataSource} from "@angular/material/table";
   styleUrl: './data-view.component.css'
 })
 export class DataViewComponent implements OnInit{
+
   dataSource = new MatTableDataSource<Endereco>();
   displayedColumns: string[] = ['cep', 'logradouro', 'complemento', 'numero', 'bairro', 'cidade', 'estado'];
 

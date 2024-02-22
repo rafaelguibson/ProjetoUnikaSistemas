@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, Inject, OnInit, ViewChild} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MaterialModule} from "../../material/material.module";
@@ -8,17 +8,21 @@ import {TipoPessoa} from "../../model/enum/tipo-pessoa";
 import {JsonPipe, NgIf} from "@angular/common";
 import {MonitoradorHttpClientService} from "../../service/monitorador-http-client.service";
 import {Monitorador} from "../../model/monitorador";
+import {MatTab, MatTabGroup} from "@angular/material/tabs";
 
 @Component({
   selector: 'app-dialog',
   templateUrl: './dialog.component.html',
   styleUrl: './dialog.component.css',
   standalone: true,
-  imports: [MaterialModule, ReactiveFormsModule, MatTooltipModule, NgIf, FormsModule, JsonPipe, MatFormFieldModule],
+  imports: [MaterialModule, ReactiveFormsModule, MatTooltipModule, NgIf, FormsModule, JsonPipe, MatFormFieldModule, MatTabGroup, MatTab],
 })
 export class DialogComponent implements OnInit {
+  @ViewChild('tabGroup') tabGroup!: MatTabGroup;
   protected readonly TipoPessoa = TipoPessoa;
   monitoradorForm!: FormGroup;
+  enderecoTab:boolean = true;
+  monitoradorTab:boolean = false;
 
   constructor(public dialogRef: MatDialogRef<DialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: { tipoPessoa: TipoPessoa },
@@ -28,6 +32,9 @@ export class DialogComponent implements OnInit {
   }
 
   ngOnInit() {
+    if(this.data.tipoPessoa == TipoPessoa.PF) {
+      this.dialogRef.updateSize('530px', '480px')
+    }
     this.monitoradorForm = this.formBuilder.group({
       id: ['', [Validators.required]],
       tipoPessoa: [this.data.tipoPessoa == TipoPessoa.PF ? 'PF': 'PJ', [Validators.required]],
@@ -60,5 +67,24 @@ export class DialogComponent implements OnInit {
     });
     this.fecharModal();
     this.monitoradorForm.reset();
+  }
+
+  avancar() {
+    // if (this.monitoradorForm.valid) {
+      // Assuming you want to switch to the second tab
+      this.tabGroup.selectedIndex = 1;
+      this.enderecoTab = !this.enderecoTab;
+    this.monitoradorTab = !this.monitoradorTab;
+    // }
+
+  }
+  retornar() {
+    // if (this.monitoradorForm.valid) {
+    // Assuming you want to switch to the second tab
+    this.tabGroup.selectedIndex = 0;
+    this.monitoradorTab = !this.monitoradorTab;
+    this.enderecoTab = !this.enderecoTab;
+    // }
+
   }
 }

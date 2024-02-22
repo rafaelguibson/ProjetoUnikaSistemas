@@ -1,12 +1,13 @@
 <fieldset>
-    <div class="panel panel-primary" style="border: none;">
-      <div class="panel-heading dialog-title" >
-        <span class="header-space">Cadastro Pessoa {{data.tipoPessoa}} </span>
-        <a (click)="fecharModal()"><i class="bi bi-x-circle-fill" matTooltip="Fechar Modal" ></i></a>
-      </div>
+  <div class="panel panel-primary" style="border: none;">
+    <div class="panel-heading dialog-title" >
+      <span class="header-space">Cadastro Pessoa {{data.tipoPessoa}} </span>
+      <a (click)="fecharModal()" style="cursor: pointer;"><i class="bi bi-x-circle-fill" matTooltip="Fechar Modal" ></i></a>
+    </div>
 
-      <div class="panel-body">
-        <div class="form-group form-content">
+    <div class="panel-body">
+      <mat-tab-group  #tabGroup>
+        <mat-tab label="Cadastro Monitorador" [disabled]="monitoradorTab"><div class="form-group form-content">
 
           <form [formGroup]="monitoradorForm">
             <div></div>
@@ -93,7 +94,7 @@
               </tr>
             </table>
             <mat-card-actions>
-              <button mat-raised-button color="primary" (click)=" CadastrarMonitorador(monitoradorForm.value)"> Save</button>
+              <button mat-raised-button color="primary" (click)="avancar()">Avançar</button>
             </mat-card-actions>
 
             <div class="invalid-feedback" >
@@ -103,9 +104,20 @@
           </form>
 
 
-      </div>
-    </div>
-    </div>
+        </div>  </mat-tab>
+        <mat-tab label="Cadastro Endereço" [disabled]="enderecoTab">
+<div class="container" style="min-height: 510px;">
 
-  </fieldset>
+  <mat-card-actions>
+    <button mat-raised-button color="primary" (click)="retornar()">Voltar</button>
+  </mat-card-actions>
+</div>
 
+
+        </mat-tab>
+      </mat-tab-group>
+
+    </div>
+  </div>
+
+</fieldset>

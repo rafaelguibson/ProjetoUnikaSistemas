@@ -82,13 +82,13 @@
                   <!-- Cidade Column -->
                   <ng-container matColumnDef="cidade">
                     <th mat-header-cell *matHeaderCellDef> Cidade </th>
-                    <td mat-cell *matCellDef="let endereco"> {{ endereco.cidade }} </td>
+                    <td mat-cell *matCellDef="let endereco"> {{ endereco.localidade }} </td>
                   </ng-container>
 
                   <!-- Estado Column -->
                   <ng-container matColumnDef="estado">
                     <th mat-header-cell *matHeaderCellDef> Estado </th>
-                    <td mat-cell *matCellDef="let endereco"> {{ endereco.estado }} </td>
+                    <td mat-cell *matCellDef="let endereco"> {{ endereco.uf }} </td>
                   </ng-container>
 
                   <!-- Configuração da Tabela -->
@@ -97,7 +97,7 @@
                 </table>
 
                 <!-- Paginação -->
-                <mat-paginator [pageSize]="[2]" showFirstLastButtons></mat-paginator>
+                <mat-paginator [pageSize]="[1]" showFirstLastButtons></mat-paginator>
               </div>
 
             </td>
