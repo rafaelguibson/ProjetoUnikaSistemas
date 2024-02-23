@@ -24,3 +24,25 @@
   display: flex;
   justify-content: center;
 }
+.icon-btn-yes {
+  font-size: 1.35em;
+  font-weight: 90;
+  text-shadow: 2px 2px 4px rgb(48, 48, 58);
+  color: green;
+}
+.icon-btn-no {
+  font-size: 1.35em;
+  font-weight: 90;
+  text-shadow: 2px 2px 4px rgb(48, 48, 58);
+  color: red;
+}
+.spn-space {
+  margin-right: 15px;
+}
+.button-yes {
+  border: 1px solid #212129;
+}
+.button-no {
+  margin-right: 30px;
+  border: 1px solid #212129;
+}

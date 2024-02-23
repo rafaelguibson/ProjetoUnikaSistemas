@@ -9,6 +9,8 @@ import {JsonPipe, NgIf} from "@angular/common";
 import {MonitoradorHttpClientService} from "../../service/monitorador-http-client.service";
 import {Monitorador} from "../../model/monitorador";
 import {MatTab, MatTabGroup} from "@angular/material/tabs";
+import {Endereco} from "../../model/endereco";
+import {MatTableDataSource} from "@angular/material/table";
 
 @Component({
   selector: 'app-dialog',
@@ -21,9 +23,10 @@ export class DialogComponent implements OnInit {
   @ViewChild('tabGroup') tabGroup!: MatTabGroup;
   protected readonly TipoPessoa = TipoPessoa;
   monitoradorForm!: FormGroup;
-  enderecoTab:boolean = true;
-  monitoradorTab:boolean = false;
-
+  enderecoForm!: FormGroup;
+  showAddressForm:boolean = false;
+  dataSource = new MatTableDataSource<Endereco>();
+  displayedColumns: string[] = ['cep', 'logradouro', 'complemento', 'numero', 'bairro', 'cidade', 'estado'];
   constructor(public dialogRef: MatDialogRef<DialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: { tipoPessoa: TipoPessoa },
               private formBuilder: FormBuilder,
@@ -32,9 +35,9 @@ export class DialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    if(this.data.tipoPessoa == TipoPessoa.PF) {
-      this.dialogRef.updateSize('530px', '480px')
-    }
+    // if(this.data.tipoPessoa == TipoPessoa.PF) {
+    //   this.dialogRef.updateSize('530px', '480px')
+    // }
     this.monitoradorForm = this.formBuilder.group({
       id: ['', [Validators.required]],
       tipoPessoa: [this.data.tipoPessoa == TipoPessoa.PF ? 'PF': 'PJ', [Validators.required]],
@@ -48,8 +51,17 @@ export class DialogComponent implements OnInit {
       dataNascimento: [null, [Validators.required]],
       status: [true],
     });
-    // Acesse o tipoPessoa aqui
-    console.log('Tipo de Pessoa:', this.data.tipoPessoa);
+    this.enderecoForm = this.formBuilder.group({
+      monitorador: ['', Validators.required],
+      logradouro: ['', Validators.required],
+      complemento: [''],
+      numero: [''],
+      cep: ['', [Validators.required, Validators.pattern(/^\d{5}-\d{3}$/)]],
+      bairro: [''],
+      localidade: ['', Validators.required],
+      uf: ['', Validators.required],
+      desabilitarNumero: [false]
+    });
   }
 
   fecharModal() {
@@ -57,6 +69,15 @@ export class DialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  onSubmit() {
+    if (this.enderecoForm.valid) {
+      // Create an Endereco object from the form values
+      const endereco: Endereco = this.enderecoForm.value as Endereco;
+
+      // Perform any additional logic, such as submitting the form data
+      console.log('Submitted Endereco:', endereco);
+    }
+  }
 
   CadastrarMonitorador(monitorador: Monitorador) {
     this.monitoradorService.saveMonitorador(this.monitoradorForm.value).subscribe(response => {
@@ -69,22 +90,7 @@ export class DialogComponent implements OnInit {
     this.monitoradorForm.reset();
   }
 
-  avancar() {
-    // if (this.monitoradorForm.valid) {
-      // Assuming you want to switch to the second tab
-      this.tabGroup.selectedIndex = 1;
-      this.enderecoTab = !this.enderecoTab;
-    this.monitoradorTab = !this.monitoradorTab;
-    // }
-
-  }
-  retornar() {
-    // if (this.monitoradorForm.valid) {
-    // Assuming you want to switch to the second tab
-    this.tabGroup.selectedIndex = 0;
-    this.monitoradorTab = !this.monitoradorTab;
-    this.enderecoTab = !this.enderecoTab;
-    // }
-
+  showAddress() {
+      this.showAddressForm = !this.showAddressForm;
   }
 }
