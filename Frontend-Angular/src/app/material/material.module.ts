@@ -51,6 +51,7 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
     MatTooltipModule,
     MatSlideToggleModule,
 
+
   ]
 })
 export class MaterialModule { }
