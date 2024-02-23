@@ -91,6 +91,13 @@ export class DialogComponent implements OnInit {
   }
 
   showAddress() {
+
       this.showAddressForm = !this.showAddressForm;
+      if(this.showAddressForm) {
+        this.dialogRef.updateSize('800px', '700px')
+      }
+      if (!this.showAddressForm) {
+        this.dialogRef.updateSize('800px', '230px')
+      }
   }
 }

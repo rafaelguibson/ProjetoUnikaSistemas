@@ -30,7 +30,7 @@ export class MenuBarComponent {
   if(tipoPessoa === TipoPessoa.PJ)  this.toggle_pj_menu = !this.toggle_pj_menu;
     this.dialog.open(DialogComponent,
       {
-        height: '750px',
+        height: '230px',
         width: '800px',
         data: {tipoPessoa }
       });

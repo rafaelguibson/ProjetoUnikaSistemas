@@ -2,8 +2,8 @@
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <!------ Include the above in your HEAD tag ---------->
-<fieldset>
-  <div class="panel" style="border: none;">
+
+  <div class="panel" style="border: none; overflow: hidden">
     <div class="panel-heading dialog-title">
       <span class="header-space">Cadastro Pessoa {{ data.tipoPessoa == 'PF'? 'Física': 'Jurídica' }} </span>
       <a (click)="fecharModal()" style="cursor: pointer;"><i class="bi bi-x-circle-fill" matTooltip="Fechar Modal"></i></a>
@@ -74,73 +74,75 @@
 
           </div>
           <mat-card-actions>
-            <button mat-raised-button color="primary" (click)="showAddress()">Adicionar Endereço</button>
+            <button  class="btn btn-dark" (click)="showAddress()">Adicionar Endereço</button>
           </mat-card-actions>
           <div class="form-group form-content" *ngIf="showAddressForm">
             <!-- endereco-form.component.html -->
-
+            <mat-card class="mat-elevation-z24 table-data"  style="box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.2);">
+              <mat-card-content><span style="font-weight: bold">Cadastrar Endereços</span> </mat-card-content>
+            </mat-card>
             <form [formGroup]="enderecoForm" (ngSubmit)="onSubmit()">
               <div style="display: flex; flex-wrap: wrap; gap: 10px; width: 100%; max-width: 780px;">
                 <div style="width: 30%; max-width: 30%;">
                   <div class="input-group" style="margin-bottom: 5px;">
                     <span class="input-group-addon">CEP: </span>
-                    <input id="cep" name="cep" class="form-control" placeholder="" required="" type="text">
+                    <input id="cep" name="cep" class="form-control" placeholder="" required="" type="text" formControlName="cep">
                   </div>
                 </div>
                 <div>
-                  <button type="button" class="btn btn-primary" matTooltip="Pesquisar CEP">Pesquisar</button>
+                  <button type="button" class="btn btn-dark" matTooltip="Pesquisar CEP">Pesquisar</button>
                 </div>
                 <!-- ... CEP e botão Pesquisar ... -->
 
                 <div style="width: 55%; max-width: 55%;">
                   <div class="input-group" style="margin-bottom: 5px;">
                     <span class="input-group-addon">Rua: </span>
-                    <input id="rua" name="rua" class="form-control" placeholder="" required="" readonly="readonly" type="text">
+                    <input id="logradouro" name="logradouro" class="form-control" placeholder="" required="" type="text"  formControlName="logradouro">
                   </div>
                 </div>
 
                 <div style="width: 35%; max-width: 35%;">
                   <div class="input-group" style="margin-bottom: 5px;">
                     <span class="input-group-addon">Bairro</span>
-                    <input id="bairro" name="bairro" class="form-control" placeholder="" required="" readonly="readonly" type="text">
+                    <input id="bairro" name="bairro" class="form-control" placeholder="" required="" formControlName="bairro">
                   </div>
                 </div>
 
                 <div style="width: 45%; max-width: 45%;">
                   <div class="input-group" style="margin-bottom: 5px;">
                     <span class="input-group-addon">Complemento</span>
-                    <input id="complemento" name="complemento" class="form-control" placeholder="" required="" readonly="readonly" type="text">
+                    <input id="complemento" name="complemento" class="form-control" placeholder="" required="" type="text"  formControlName="complemento">
                   </div>
                 </div>
 
                 <div style="width: 15%; max-width: 15%;">
                   <div class="input-group" style="margin-bottom: 5px;">
                     <span class="input-group-addon">Nº: </span>
-                    <input id="numero" name="numero" class="form-control" placeholder="" required="" type="text">
+                    <input id="numero" name="numero" class="form-control" placeholder="" required="" type="text"  formControlName="numero">
                   </div>
                 </div>
 
                 <div style="width: 35%; max-width: 35%;">
                   <div class="input-group" style="margin-bottom: 5px;">
                     <span class="input-group-addon">Cidade</span>
-                    <input id="cidade" name="cidade" class="form-control" placeholder="" required="" readonly="readonly" type="text">
+                    <input id="localidade" name="localidade" class="form-control" placeholder="" required="" type="text"  formControlName="localidade">
                   </div>
                 </div>
 
                 <div style="width: 30%; max-width: 30%;">
                   <div class="input-group" style="margin-bottom: 5px;">
-                    <span class="input-group-addon">UF</span>
-                    <input id="estado" name="estado" class="form-control" placeholder="" required="" readonly="readonly" type="text">
+                    <span class="input-group-addon">Estado</span>
+                    <input id="uf" name="uf" class="form-control" placeholder="" required="" type="text"  formControlName="uf">
                   </div>
                 </div>
 
               </div>
             </form>
             <div>
-              <mat-card class="mat-elevation-z8 table-data">
-                <mat-card-content><h3>Endereços</h3> </mat-card-content>
+              <mat-card class="mat-elevation-z24 table-data"  style="box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.2);">
+                <mat-card-content><span style="font-weight: bold">Endereços Adicionados</span> </mat-card-content>
               </mat-card>
-              <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+              <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" >
                 <!-- CEP Column -->
                 <ng-container matColumnDef="cep">
                   <th mat-header-cell *matHeaderCellDef> CEP </th>
@@ -187,8 +189,6 @@
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
               </table>
-
-              <!-- Paginação -->
               <mat-paginator [pageSize]="[1]" showFirstLastButtons></mat-paginator>
             </div>
             <div style="display: flex; justify-content: space-between;">
@@ -197,7 +197,7 @@
                 <span class="header-space"></span>
               </mat-card-actions>
               <mat-card-actions>
-                <button mat-raised-button color="primary" type="submit">Submit</button>
+                <button class="btn btn-dark" type="submit">  <span style="font-weight: lighter">Cadastrar</span> <i class="bi bi-floppy-fill form-icon " style="margin-left: 5px; color: #ECEBE9"></i></button>
               </mat-card-actions>
             </div>
           </div>
@@ -206,4 +206,3 @@
     </div>
   </div>
 
-</fieldset>
