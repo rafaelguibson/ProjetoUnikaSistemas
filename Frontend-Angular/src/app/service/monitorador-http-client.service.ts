@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Monitorador } from "../model/monitorador";
+import {Endereco} from "../model/endereco";
 
 @Injectable({
   providedIn: 'root'
@@ -73,5 +74,9 @@ export class MonitoradorHttpClientService {
     return this.http.post<Monitorador[]>(url, filtro);
   }
 
-  // Adicione outros métodos conforme necessário
+  buscarCep(cep: string): Observable<Endereco> {
+    console.log(cep)
+    const url = `https://viacep.com.br/ws/${cep}/json/`;
+    return this.http.get<Endereco>(url);
+  }
 }

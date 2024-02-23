@@ -79,6 +79,35 @@ export class DialogComponent implements OnInit, AfterViewInit {
       console.log('Submitted Endereco:', endereco);
     // }
   }
+
+  buscarCep(endereco:Endereco): void {
+    const cep: string = endereco.cep;
+    if (!cep) {
+      console.error('CEP não fornecido');
+      return;
+    }
+
+    this.monitoradorService.buscarCep(cep).subscribe(
+      (enderecoRetornado) => {
+        console.log('Endereço encontrado:', enderecoRetornado);
+
+        // Configurar os valores nos campos do formulário de endereço
+        this.enderecoForm.patchValue({
+          logradouro: enderecoRetornado.logradouro,
+          complemento: enderecoRetornado.complemento,
+          numero: enderecoRetornado.numero,
+          bairro: enderecoRetornado.bairro,
+          localidade: enderecoRetornado.localidade,
+          uf: enderecoRetornado.uf,
+        });
+
+      },
+      (error) => {
+        console.error('Erro na busca de CEP:', error);
+        // Lógica de tratamento de erro
+      }
+    );
+  }
   ngAfterViewInit() {
 
   }
@@ -120,4 +149,5 @@ export class DialogComponent implements OnInit, AfterViewInit {
     // Limpa os controles do formulário de endereço
     this.enderecoForm.reset();
   }
+
 }
