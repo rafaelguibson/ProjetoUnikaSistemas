@@ -29,6 +29,8 @@ import java.util.regex.Pattern;
 public class MonitoradorService {
     private static final Pattern CPF_PATTERN =
             Pattern.compile("[0-9]{3}\\.?[0-9]{3}\\.?[0-9]{3}\\-?[0-9]{2}");
+    private static final Pattern EMAIL_PATTERN =
+            Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}$");
     private static final String DATE_FORMAT = "dd/MM/yyyy";
     private final MonitoradorRepository monitoradorRepository;
     private final ExcelService excelService;
@@ -120,11 +122,12 @@ public class MonitoradorService {
             validarCampoObrigatorio(monitorador.getNomeRazaoSocial(), "Razão Social");
             validarCampoObrigatorio(monitorador.getCpfCnpj(), "CNPJ");
             validarCampoObrigatorio(monitorador.getRgIe(), "Inscrição Estadual");
-            validarCampoObrigatorio(monitorador.getTelefone(), "Telefone");
             validarCampoObrigatorio(monitorador.getStatus(), "Status");
         }
-
-        //validarCampoObrigatorio(monitorador.getEnderecos(), "Endereços");
+        validarCampoObrigatorio(monitorador.getTelefone(), "Telefone");
+        validarCampoObrigatorio(monitorador.getEmail(), "Email");
+        validarEmail(monitorador.getEmail());
+        validarCampoObrigatorio(monitorador.getEnderecos(), "Endereços");
     }
 
     private void validarCampoObrigatorio(Object campo, String nomeCampo) {
@@ -140,7 +143,11 @@ public class MonitoradorService {
         }
         // Aqui você pode adicionar lógica adicional para validar os dígitos verificadores do CPF, se necessário.
     }
-
+    public void validarEmail(String email) throws IllegalArgumentException {
+        if (!EMAIL_PATTERN.matcher(email).matches()) {
+            throw new IllegalArgumentException("E-mail inválido.");
+        }
+    }
     public void validarDuplicadosLista(List<Monitorador> monitoradorList) throws RegistroDuplicadoException {
         // Verifique se os es monitorador já existem pelo ID ou outro campo único, por exemplo, CPF ou CNPJ
         for(Monitorador item: monitoradorList) {

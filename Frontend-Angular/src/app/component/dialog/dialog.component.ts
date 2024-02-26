@@ -116,7 +116,10 @@ export class DialogComponent implements OnInit, AfterViewInit {
 
   }
   adicionarEndereco(endereco: Endereco) {
-    // Adiciona o endereço à lista separada
+    if(endereco.cep == null) {
+      this.errorMensagem = 'É necessário preencher o CEP!';
+      this.showFeedbackPanel = true;
+    }
     this.enderecoList.push(endereco);
     // Atualiza a fonte de dados da tabela
     this.dataSource.data = [...this.enderecoList];
@@ -145,6 +148,7 @@ export class DialogComponent implements OnInit, AfterViewInit {
 
   showAddress() {
 
+    // if(this.monitoradorForm.valid) {
       this.showAddressForm = !this.showAddressForm;
       if(this.showAddressForm) {
         this.dialogRef.updateSize('800px', '805px')
@@ -152,6 +156,7 @@ export class DialogComponent implements OnInit, AfterViewInit {
       if (!this.showAddressForm) {
         this.dialogRef.updateSize('800px', '285px')
       }
+    // }
   }
   private limparFormularioEndereco() {
     // Limpa os controles do formulário de endereço
