@@ -13,7 +13,7 @@ import {MAT_DATE_LOCALE} from "@angular/material/core";
 import { DataViewComponent } from './component/data-view/data-view.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { DeleteConfirmComponent } from './component/delete-confirm/delete-confirm.component';
-
+import {NgxMaskDirective, NgxMaskPipe, provideNgxMask} from "ngx-mask";
 
 
 @NgModule({
@@ -32,11 +32,11 @@ import { DeleteConfirmComponent } from './component/delete-confirm/delete-confir
     MaterialModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: `pt-BR`},
     provideAnimationsAsync(),
+    provideNgxMask(),
     MonitoradorHttpClientService
   ],
   bootstrap: [AppComponent]

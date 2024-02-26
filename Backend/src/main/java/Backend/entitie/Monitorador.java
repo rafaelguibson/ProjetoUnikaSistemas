@@ -1,6 +1,6 @@
 package Backend.entitie;
 
-import Backend.enums.EstadoCivil;
+
 import Backend.enums.TipoPessoa;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -29,9 +29,6 @@ public class Monitorador implements Serializable {
 
     @Enumerated(EnumType.STRING)
     private TipoPessoa tipoPessoa;
-
-    @Enumerated(EnumType.STRING)
-    private EstadoCivil estadoCivil;
 
     private String nomeRazaoSocial;
     private String cpfCnpj;

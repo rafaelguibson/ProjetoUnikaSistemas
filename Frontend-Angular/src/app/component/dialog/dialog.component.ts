@@ -13,25 +13,30 @@ import {Endereco} from "../../model/endereco";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator, MatPaginatorModule} from "@angular/material/paginator";
 import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from "@angular/material/snack-bar";
+import {NgxMaskDirective, NgxMaskPipe, provideNgxMask} from "ngx-mask";
+import {EstadoCivil} from "../../model/enum/estado-civil";
+import {error} from "@angular/compiler-cli/src/transformers/util";
 
 @Component({
   selector: 'app-dialog',
   templateUrl: './dialog.component.html',
   styleUrl: './dialog.component.css',
   standalone: true,
-  imports: [MaterialModule, ReactiveFormsModule, MatTooltipModule, NgIf, FormsModule, JsonPipe, MatFormFieldModule, MatPaginatorModule],
+  imports: [MaterialModule, ReactiveFormsModule, MatTooltipModule, NgIf, FormsModule, JsonPipe, MatFormFieldModule, MatPaginatorModule, NgxMaskDirective, NgxMaskPipe],
+  providers: [provideNgxMask()]
 })
 export class DialogComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   protected readonly TipoPessoa = TipoPessoa;
   monitoradorForm!: FormGroup;
   enderecoForm!: FormGroup;
-  showAddressForm:boolean = false;
+  showAddressForm: boolean = false;
   enderecoList: Endereco[] = [];
-  showFeedbackPanel:boolean = false;
-  errorMensagem:string = '';
+  showFeedbackPanel: boolean = false;
+  errorMensagem: string = '';
   dataSource = new MatTableDataSource<Endereco>();
   displayedColumns: string[] = ['cep', 'logradouro', 'complemento', 'numero', 'bairro', 'cidade', 'estado'];
+
   constructor(public dialogRef: MatDialogRef<DialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: { tipoPessoa: TipoPessoa },
               private formBuilder: FormBuilder,
@@ -43,20 +48,19 @@ export class DialogComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.monitoradorForm = this.formBuilder.group({
       id: [''],
-      tipoPessoa: [this.data.tipoPessoa == TipoPessoa.PF ? 'PF': 'PJ'],
-      estadoCivil: [null],
+      tipoPessoa: [this.data.tipoPessoa],
       dataCadastro: [null],
       nomeRazaoSocial: ['', [Validators.required]],
       cpfCnpj: ['', [Validators.required]],
       rgIe: ['', [Validators.required]],
       telefone: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
-      dataNascimento: [null, [Validators.required]],
+      dataNascimento: [null, this.data.tipoPessoa === TipoPessoa.PF ? [Validators.required] : []],
       status: [true],
-      enderecos: [[]],
+      enderecos: [this.enderecoList],
     });
     this.enderecoForm = this.formBuilder.group({
-      monitorador: ['', Validators.required],
+      monitorador: [null],
       logradouro: ['', Validators.required],
       complemento: [''],
       numero: [''],
@@ -75,26 +79,23 @@ export class DialogComponent implements OnInit, AfterViewInit {
   }
 
   onAddAddress() {
-    // if (this.enderecoForm.valid) {
-      // Create an Endereco object from the form values
-      const endereco: Endereco = this.enderecoForm.value as Endereco;
-      this.adicionarEndereco(endereco);
-      this.limparFormularioEndereco();
-      console.log('Submitted Endereco:', endereco);
-    // }
+
+    // Create an Endereco object from the form values
+    const endereco: Endereco = this.enderecoForm.value as Endereco;
+    this.adicionarEndereco(endereco);
+    this.limparFormularioEndereco();
+
   }
 
-  buscarCep(endereco:Endereco): void {
+  buscarCep(endereco: Endereco): void {
     const cep: string = endereco.cep;
     if (!cep) {
-      console.error('CEP não fornecido');
+      this.showErrorMensage('É necessário preencher o CEP!');
       return;
     }
 
     this.monitoradorService.buscarCep(cep).subscribe(
       (enderecoRetornado) => {
-        console.log('Endereço encontrado:', enderecoRetornado);
-
         // Configurar os valores nos campos do formulário de endereço
         this.enderecoForm.patchValue({
           logradouro: enderecoRetornado.logradouro,
@@ -107,19 +108,16 @@ export class DialogComponent implements OnInit, AfterViewInit {
 
       },
       (error) => {
-        console.error('Erro na busca de CEP:', error);
-        // Lógica de tratamento de erro
+          this.showErrorMensage(error);
       }
     );
   }
+
   ngAfterViewInit() {
 
   }
+
   adicionarEndereco(endereco: Endereco) {
-    if(endereco.cep == null) {
-      this.errorMensagem = 'É necessário preencher o CEP!';
-      this.showFeedbackPanel = true;
-    }
     this.enderecoList.push(endereco);
     // Atualiza a fonte de dados da tabela
     this.dataSource.data = [...this.enderecoList];
@@ -127,37 +125,55 @@ export class DialogComponent implements OnInit, AfterViewInit {
   }
 
   adicionarEnderecosAoMonitoradorForm() {
-    // Adiciona a lista de endereços ao monitoradorForm
     this.monitoradorForm.get('enderecos')?.setValue(this.enderecoList);
+    console.log('Endereços adicionados: ', this.monitoradorForm.value );
   }
 
-  cadastrarMonitorador(monitorador: Monitorador) {
-    this.monitoradorService.saveMonitorador(this.monitoradorForm.value).subscribe(response => {
+  cadastrarMonitorador() {
+    this.adicionarEnderecosAoMonitoradorForm();
+    const monitorador: Monitorador = this.monitoradorForm.value as Monitorador;
+    console.log(monitorador);
+    this.monitoradorService.saveMonitorador(monitorador).subscribe(response => {
       console.log('Monitorador salvo com sucesso:', response);
       this.fecharModal();
       this.monitoradorForm.reset();
       // this.dialogRef.close();
     }, (error) => {
-      this.errorMensagem = 'Erro ao salvar o monitorador: ' + error.error;
-      this.showFeedbackPanel = true;
-      console.error('Erro ao salvar o monitorador:', error.error);
+      this.showErrorMensage(error.error);
     });
 
   }
 
+  showErrorMensage(msg: string ) {
+    this.errorMensagem = msg ;
+    this.showFeedbackPanel = true;
+    this.scheduleMessageClear();
+  }
+  // Função para agendar a limpeza da mensagem após 10 segundos
+  private scheduleMessageClear() {
+    setTimeout(() => {
+      this.errorMensagem = ''; // Limpar a mensagem após 5 segundos
+      this.showFeedbackPanel = false;
+    }, 5000); // 5000 milissegundos = 5 segundos
+  }
 
   showAddress() {
 
-    // if(this.monitoradorForm.valid) {
+    if (this.monitoradorForm.valid) {
+      this.showFeedbackPanel = false!
       this.showAddressForm = !this.showAddressForm;
-      if(this.showAddressForm) {
+      if (this.showAddressForm) {
         this.dialogRef.updateSize('800px', '805px')
       }
       if (!this.showAddressForm) {
         this.dialogRef.updateSize('800px', '285px')
       }
-    // }
+    } else {
+      this.errorMensagem = 'Preencha todos os campos... ';
+      this.showFeedbackPanel = true;
+    }
   }
+
   private limparFormularioEndereco() {
     // Limpa os controles do formulário de endereço
     this.enderecoForm.reset();

@@ -28,7 +28,6 @@ export class TableComponent {
 
   loadDataTable() {
       this.httpService.getData().subscribe(data => {
-          console.log(data);
           this.data = data;
 
           this.dataSource = new MatTableDataSource(this.data);
@@ -67,6 +66,4 @@ export class TableComponent {
     }
   }
 
-  protected readonly input = input;
-  protected readonly TipoPessoa = TipoPessoa;
 }

@@ -33,7 +33,7 @@ export class MenuBarComponent {
   if(tipoPessoa === TipoPessoa.PJ)  this.toggle_pj_menu = !this.toggle_pj_menu;
     this.dialog.open(DialogComponent,
       {
-        height: '285px',
+        height: '295px',
         width: '800px',
         data: {tipoPessoa }
       });
@@ -60,18 +60,4 @@ export class MenuBarComponent {
       document.body.removeChild(downloadLink);
     });
   }
-  // exportToPdf(): void {
-  //   this.monitoradorService.exportMonitoradoresToExcel().subscribe((response) => {
-  //     const blob = new Blob([response.body as BlobPart], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-  //
-  //     const downloadLink = document.createElement('a');
-  //     const url = window.URL.createObjectURL(blob);
-  //     downloadLink.href = url;
-  //     downloadLink.download = 'monitoradores.xlsx';
-  //
-  //     document.body.appendChild(downloadLink);
-  //     downloadLink.click();
-  //     document.body.removeChild(downloadLink);
-  //   });
-  // }
 }

@@ -5,7 +5,6 @@ import {EstadoCivil} from "./enum/estado-civil";
 export interface Monitorador {
   id?: number;
   tipoPessoa: TipoPessoa;
-  estadoCivil?: EstadoCivil;
   nomeRazaoSocial: string;
   cpfCnpj: string;
   rgIe: string;
