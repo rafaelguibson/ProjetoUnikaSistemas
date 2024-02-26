@@ -124,7 +124,7 @@ public class MonitoradorService {
             validarCampoObrigatorio(monitorador.getStatus(), "Status");
         }
 
-        validarCampoObrigatorio(monitorador.getEnderecos(), "Endereços");
+        //validarCampoObrigatorio(monitorador.getEnderecos(), "Endereços");
     }
 
     private void validarCampoObrigatorio(Object campo, String nomeCampo) {

@@ -13,6 +13,12 @@
   <div class="panel-body">
     <div class="form-group form-content">
       <form [formGroup]="monitoradorForm">
+        <div class="alert alert-danger" role="alert" *ngIf="showFeedbackPanel">
+          <div class="content">
+
+          </div>
+          {{errorMensagem}}
+        </div>
         <div style="display: flex; flex-wrap: wrap; gap: 5px; width: 100%; max-width: 780px;">
 
           <div style="width: 60%; max-width: 60%;">
@@ -57,14 +63,14 @@
           <div style="width: 40%; max-width: 40%;">
             <div class="input-group">
               <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-              <input id="prependedtext" name="prependedtext" class="form-control" placeholder="email@email.com" required="" type="text" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" >
+              <input  name="prependedtext" class="form-control" placeholder="email@email.com" required="" type="text" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" formControlName="email">
             </div>
           </div>
 
           <div style="width: 27.5%; max-width: 27.5%;">
             <div class="input-group">
               <span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
-              <input id="prependedtext" name="prependedtext" class="form-control" placeholder="Ex.: (99) 99999-9999" type="text" maxlength="13"  pattern="\[0-9]{2}\ [0-9]{4,6}-[0-9]{3,4}$">
+              <input  name="prependedtext" class="form-control" placeholder="Ex.: (99) 99999-9999" type="text" maxlength="13"  pattern="\[0-9]{2}\ [0-9]{4,6}-[0-9]{3,4}$" formControlName="telefone">
             </div>
           </div>
           <div style="width: 100%; display: flex; justify-content: space-between;">
@@ -91,10 +97,10 @@
 
         <div class="form-group form-content" *ngIf="showAddressForm">
           <!-- endereco-form.component.html -->
-          <mat-card class="mat-elevation-z24 table-data" style="box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.2);">
+          <mat-card class="mat-elevation-z24 table-data" style="box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.2);">
             <mat-card-content><span style="font-weight: bold">Cadastrar Endereços</span></mat-card-content>
           </mat-card>
-          <form [formGroup]="enderecoForm" (ngSubmit)="onSubmit()">
+          <form [formGroup]="enderecoForm" (ngSubmit)="onAddAddress()">
             <div style="display: flex; flex-wrap: wrap; gap: 10px; width: 100%; max-width: 780px;">
               <div style="width: 30%; max-width: 30%;">
                 <div class="input-group" style="margin-bottom: 5px;">
@@ -132,7 +138,7 @@
                 </div>
               </div>
 
-              <div style="width: 15%; max-width: 15%;">
+              <div style="width: 17%; max-width: 17%;">
                 <div class="input-group" style="margin-bottom: 5px;">
                   <span class="input-group-addon">Nº: </span>
                   <input id="numero" name="numero" class="form-control" placeholder="" required="" type="text"
@@ -156,20 +162,20 @@
                 </div>
               </div>
               <div style="width: 30%; max-width: 30%;">
-                <div style="display: flex; justify-content: flex-end;">
-                  <mat-card-actions>
-                    <button class="btn btn-dark btn-sm" type="submit" (click)="onSubmit()">
-                      <span style="font-weight: lighter">Cadastrar</span>
-                      <i class="bi bi-floppy-fill form-icon " style="margin-left: 5px; color: #ECEBE9"></i>
+                <div style="display: flex; justify-content: flex-end;vertical-align: center">
+
+                    <button class="btn btn-dark btn-sm" type="submit" (click)="onAddAddress()">
+                      <span style="font-weight: lighter; margin-right: 5px;">Adicionar</span>
+                      <i class="bi bi-journal-plus" style="vertical-align: middle; font-size: 15px;"></i>
                     </button>
-                  </mat-card-actions>
+
                 </div>
               </div>
 
             </div>
           </form>
           <div>
-            <mat-card class="mat-elevation-z24 table-data" style="box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.2);">
+            <mat-card class="mat-elevation-z24 table-data" style="box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.2);">
               <mat-card-content><span style="font-weight: bold">Endereços Adicionados</span></mat-card-content>
             </mat-card>
             <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
@@ -225,6 +231,12 @@
                            showFirstLastButtons
                            aria-label="Dados de Endereço"></mat-paginator>
           </div>
+          <mat-card-actions style="display: flex; justify-content: end">
+            <button class="btn btn-dark btn-sm" type="submit" (click)="cadastrarMonitorador(monitoradorForm.value)">
+              <span style="font-weight: lighter">Cadastrar Monitorador</span>
+              <i class="bi bi-floppy-fill form-icon " style="margin-left: 5px; color: #ECEBE9"></i>
+            </button>
+          </mat-card-actions>
         </div>
       </form>
     </div>

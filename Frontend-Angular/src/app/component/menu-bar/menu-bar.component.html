@@ -60,9 +60,20 @@
           </li>
         </ul>
       </div>
-      <mat-list-item>
-        <a href="#" routerLink=""><i class="bi bi bi-graph-up-arrow header-icon"></i> <span class="header-text"><b>Relatórios</b>  </span></a>
+      <mat-list-item class="dropdown-btn" (click)="toggReport()">
+        <i class="bi bi bi-graph-up-arrow header-icon header-icon"></i> <span class="header-text"><b>Relatórios</b></span>
       </mat-list-item>
+      <div *ngIf="!toggle_report_menu">
+        <ul style="background: #d7d6d4">
+          <li><a mat-list-item href="#"><i class="bi bi-filetype-pdf header-icon custom-bold-icon"></i><span
+            class="header-text">Exportar - PDF</span></a></li>
+          <li><a mat-list-item><i class="bi bi-filetype-xlsx header-icon custom-bold-icon"></i><span
+            class="header-text" (click)="exportToExcel()"> Exportar - XLSX</span></a></li>
+          <li><a mat-list-item href="#"><i class="bi bi-file-spreadsheet header-icon custom-bold-icon"></i><span
+            class="header-text"> Importar - XLSX</span></a>
+          </li>
+        </ul>
+      </div>
     </mat-nav-list>
   </mat-drawer>
   <mat-drawer-content>

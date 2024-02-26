@@ -114,3 +114,12 @@ ul {
   margin-right: 4px;
   color: #5cb85c;
 }
+li {
+
+  font-size: 80%;
+  font-weight: bolder;
+}
+.custom-bold-icon {
+  font-weight: bolder;
+  font-size: 100%;
+}

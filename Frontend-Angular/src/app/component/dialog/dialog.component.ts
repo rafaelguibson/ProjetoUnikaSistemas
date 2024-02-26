@@ -12,6 +12,7 @@ import {Monitorador} from "../../model/monitorador";
 import {Endereco} from "../../model/endereco";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator, MatPaginatorModule} from "@angular/material/paginator";
+import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-dialog',
@@ -26,22 +27,25 @@ export class DialogComponent implements OnInit, AfterViewInit {
   monitoradorForm!: FormGroup;
   enderecoForm!: FormGroup;
   showAddressForm:boolean = false;
-  enderecoList: Endereco[] = [];  // Lista separada de endereços
+  enderecoList: Endereco[] = [];
+  showFeedbackPanel:boolean = false;
+  errorMensagem:string = '';
   dataSource = new MatTableDataSource<Endereco>();
   displayedColumns: string[] = ['cep', 'logradouro', 'complemento', 'numero', 'bairro', 'cidade', 'estado'];
   constructor(public dialogRef: MatDialogRef<DialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: { tipoPessoa: TipoPessoa },
               private formBuilder: FormBuilder,
-              private monitoradorService: MonitoradorHttpClientService
+              private monitoradorService: MonitoradorHttpClientService,
+              private snackBar: MatSnackBar
   ) {
   }
 
   ngOnInit() {
     this.monitoradorForm = this.formBuilder.group({
-      id: ['', [Validators.required]],
-      tipoPessoa: [this.data.tipoPessoa == TipoPessoa.PF ? 'PF': 'PJ', [Validators.required]],
-      estadoCivil: [null, [Validators.required]],
-      dataCadastro: [null, [Validators.required]],
+      id: [''],
+      tipoPessoa: [this.data.tipoPessoa == TipoPessoa.PF ? 'PF': 'PJ'],
+      estadoCivil: [null],
+      dataCadastro: [null],
       nomeRazaoSocial: ['', [Validators.required]],
       cpfCnpj: ['', [Validators.required]],
       rgIe: ['', [Validators.required]],
@@ -70,7 +74,7 @@ export class DialogComponent implements OnInit, AfterViewInit {
     this.dialogRef.close();
   }
 
-  onSubmit() {
+  onAddAddress() {
     // if (this.enderecoForm.valid) {
       // Create an Endereco object from the form values
       const endereco: Endereco = this.enderecoForm.value as Endereco;
@@ -124,30 +128,35 @@ export class DialogComponent implements OnInit, AfterViewInit {
     this.monitoradorForm.get('enderecos')?.setValue(this.enderecoList);
   }
 
-  CadastrarMonitorador(monitorador: Monitorador) {
+  cadastrarMonitorador(monitorador: Monitorador) {
     this.monitoradorService.saveMonitorador(this.monitoradorForm.value).subscribe(response => {
       console.log('Monitorador salvo com sucesso:', response);
-      this.dialogRef.close();
+      this.fecharModal();
+      this.monitoradorForm.reset();
+      // this.dialogRef.close();
     }, (error) => {
-      console.error('Erro ao salvar o monitorador:', error);
+      this.errorMensagem = 'Erro ao salvar o monitorador: ' + error.error;
+      this.showFeedbackPanel = true;
+      console.error('Erro ao salvar o monitorador:', error.error);
     });
-    this.fecharModal();
-    this.monitoradorForm.reset();
+
   }
+
 
   showAddress() {
 
       this.showAddressForm = !this.showAddressForm;
       if(this.showAddressForm) {
-        this.dialogRef.updateSize('800px', '750px')
+        this.dialogRef.updateSize('800px', '805px')
       }
       if (!this.showAddressForm) {
-        this.dialogRef.updateSize('800px', '230px')
+        this.dialogRef.updateSize('800px', '285px')
       }
   }
   private limparFormularioEndereco() {
     // Limpa os controles do formulário de endereço
     this.enderecoForm.reset();
   }
+
 
 }

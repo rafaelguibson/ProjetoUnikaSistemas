@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpResponse} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Monitorador } from "../model/monitorador";
 import {Endereco} from "../model/endereco";
@@ -78,5 +78,14 @@ export class MonitoradorHttpClientService {
     console.log(cep)
     const url = `https://viacep.com.br/ws/${cep}/json/`;
     return this.http.get<Endereco>(url);
+  }
+  exportMonitoradoresToExcel(): Observable<HttpResponse<Blob>> {
+    const url = `${this.baseUrl}/export/excel`;
+
+    // @ts-ignore
+    return this.http.get(url, {
+      observe: 'response',
+      responseType: 'blob' as 'json',
+    });
   }
 }
