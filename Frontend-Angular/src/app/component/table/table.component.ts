@@ -9,6 +9,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {DialogComponent} from "../dialog/dialog.component";
 import {DataViewComponent} from "../data-view/data-view.component";
 import {DeleteConfirmComponent} from "../delete-confirm/delete-confirm.component";
+import {TableCommunicationServiceService} from "../../service/table-communication-service.service";
 
 @Component({
   selector: 'app-table',
@@ -22,8 +23,17 @@ export class TableComponent {
   @ViewChild(MatSort) sort!:MatSort
 
   data:any;
-  constructor(private httpService : MonitoradorHttpClientService,public dialog:MatDialog) {
+  constructor(private httpService : MonitoradorHttpClientService,public dialog:MatDialog, private tableCommunicationService: TableCommunicationServiceService) {
     this.loadDataTable();
+
+    // Assina o Observable para saber quando chamar os métodos específicos
+    this.tableCommunicationService.callMethod$.subscribe(method => {
+      if (method === 'loadDataTablePF') {
+        this.loadDataTablePF();
+      } else if (method === 'loadDataTablePJ') {
+        this.loadDataTablePJ();
+      }
+    });
   }
 
   loadDataTable() {
@@ -66,4 +76,21 @@ export class TableComponent {
     }
   }
 
+  loadDataTablePF() {
+    this.httpService.getAllPF().subscribe(data => {
+      this.data = data;
+      this.dataSource = new MatTableDataSource(this.data);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    });
+  }
+
+  loadDataTablePJ() {
+    this.httpService.getAllPJ().subscribe(data => {
+      this.data = data;
+      this.dataSource = new MatTableDataSource(this.data);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    });
+  }
 }

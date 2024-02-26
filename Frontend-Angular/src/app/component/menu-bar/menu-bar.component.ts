@@ -3,6 +3,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {DialogComponent} from "../dialog/dialog.component";
 import {TipoPessoa} from "../../model/enum/tipo-pessoa";
 import {MonitoradorHttpClientService} from "../../service/monitorador-http-client.service";
+import {TableCommunicationServiceService} from "../../service/table-communication-service.service";
 
 @Component({
   selector: 'app-menu-bar',
@@ -26,7 +27,8 @@ export class MenuBarComponent {
   }
 
   constructor(public dialog:MatDialog,
-              private monitoradorService: MonitoradorHttpClientService) { }
+              private monitoradorService: MonitoradorHttpClientService,
+              private tableCommunicationService: TableCommunicationServiceService) { }
 
   openDialog(tipoPessoa: TipoPessoa) {
   if(tipoPessoa === TipoPessoa.PF)  this.toggle_pf_menu = !this.toggle_pf_menu;
@@ -59,5 +61,13 @@ export class MenuBarComponent {
       downloadLink.click();
       document.body.removeChild(downloadLink);
     });
+  }
+  visualizarPF() {
+    console.log('clicado');
+    this.tableCommunicationService.callMethod('loadDataTablePF');
+  }
+
+  visualizarPJ() {
+    this.tableCommunicationService.callMethod('loadDataTablePJ');
   }
 }

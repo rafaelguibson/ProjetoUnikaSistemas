@@ -17,12 +17,12 @@ export class MonitoradorHttpClientService {
   }
 
   getAllPF(): Observable<Monitorador[]> {
-    const url = `${this.baseUrl}/PF`;
+    const url = `${this.baseUrl}/pf`;
     return this.http.get<Monitorador[]>(url);
   }
 
   getAllPJ(): Observable<Monitorador[]> {
-    const url = `${this.baseUrl}/PJ`;
+    const url = `${this.baseUrl}/pj`;
     return this.http.get<Monitorador[]>(url);
   }
 
