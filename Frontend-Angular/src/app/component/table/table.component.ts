@@ -32,6 +32,8 @@ export class TableComponent {
         this.loadDataTablePF();
       } else if (method === 'loadDataTablePJ') {
         this.loadDataTablePJ();
+      } else if (method === 'loadDataTable') {
+        this.loadDataTable();
       }
     });
   }

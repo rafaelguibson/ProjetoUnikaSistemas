@@ -40,7 +40,6 @@ export class MenuBarComponent {
         data: {tipoPessoa }
       });
   }
-
   protected readonly TipoPessoa = TipoPessoa;
 
 
@@ -69,5 +68,9 @@ export class MenuBarComponent {
 
   visualizarPJ() {
     this.tableCommunicationService.callMethod('loadDataTablePJ');
+  }
+  
+  vizualizarTodos() {
+    this.tableCommunicationService.callMethod('loadDataTable');
   }
 }
