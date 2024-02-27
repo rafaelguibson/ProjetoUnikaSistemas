@@ -27,6 +27,10 @@ public interface MonitoradorRepository extends JpaRepository<Monitorador, Long>,
         return findAll((Specification<Monitorador>) (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
+            if (filtro.getId() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("id"), filtro.getId()));
+            }
+
             if (filtro.getNomeRazaoSocial() != null && !filtro.getNomeRazaoSocial().trim().isEmpty()) {
                 predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("nomeRazaoSocial")),
                         "%" + filtro.getNomeRazaoSocial().toLowerCase() + "%"));

@@ -74,8 +74,8 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
     <!-- Mensagem quando não existe o dado buscado no Filtro-->
-    <tr *matNoDataRow>
-      <td class="mat-cell" colspan="4"> Nenhum dado encontrado na tabela.</td>
+    <tr *matNoDataRow style="text-align: center">
+      <td class="mat-cell" colspan="10" > <strong style="font-size: 16px">Nenhum dado encontrado na tabela.</strong></td>
     </tr>
   </table>
 
@@ -85,7 +85,7 @@
 
 <!-- data-filter -->
 
-<div *ngIf="true">
+<div *ngIf="showFilter">
   <div class="mat-elevation-z8 container-filter">
       <h2 class="filter-header">Buscar Monitorador</h2>
   </div>

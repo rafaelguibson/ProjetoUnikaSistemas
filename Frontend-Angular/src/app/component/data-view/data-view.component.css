@@ -10,6 +10,8 @@
 }
 .header-space {
   flex: 1 1 auto;
+  font-size: 18px;
+  font-weight: bold;
 }
 .dialog-title {
   display: flex;
