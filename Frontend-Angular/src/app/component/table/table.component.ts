@@ -50,7 +50,7 @@ export class TableComponent implements OnInit{
 ngOnInit() {
   this.filtroForm = this.formBuilder.group({
     id: [''],
-    //tipoPessoa: [this.data.tipoPessoa],
+    tipoPessoa: [this.tipoPessoaFilter],
     dataCadastro: [null],
     nomeRazaoSocial: [''],
     cpfCnpj: [''],
@@ -119,15 +119,26 @@ ngOnInit() {
     });
   }
   filterPJ() {
-    console.log('TipoPessoa PJ definido')
     this.tipoPessoaFilter = TipoPessoa.PJ
     this.showFilter = true;
   }
   filterPF() {
-    console.log('TipoPessoa PF definido')
     this.tipoPessoaFilter = TipoPessoa.PF;
     this.showFilter = true;
   }
+  filter() {
+    const monitorador: Monitorador = this.filtroForm.value as Monitorador;
+
+    // Chame o método de filtro do HttpClient
+    this.httpService.filtrar(monitorador).subscribe(filteredData => {
+     console.log('filtrados: ', filteredData)
+      this.data = filteredData;
+      this.dataSource = new MatTableDataSource(this.data);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    });
+  }
+
 
   protected readonly TipoPessoa = TipoPessoa;
 }

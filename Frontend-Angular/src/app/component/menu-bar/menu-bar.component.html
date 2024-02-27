@@ -8,7 +8,7 @@
 </mat-toolbar>
 
 <mat-drawer-container autosize>
-  <mat-drawer #drawer opened="true" mode="side" position="start">
+  <mat-drawer #drawer opened="true" mode="side" position="start" style="background: #FAF9F6; border-right: 1px solid rgba(47,47,47,0.61);">
 
     <div class="sidebar-header">
 
@@ -37,7 +37,7 @@
         <i class="bi bi-person-vcard header-icon"></i> <span class="header-text"><b>Pessoa Física</b></span>
       </mat-list-item>
       <div *ngIf="!toggle_pf_menu">
-        <ul style="background: #d7d6d4">
+        <ul style="background: rgba(239,237,234,0.87)">
           <li><a mat-list-item (click)="visualizarPF()"><i class="bi bi-eye header-icon"></i><span
             class="header-text"> Vizualizar</span></a></li>
           <li><a mat-list-item (click)="openDialog(TipoPessoa.PF)"><i class="bi bi-plus-square header-icon"></i><span
@@ -50,7 +50,7 @@
         <i class="bi bi-building header-icon"></i> <span class="header-text"><b>Pessoa Jurídica</b></span>
       </mat-list-item>
       <div *ngIf="!toggle_pj_menu">
-        <ul style="background: #d7d6d4">
+        <ul style="background: rgba(239,237,234,0.87)">
           <li><a mat-list-item (click)="visualizarPJ()"><i class="bi bi-eye header-icon"></i><span
             class="header-text"> Vizualizar</span></a></li>
           <li><a mat-list-item (click)="openDialog(TipoPessoa.PJ)"><i class="bi bi-plus-square header-icon"></i><span
@@ -63,7 +63,7 @@
         <i class="bi bi bi-graph-up-arrow header-icon header-icon"></i> <span class="header-text"><b>Relatórios</b></span>
       </mat-list-item>
       <div *ngIf="!toggle_report_menu">
-        <ul style="background: #d7d6d4">
+        <ul style="background: rgba(239,237,234,0.87)">
           <li><a mat-list-item href="#"><i class="bi bi-filetype-pdf header-icon custom-bold-icon"></i><span
             class="header-text">Exportar - PDF</span></a></li>
           <li><a mat-list-item><i class="bi bi-filetype-xlsx header-icon custom-bold-icon"></i><span
@@ -75,9 +75,8 @@
       </div>
     </mat-nav-list>
   </mat-drawer>
-  <mat-drawer-content>
+  <mat-drawer-content style="background: #FAF9F6">
     <div>
-
       <router-outlet></router-outlet>
     </div>
   </mat-drawer-content>

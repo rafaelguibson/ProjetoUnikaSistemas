@@ -46,7 +46,9 @@ table {
 .container-filter {
   margin-top: 15px;
   border-radius: 9px;
-  padding: 5px
+  padding: 5px;
+  background: #FAF9F6;
+  border: 1px solid rgba(23, 23, 23, 0.66);
 }
 .filter-content {
   margin-top: 10px;
@@ -54,13 +56,19 @@ table {
   display: flex;
   justify-content: center;
   border-radius: 9px;
-  background: #ffffff;
-  border: 1px solid #000000;
+  background: #FAF9F6;
+  border: 1px solid rgba(23, 23, 23, 0.66);
 }
 input {
-  border: 1px solid #000000;
+  border: 1px solid rgba(23, 23, 23, 0.66);
   text-shadow: 2px 2px 4px rgb(192, 191, 191);
 }
 span {
   text-shadow: 2px 2px 4px rgb(192, 191, 191);
+}
+tr {
+  background: #FAF9F6;
+}
+mat-paginator {
+  background: #FAF9F6;
 }
