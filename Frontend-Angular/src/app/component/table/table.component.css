@@ -39,7 +39,7 @@ table {
   padding-right: 7px;
 }
 .filter-header {
-  font-weight: bold;
+  font-size: 18px;
   text-shadow: 2px 2px 4px rgb(126, 125, 125);
   margin: 5px;
 }

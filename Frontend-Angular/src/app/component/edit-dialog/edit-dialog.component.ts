@@ -17,7 +17,7 @@ export class EditDialogComponent implements OnInit{
   monitoradorForm!: FormGroup;
   errorMensagem: string = '';
   showFeedbackPanel: boolean = false;
-  constructor(public dialogRef: MatDialogRef<DialogComponent>,
+  constructor(public dialogRef: MatDialogRef<EditDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: { tipoPessoa: TipoPessoa, monitorador: Monitorador },
               private formBuilder: FormBuilder,
               private monitoradorService: MonitoradorHttpClientService,

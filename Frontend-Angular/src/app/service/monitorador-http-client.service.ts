@@ -30,29 +30,7 @@ export class MonitoradorHttpClientService {
     return this.http.post<Monitorador>(this.baseUrl, monitorador);
   }
 
-  saveAllMonitorador(monitoradores: Monitorador[]): Observable<void> {
-    const url = `${this.baseUrl}/saveAll`;
-    return this.http.post<void>(url, monitoradores);
-  }
 
-  getAllMonitoradores(): Observable<Monitorador[]> {
-    return this.http.get<Monitorador[]>(this.baseUrl);
-  }
-
-  getMonitoradorById(id: number): Observable<Monitorador> {
-    const url = `${this.baseUrl}/${id}`;
-    return this.http.get<Monitorador>(url);
-  }
-
-  buscarPF(): Observable<Monitorador[]> {
-    const url = `${this.baseUrl}/pf`;
-    return this.http.get<Monitorador[]>(url);
-  }
-
-  buscarPJ(): Observable<Monitorador[]> {
-    const url = `${this.baseUrl}/pj`;
-    return this.http.get<Monitorador[]>(url);
-  }
 
   updateMonitorador(id: number, monitorador: Monitorador): Observable<Monitorador> {
     const url = `${this.baseUrl}/${id}`;
@@ -64,16 +42,16 @@ export class MonitoradorHttpClientService {
     return this.http.delete<void>(url);
   }
 
-  deleteAllMonitoradores(monitoradores: Monitorador[]): Observable<void> {
-    const url = `${this.baseUrl}/deleteAll`;
-    return this.http.post<void>(url, monitoradores);
-  }
-
   filtrar(filtro: Monitorador): Observable<Monitorador[]> {
     const url = `${this.baseUrl}/filtrar`;
     return this.http.post<Monitorador[]>(url, filtro);
   }
 
+  uploadFile(fileBytes: Uint8Array): Observable<Monitorador[]> {
+    const url = `${this.baseUrl}/upload`;
+
+    return this.http.post<Monitorador[]>(url, fileBytes);
+  }
   buscarCep(cep: string): Observable<Endereco> {
     console.log(cep)
     const url = `https://viacep.com.br/ws/${cep}/json/`;

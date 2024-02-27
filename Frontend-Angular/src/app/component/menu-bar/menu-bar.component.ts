@@ -4,6 +4,7 @@ import {DialogComponent} from "../dialog/dialog.component";
 import {TipoPessoa} from "../../model/enum/tipo-pessoa";
 import {MonitoradorHttpClientService} from "../../service/monitorador-http-client.service";
 import {TableCommunicationServiceService} from "../../service/table-communication-service.service";
+import {UploadDialogComponent} from "../upload-dialog/upload-dialog.component";
 
 @Component({
   selector: 'app-menu-bar',
@@ -61,6 +62,13 @@ export class MenuBarComponent {
       document.body.removeChild(downloadLink);
     });
   }
+  importFromExcel() {
+    this.dialog.open(UploadDialogComponent,
+      {
+        height: '295px',
+        width: '800px',
+      });
+  }
   visualizarPF() {
     console.log('clicado');
     this.tableCommunicationService.callMethod('loadDataTablePF');
@@ -79,4 +87,5 @@ export class MenuBarComponent {
   filtrarPJ() {
     this.tableCommunicationService.callMethod('filterPJ');
   }
+
 }

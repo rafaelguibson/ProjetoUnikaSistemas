@@ -1,1 +1,35 @@
-<p>upload-dialog works!</p>
+
+  <div class="panel panel-primary" style=" border: 1px solid rgba(23, 23, 23, 0.66); ">
+    <div class="dialog-title">
+      <span class="header-space">Detalhamento Monitorador</span>
+      <a (click)="fecharModal()" style="cursor: pointer;"><i class="bi bi-x-circle-fill" matTooltip="Fechar Modal"></i></a>
+    </div>
+
+    <div>
+      <h2>Single File Upload</h2>
+
+      <input type="file" class="file-input" (change)="onChange($event)" #fileUpload />
+
+      <div *ngIf="file">
+        <section class="file-info">
+          File details:
+          <ul>
+            <li>Name: {{file.name}}</li>
+            <li>Type: {{file.type}}</li>
+            <li>Size: {{file.size}} bytes</li>
+          </ul>
+        </section>
+
+        <button (click)="onUpload()">Upload the file</button>
+
+        <section [ngSwitch]="status">
+          <p *ngSwitchCase="'uploading'">⏳ Uploading...</p>
+          <p *ngSwitchCase="'success'">✅ Done!</p>
+          <p *ngSwitchCase="'fail'">❌ Error!</p>
+          <p *ngSwitchDefault>😶 Waiting to upload...</p>
+        </section>
+      </div>
+    </div>
+  </div>
+
+
