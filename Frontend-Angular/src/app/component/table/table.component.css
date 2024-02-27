@@ -38,3 +38,29 @@ table {
   color: #212129;
   padding-right: 7px;
 }
+.filter-header {
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgb(126, 125, 125);
+  margin: 5px;
+}
+.container-filter {
+  margin-top: 15px;
+  border-radius: 9px;
+  padding: 5px
+}
+.filter-content {
+  margin-top: 10px;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  border-radius: 9px;
+  background: #ffffff;
+  border: 1px solid #000000;
+}
+input {
+  border: 1px solid #000000;
+  text-shadow: 2px 2px 4px rgb(192, 191, 191);
+}
+span {
+  text-shadow: 2px 2px 4px rgb(192, 191, 191);
+}

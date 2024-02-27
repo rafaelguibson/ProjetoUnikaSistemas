@@ -7,7 +7,7 @@
 </div>
 <!-- data-table -->
 
-<div class="mat-elevation-z8 table-data">
+<div class="mat-elevation-z8 table-data"  style="border: 1px solid #000000">
   <table mat-table  matSort [dataSource]="dataSource" >
 
 
@@ -84,85 +84,110 @@
 </div>
 
 <!-- data-filter -->
-  <div class="mat-elevation-z8" style="margin-top: 15px" >
-    <mat-card>
-      <mat-card-content><h2>Buscar Monitorador</h2> </mat-card-content>
-    </mat-card>
 
-    <form [formGroup]="filtroForm">
-      <div style="width: 60%; max-width: 60%;">
-        <div class="input-group" style="margin-bottom: 5px;">
-          @if (tipoPessoaFilter === TipoPessoa.PF) {
-            <span class="input-group-addon"><strong>Nome: </strong></span>
-          }
-          @if (tipoPessoaFilter === TipoPessoa.PJ) {
-            <span class="input-group-addon"><strong>Razão Social:</strong></span>
-          }
-          <input id="nomeRazaoSocial" name="nomeRazaoSocial" class="form-control" placeholder="" required=""
-                 type="text" matInput formControlName="nomeRazaoSocial" maxlength="100">
-        </div>
+<div *ngIf="true">
+  <div class="mat-elevation-z8 container-filter" style="background: #ffffff; border: 1px solid #000000">
+      <h2 class="filter-header">Buscar Monitorador</h2>
+  </div>
+
+  <div class="form-group form-content mat-elevation-z8">
+    <div class="mat-elevation-z8 filter-content">
+      <div class="container">
+        <form [formGroup]="filtroForm" style="margin: 10px;">
+          <div style="display: flex; gap: 5px; flex-wrap: wrap; width: 100%; text-align: left">
+
+            <div style="flex: 1; max-width: calc(10% - 5px);">
+
+                <span ><strong>ID:</strong></span>
+                <input id="id" name="id" class="form-control" placeholder="" required="" type="text" matInput
+                       formControlName="id" maxlength="6">
+
+            </div>
+
+            <div style="flex: 1; max-width: calc(36% - 5px);">
+              <div style="margin-bottom: 5px;">
+                @if (tipoPessoaFilter === TipoPessoa.PF) {
+                  <span><strong>Nome: </strong></span>
+                }
+                @if (tipoPessoaFilter === TipoPessoa.PJ) {
+                  <span><strong>Razão Social:</strong></span>
+                }
+                <input id="nomeRazaoSocial" name="nomeRazaoSocial" class="form-control" placeholder="" required=""
+                       type="text" matInput formControlName="nomeRazaoSocial" maxlength="100">
+              </div>
+            </div>
+
+            <div style="flex: 1; max-width: calc(16% - 5px);">
+              <div  style="margin-bottom: 5px;">
+                @if (tipoPessoaFilter === TipoPessoa.PF) {
+                  <span><strong>CPF:</strong></span>
+                }
+                @if (tipoPessoaFilter === TipoPessoa.PJ) {
+                  <span><strong>CNPJ:</strong></span>
+                }
+                <input id="cpfCnpj" name="cpfCnpj" class="form-control" placeholder="" required="" type="text" matInput
+                       formControlName="cpfCnpj" [mask]="tipoPessoaFilter === TipoPessoa.PF ? '000.000.000-00' : '00.000.000/0000-00'" [dropSpecialCharacters]="true">
+              </div>
+            </div>
+
+
+
+            <div style="display: flex; gap: 5px; flex-wrap: wrap; width: 100%;">
+
+              <div style="flex: 1; max-width: calc(10% - 5px); margin-top: 4px">
+                <div>
+                  @if (tipoPessoaFilter === TipoPessoa.PF) {
+                    <span><strong>RG:</strong></span>
+                  }
+                  @if (tipoPessoaFilter === TipoPessoa.PJ) {
+                    <span><strong>I.E:</strong></span>
+                  }
+                  <input id="rgIe" name="rgIe" class="form-control" placeholder="" required="" type="text" matInput
+                         formControlName="rgIe">
+                </div>
+              </div>
+
+              <div style="flex: 1; max-width: calc(12% - 5px);">
+                <span class=""><label><strong>Data Nascimento:</strong></label></span>
+                <input name="prependedtext" class="form-control" placeholder="dd/MM/YYYY" required="" type="date" formControlName="dataNascimento">
+              </div>
+
+                <div style="flex: 1; max-width: calc(12% - 5px);">
+                  <span class=""><label><strong>Data Inicial:</strong></label></span>
+                  <input name="prependedtext" class="form-control" placeholder="dd/MM/YYYY" required="" type="date" formControlName="dataInicial">
+                </div>
+
+              <div style="flex: 1; max-width: calc(12% - 5px);">
+                  <span class=""><label><strong>Data Final:</strong></label></span>
+                  <input name="prependedtext" class="form-control" placeholder="dd/MM/YYYY" required="" type="date" formControlName="dataFinal">
+              </div>
+
+              <div style="flex: 1; max-width: calc(10% - 5px);margin-top: 4px">
+                <span><strong>Status:</strong></span>
+                <div class="input-group" style="min-height: 34px;">
+                  <span class="input-group-addon" style=" background: #ffffff; border: 1px solid black; border-right: none"></span>
+                  <span class="input-group-addon"  style=" background: #ffffff; border: 1px solid black; border-left: none">
+                <mat-slide-toggle formControlName="status" name="status"></mat-slide-toggle>
+                    {{ filtroForm.get('status')!.value ? 'Ativo' : 'Inativo' }}
+              </span>
+                </div>
+              </div>
+              <div style="flex: 7; max-width: calc(20% - 5px); margin-left: 18px; margin-top: 23px">
+                <span></span>
+                <button class="btn btn-dark" matTooltip="Pesquisar">
+                  <strong><i class="bi bi-search header-icon"></i></strong>
+                </button>
+              </div>
+              </div>
+            </div>
+
+        </form>
       </div>
 
-<!--      <div style="width: 38%; max-width: 38%;">-->
-<!--        <div class="input-group" style="margin-bottom: 5px;">-->
-<!--          @if (data.tipoPessoa === TipoPessoa.PF) {-->
-<!--            <span class="input-group-addon"><strong>CPF:</strong></span>-->
-<!--          }-->
-<!--          @if (data.tipoPessoa === TipoPessoa.PJ) {-->
-<!--            <span class="input-group-addon"><strong>CNPJ:</strong></span>-->
-<!--          }-->
-<!--          <input id="cpfCnpj" name="cpfCnpj" class="form-control" placeholder="" required="" type="text" matInput-->
-<!--                 formControlName="cpfCnpj"  [mask]="data.tipoPessoa === TipoPessoa.PF ? '000.000.000-00' : '00.000.000/0000-00'" [dropSpecialCharacters]="true">-->
-<!--        </div>-->
-<!--      </div>-->
 
-<!--      <div style="width: 30%; max-width: 30%;">-->
-<!--        <div class="input-group" style="margin-bottom: 5px;">-->
-<!--          @if (data.tipoPessoa === TipoPessoa.PF) {-->
-<!--            <span class="input-group-addon"><strong>RG:</strong></span>-->
-<!--          }-->
-<!--          @if (data.tipoPessoa === TipoPessoa.PJ) {-->
-<!--            <span class="input-group-addon"><strong>I.E</strong></span>-->
-<!--          }-->
-<!--          <input id="rgIe" name="rgIe" class="form-control" placeholder="" required="" type="text" matInput-->
-<!--                 formControlName="rgIe" maxlength="15">-->
-<!--        </div>-->
-<!--      </div>-->
-
-<!--      <div style="width: 40%; max-width: 40%;">-->
-<!--        <div class="input-group">-->
-<!--          <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>-->
-<!--          <input  name="prependedtext" class="form-control" placeholder="email@email.com" required="" type="text"  formControlName="email">-->
-<!--        </div>-->
-<!--      </div>-->
-
-<!--      <div style="width: 27.5%; max-width: 27.5%;">-->
-<!--        <div class="input-group">-->
-<!--          <span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>-->
-<!--          <input  name="prependedtext" class="form-control" placeholder="Ex.: (99) 99999-9999"-->
-<!--                  type="text" maxlength="15" formControlName="telefone" mask="(00) 00000-0000"  [dropSpecialCharacters]="true">-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div style="width: 100%; display: flex; justify-content: space-between;">-->
-<!--        <div style="width: 20%; max-width: 20%; display: flex; align-items: center;">-->
-<!--          <div class="input-group" style="max-height: 34px; justify-content: space-between;min-height: 34px;">-->
-<!--            <span class="input-group-addon"><strong>Status: </strong></span>-->
-<!--            <span class="input-group-addon">-->
-<!--                  <mat-slide-toggle formControlName="status" name="status"></mat-slide-toggle>-->
-<!--              {{ monitoradorForm.get('status')!.value ? 'Ativo' : 'Inativo' }}-->
-<!--              </span>-->
-<!--          </div>-->
-
-
-<!--        </div>-->
-
-<!--        <div style="width: 20%; max-width: 20%;" *ngIf="data.tipoPessoa == TipoPessoa.PF">-->
-<!--          <div class="input-group">-->
-<!--            <span class="input-group-addon"><strong>Data de Nascimento: </strong></span>-->
-<!--            <input  name="prependedtext" class="form-control" placeholder="dd/MM/YYYY" required="" type="date" formControlName="dataNascimento">-->
-<!--          </div>-->
-<!--        </div>-->
-
-    </form>
+    </div>
   </div>
+
+
+
 

@@ -22,6 +22,7 @@ public interface MonitoradorRepository extends JpaRepository<Monitorador, Long>,
     boolean existsByCpfCnpj(String cpfCnpj);
 
 
+
     default List<Monitorador> filtrar(Monitorador filtro) {
         return findAll((Specification<Monitorador>) (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();

@@ -25,6 +25,7 @@ export class TableComponent implements OnInit{
   data:any;
   filtroForm!: FormGroup;
   tipoPessoaFilter!:TipoPessoa;
+  showFilter:boolean = false;
   constructor(private httpService : MonitoradorHttpClientService,
               public dialog:MatDialog,
               private tableCommunicationService: TableCommunicationServiceService,
@@ -120,10 +121,12 @@ ngOnInit() {
   filterPJ() {
     console.log('TipoPessoa PJ definido')
     this.tipoPessoaFilter = TipoPessoa.PJ
+    this.showFilter = true;
   }
   filterPF() {
     console.log('TipoPessoa PF definido')
     this.tipoPessoaFilter = TipoPessoa.PF;
+    this.showFilter = true;
   }
 
   protected readonly TipoPessoa = TipoPessoa;
