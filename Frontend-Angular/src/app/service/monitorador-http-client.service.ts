@@ -56,7 +56,7 @@ export class MonitoradorHttpClientService {
 
   updateMonitorador(id: number, monitorador: Monitorador): Observable<Monitorador> {
     const url = `${this.baseUrl}/${id}`;
-    return this.http.patch<Monitorador>(url, monitorador);
+    return this.http.put<Monitorador>(url, monitorador);
   }
 
   deleteMonitorador(id: number | undefined): Observable<void> {

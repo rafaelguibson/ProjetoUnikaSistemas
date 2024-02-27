@@ -13,6 +13,8 @@ import Backend.service.ExcelService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import net.sf.jasperreports.engine.JRException;
+import org.hibernate.ObjectNotFoundException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -108,6 +110,24 @@ public class MonitoradorService {
         monitoradorRepository.deleteAll(list);
     }
 
+    @Transactional
+    public Monitorador updateMonitorador(Long id, Monitorador monitorador) {
+        Monitorador oldMonitorador = findById(id);
+        oldMonitorador.setCpfCnpj(monitorador.getCpfCnpj());
+        oldMonitorador.setNomeRazaoSocial(monitorador.getNomeRazaoSocial());
+        oldMonitorador.setRgIe(monitorador.getRgIe());
+        oldMonitorador.setEmail(monitorador.getEmail());
+        oldMonitorador.setTelefone(monitorador.getTelefone());
+        oldMonitorador.setTipoPessoa(monitorador.getTipoPessoa());
+        oldMonitorador.setDataNascimento(monitorador.getDataNascimento());
+        oldMonitorador.setStatus(monitorador.getStatus());
+        return monitoradorRepository.save(oldMonitorador);
+    }
+
+    public Monitorador findById(Long id) {
+        Optional<Monitorador> obj = monitoradorRepository.findById(id);
+        return obj.orElseThrow(() -> new ObjectNotFoundException(id, Monitorador.class.getName()));
+    }
     public void validarMonitorador(Monitorador monitorador) {
         if (monitorador.getTipoPessoa() == TipoPessoa.PF) {
             validarCampoObrigatorio(monitorador.getNomeRazaoSocial(), "Nome");

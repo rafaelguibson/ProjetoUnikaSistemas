@@ -41,7 +41,6 @@ export class DialogComponent implements OnInit, AfterViewInit {
               @Inject(MAT_DIALOG_DATA) public data: { tipoPessoa: TipoPessoa },
               private formBuilder: FormBuilder,
               private monitoradorService: MonitoradorHttpClientService,
-              private snackBar: MatSnackBar
   ) {
   }
 

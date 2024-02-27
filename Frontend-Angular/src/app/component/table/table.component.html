@@ -63,7 +63,7 @@
     <ng-container matColumnDef="menus">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Menus</th>
       <td mat-cell *matCellDef="let row">
-        <a mat-button  matTooltip="Editar"> <i class="bi bi-pencil-square menu-icon"></i> </a>
+        <a mat-button (click)="openDialogEdit(row.tipoPessoa, row)" matTooltip="Editar"> <i class="bi bi-pencil-square menu-icon"></i> </a>
         <a mat-button (click)="openDialogDelete(row)"  matTooltip="Excluir"><i class="bi bi-trash menu-icon"></i></a>
         <a mat-button (click)="openDialogDetails(row)" matTooltip="Detalhes"> <i class="bi bi-card-list menu-icon"></i> </a>
 

@@ -10,6 +10,8 @@ import {DataViewComponent} from "../data-view/data-view.component";
 import {DeleteConfirmComponent} from "../delete-confirm/delete-confirm.component";
 import {TableCommunicationServiceService} from "../../service/table-communication-service.service";
 import {FormBuilder, FormGroup} from "@angular/forms";
+import {DialogComponent} from "../dialog/dialog.component";
+import {EditDialogComponent} from "../edit-dialog/edit-dialog.component";
 
 @Component({
   selector: 'app-table',
@@ -141,4 +143,13 @@ ngOnInit() {
 
 
   protected readonly TipoPessoa = TipoPessoa;
+
+  openDialogEdit(tipoPessoa: TipoPessoa, monitorador: Monitorador) {
+    this.dialog.open(EditDialogComponent,
+      {
+        height: '295px',
+        width: '800px',
+        data: {tipoPessoa, monitorador }
+      });
+  }
 }

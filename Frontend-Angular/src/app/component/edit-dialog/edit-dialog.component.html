@@ -1,0 +1,108 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<div class="panel" style="border: none; overflow: hidden">
+  <div class="panel-heading dialog-title">
+    <span class="header-space">Editar Pessoa {{ data.tipoPessoa == 'PF' ? 'Física' : 'Jurídica' }} </span>
+    <a (click)="fecharModal()" style="cursor: pointer;"><i class="bi bi-x-circle-fill"
+                                                           matTooltip="Fechar Modal"></i></a>
+  </div>
+
+  <div class="panel-body">
+    <div class="form-group form-content">
+      <form [formGroup]="monitoradorForm">
+        <div class="alert alert-danger alert-dismissible" role="alert" *ngIf="showFeedbackPanel">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
+            <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+          </svg>
+          <button type="button" class="close" data-dismiss="alert" (click)="showFeedbackPanel = false"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          <strong>{{errorMensagem}}</strong>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 5px; width: 100%; max-width: 780px;">
+
+          <div style="width: 60%; max-width: 60%;">
+            <div class="input-group" style="margin-bottom: 5px;">
+              @if (data.tipoPessoa === TipoPessoa.PF) {
+                <span class="input-group-addon"><strong>Nome: </strong></span>
+              }
+              @if (data.tipoPessoa === TipoPessoa.PJ) {
+                <span class="input-group-addon"><strong>Razão Social:</strong></span>
+              }
+              <input id="nomeRazaoSocial" name="nomeRazaoSocial" class="form-control" placeholder="" required=""
+                     type="text" matInput formControlName="nomeRazaoSocial" maxlength="100">
+            </div>
+          </div>
+
+          <div style="width: 38%; max-width: 38%;">
+            <div class="input-group" style="margin-bottom: 5px;">
+              @if (data.tipoPessoa === TipoPessoa.PF) {
+                <span class="input-group-addon"><strong>CPF:</strong></span>
+              }
+              @if (data.tipoPessoa === TipoPessoa.PJ) {
+                <span class="input-group-addon"><strong>CNPJ:</strong></span>
+              }
+              <input id="cpfCnpj" name="cpfCnpj" class="form-control" placeholder="" required="" type="text" matInput
+                     formControlName="cpfCnpj"  [mask]="data.tipoPessoa === TipoPessoa.PF ? '000.000.000-00' : '00.000.000/0000-00'" [dropSpecialCharacters]="true">
+            </div>
+          </div>
+
+          <div style="width: 30%; max-width: 30%;">
+            <div class="input-group" style="margin-bottom: 5px;">
+              @if (data.tipoPessoa === TipoPessoa.PF) {
+                <span class="input-group-addon"><strong>RG:</strong></span>
+              }
+              @if (data.tipoPessoa === TipoPessoa.PJ) {
+                <span class="input-group-addon"><strong>I.E</strong></span>
+              }
+              <input id="rgIe" name="rgIe" class="form-control" placeholder="" required="" type="text" matInput
+                     formControlName="rgIe" maxlength="15">
+            </div>
+          </div>
+
+          <div style="width: 40%; max-width: 40%;">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+              <input  name="prependedtext" class="form-control" placeholder="email@email.com" required="" type="text"  formControlName="email">
+            </div>
+          </div>
+
+          <div style="width: 27.5%; max-width: 27.5%;">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
+              <input  name="prependedtext" class="form-control" placeholder="Ex.: (99) 99999-9999"
+                      type="text" maxlength="15" formControlName="telefone" mask="(00) 00000-0000"  [dropSpecialCharacters]="true">
+            </div>
+          </div>
+          <div style="width: 100%; display: flex;">
+            <div style="width: 30%; max-width: 30%; display: flex; align-items: center;">
+              <div class="input-group" style="max-height: 34px; justify-content: space-between;min-height: 34px;">
+                <span class="input-group-addon"><strong>Status: </strong></span>
+                <span class="input-group-addon">
+                  <mat-slide-toggle formControlName="status" name="status"></mat-slide-toggle>
+                  {{ monitoradorForm.get('status')!.value ? 'Ativo' : 'Inativo' }}
+              </span>
+              </div>
+            </div>
+
+            <div style="width: 25%; max-width: 25%;" *ngIf="data.tipoPessoa == TipoPessoa.PF">
+              <div class="input-group">
+                <span class="input-group-addon"><strong>Data de Nascimento: </strong></span>
+                <input  name="prependedtext" class="form-control" placeholder="dd/MM/YYYY" required="" type="date" formControlName="dataNascimento">
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <mat-card-actions style="display: flex; justify-content: end">
+          <button class="btn btn-dark btn-sm" type="submit" (click)="atualizarMonitorador()">
+            <span style="font-weight: lighter">Atualizar Monitorador</span>
+            <i class="bi bi-floppy-fill form-icon " style="margin-left: 5px; color: #ECEBE9"></i>
+          </button>
+        </mat-card-actions>
+      </form>
+    </div>
+  </div>
+</div>
+

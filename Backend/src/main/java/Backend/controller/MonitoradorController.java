@@ -17,7 +17,7 @@ import java.io.*;
 import java.util.*;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping(value = "/api/monitoradores", produces = "application/json; charset=UTF-8")
 public class MonitoradorController {
 
@@ -62,21 +62,15 @@ public class MonitoradorController {
         return ResponseEntity.ok(listaPJ);
     }
 
-    @PatchMapping("/{id}")
+    @PutMapping(value = "/{id}")
     public ResponseEntity<Monitorador> updateMonitorador(@PathVariable Long id, @RequestBody Monitorador monitorador) {
-        if (Objects.isNull(monitoradorService.getMonitoradorById(id))) {
-            return ResponseEntity.notFound().build();
-        }
-        monitorador.setId(id);
-        return ResponseEntity.ok(monitoradorService.salvarMonitoradorComEnderecos(monitorador));
+        Monitorador newMonitorador = monitoradorService.updateMonitorador(id, monitorador);
+        return ResponseEntity.ok().body(newMonitorador);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteMonitorador(@PathVariable Long id) {
-        if (Objects.isNull(monitoradorService.getMonitoradorById(id))) {
-            return ResponseEntity.notFound().build();
-        }
-        monitoradorService.deleteMonitorador(id);
+    public ResponseEntity<Void> deleteMonitorador(@PathVariable Long id, @RequestBody Monitorador monitorador) {
+        Monitorador updatedMonitorador = monitoradorService.updateMonitorador(id, monitorador);
         return ResponseEntity.ok().build();
     }
 

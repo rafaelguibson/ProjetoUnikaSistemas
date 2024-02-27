@@ -14,6 +14,8 @@ import { DataViewComponent } from './component/data-view/data-view.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { DeleteConfirmComponent } from './component/delete-confirm/delete-confirm.component';
 import {NgxMaskDirective, NgxMaskPipe, provideNgxMask} from "ngx-mask";
+import { UploadDialogComponent } from './component/upload-dialog/upload-dialog.component';
+import { EditDialogComponent } from './component/edit-dialog/edit-dialog.component';
 
 
 @NgModule({
@@ -24,6 +26,8 @@ import {NgxMaskDirective, NgxMaskPipe, provideNgxMask} from "ngx-mask";
     TableComponent,
     DataViewComponent,
     DeleteConfirmComponent,
+    UploadDialogComponent,
+    EditDialogComponent,
 
   ],
   imports: [
