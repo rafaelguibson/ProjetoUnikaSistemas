@@ -1,38 +1,24 @@
-  <div class="panel panel-primary">
-    <div class="panel-heading dialog-title">
-      <span class="header-space">Deletar Monitorador</span>
-      <a (click)="fecharModal()" style="cursor: pointer;"><i class="bi bi-x-circle-fill" matTooltip="Fechar Modal"></i></a>
-    </div>
-
-    <div class="panel-body">
-
-        <mat-dialog-content>
-          <table>
-            <tr>
-              <td>Tem certeza que deseja excluir o monitorador</td>
-            </tr>
-            <tr>
-              <td><strong>{{data.monitorador.nomeRazaoSocial}}?</strong></td>
-            </tr>
-          </table>
-
-        </mat-dialog-content>
-        <div class="central-div">
-          <mat-dialog-actions><strong>
-            <button mat-raised-button color="dark" mat-dialog-close class="button-no">
-              <span class="spn-space">Não</span>
-              <i class="bi bi-x-lg icon-btn-no"></i>
-            </button>
-          </strong>
-          <strong>
-            <button mat-raised-button color="dark" (click)="deleteMonitorador(data.monitorador)" cdkFocusInitial class="button-yes">
-              <span class="spn-space">Sim</span>
-              <i class="bi bi-check-circle icon-btn-yes"></i>
-            </button>
-          </strong>
-          </mat-dialog-actions>
-        </div>
-      </div>
-
+<div class="panel panel-primary" style=" border: 1px solid rgba(23, 23, 23, 0.66); ">
+  <div class="dialog-title">
+    <span class="header-space">Detalhamento Monitorador</span>
+    <a (click)="fecharModal()" style="cursor: pointer;"><i class="bi bi-x-circle-fill" matTooltip="Fechar Modal"></i></a>
   </div>
+
+  <div class="panel-body" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+    <div style="width: 100%;">
+      <span style="font-size: 18px;">Tem certeza que deseja excluir o monitorador </span>
+      <strong style="font-size: 20px">{{data.monitorador.nomeRazaoSocial}}?</strong>
+    </div>
+    <div style="width: 100%; margin-top: 10px; display: flex; justify-content: space-around;">
+      <button mat-raised-button color="dark" mat-dialog-close class="button-no">
+        <span class="spn-space">Não</span>
+        <i class="bi bi-x-lg icon-btn-no"></i>
+      </button>
+      <button mat-raised-button color="dark" (click)="deleteMonitorador(data.monitorador)" cdkFocusInitial class="button-yes">
+        <span class="spn-space">Sim</span>
+        <i class="bi bi-check-circle icon-btn-yes"></i>
+      </button>
+    </div>
+  </div>
+
 

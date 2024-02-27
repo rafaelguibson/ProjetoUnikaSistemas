@@ -6,6 +6,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {DialogComponent} from "../dialog/dialog.component";
 import {TipoPessoa} from "../../model/enum/tipo-pessoa";
 import {Monitorador} from "../../model/monitorador";
+import {TableCommunicationServiceService} from "../../service/table-communication-service.service";
 
 @Component({
   selector: 'app-edit-dialog',
@@ -20,6 +21,7 @@ export class EditDialogComponent implements OnInit{
               @Inject(MAT_DIALOG_DATA) public data: { tipoPessoa: TipoPessoa, monitorador: Monitorador },
               private formBuilder: FormBuilder,
               private monitoradorService: MonitoradorHttpClientService,
+              private tableCommunicationService: TableCommunicationServiceService
   ) {
   }
   ngOnInit() {
@@ -56,6 +58,7 @@ export class EditDialogComponent implements OnInit{
     const id: number = monitorador.id!;
     this.monitoradorService.updateMonitorador(id,monitorador).subscribe(response => {
       console.log('Monitorador atualizado com sucesso:', response);
+      this.atualizarDataTable();
       this.fecharModal();
       this.monitoradorForm.reset();
       // this.dialogRef.close();
@@ -75,6 +78,10 @@ export class EditDialogComponent implements OnInit{
       this.errorMensagem = ''; // Limpar a mensagem após 5 segundos
       this.showFeedbackPanel = false;
     }, 5000); // 5000 milissegundos = 5 segundos
+  }
+
+  atualizarDataTable() {
+    this.tableCommunicationService.callMethod('loadDataTable');
   }
   protected readonly TipoPessoa = TipoPessoa;
 }

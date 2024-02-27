@@ -47,3 +47,11 @@ mat-card {
 .mat-card-content {
   padding: 5px;
 }
+input {
+  border: 1px solid rgba(23, 23, 23, 0.66);
+  text-shadow: 2px 2px 4px rgb(192, 191, 191);
+}
+.input-group-addon {
+  border: 1px solid rgba(23, 23, 23, 0.66);
+  text-shadow: 2px 2px 4px rgb(192, 191, 191);
+}
