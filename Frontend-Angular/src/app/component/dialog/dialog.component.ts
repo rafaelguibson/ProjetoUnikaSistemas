@@ -79,12 +79,13 @@ export class DialogComponent implements OnInit, AfterViewInit {
   }
 
   onAddAddress() {
-
+    // if (this.enderecoForm.valid) {
     // Create an Endereco object from the form values
     const endereco: Endereco = this.enderecoForm.value as Endereco;
     this.adicionarEndereco(endereco);
     this.limparFormularioEndereco();
 
+    // }
   }
 
   buscarCep(endereco: Endereco): void {

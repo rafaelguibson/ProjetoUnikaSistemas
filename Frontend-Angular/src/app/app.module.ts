@@ -32,6 +32,8 @@ import {NgxMaskDirective, NgxMaskPipe, provideNgxMask} from "ngx-mask";
     MaterialModule,
     HttpClientModule,
     FormsModule,
+    NgxMaskDirective,
+    ReactiveFormsModule,
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: `pt-BR`},

@@ -69,8 +69,14 @@ export class MenuBarComponent {
   visualizarPJ() {
     this.tableCommunicationService.callMethod('loadDataTablePJ');
   }
-  
+
   vizualizarTodos() {
     this.tableCommunicationService.callMethod('loadDataTable');
+  }
+  filtrarPF() {
+    this.tableCommunicationService.callMethod('filterPF');
+  }
+  filtrarPJ() {
+    this.tableCommunicationService.callMethod('filterPJ');
   }
 }

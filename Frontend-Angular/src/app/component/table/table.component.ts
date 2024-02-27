@@ -1,29 +1,34 @@
-import {Component, input, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {MonitoradorHttpClientService} from "../../service/monitorador-http-client.service";
-import { MatPaginator} from "@angular/material/paginator";
-import { MatSort} from "@angular/material/sort";
-import { MatTableDataSource} from "@angular/material/table";
+import {MatPaginator} from "@angular/material/paginator";
+import {MatSort} from "@angular/material/sort";
+import {MatTableDataSource} from "@angular/material/table";
 import {Monitorador} from "../../model/monitorador";
 import {TipoPessoa} from "../../model/enum/tipo-pessoa";
 import {MatDialog} from "@angular/material/dialog";
-import {DialogComponent} from "../dialog/dialog.component";
 import {DataViewComponent} from "../data-view/data-view.component";
 import {DeleteConfirmComponent} from "../delete-confirm/delete-confirm.component";
 import {TableCommunicationServiceService} from "../../service/table-communication-service.service";
+import {FormBuilder, FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
   styleUrl: './table.component.css'
 })
-export class TableComponent {
+export class TableComponent implements OnInit{
   displayedColumns = ['id', 'tipoPessoa', 'nomeRazaoSocial', 'cpfCnpj','rgIe', 'telefone', 'email','dataNascimento', 'dataCadastro', 'menus'];
   dataSource!:MatTableDataSource<Monitorador>;
   @ViewChild(MatPaginator) paginator!:MatPaginator
   @ViewChild(MatSort) sort!:MatSort
 
   data:any;
-  constructor(private httpService : MonitoradorHttpClientService,public dialog:MatDialog, private tableCommunicationService: TableCommunicationServiceService) {
+  filtroForm!: FormGroup;
+  tipoPessoaFilter!:TipoPessoa;
+  constructor(private httpService : MonitoradorHttpClientService,
+              public dialog:MatDialog,
+              private tableCommunicationService: TableCommunicationServiceService,
+              private formBuilder: FormBuilder) {
     this.loadDataTable();
 
     // Assina o Observable para saber quando chamar os métodos específicos
@@ -34,10 +39,27 @@ export class TableComponent {
         this.loadDataTablePJ();
       } else if (method === 'loadDataTable') {
         this.loadDataTable();
+      } else if ( method === 'filterPF') {
+        this.filterPF();
+      }else if ( method === 'filterPJ') {
+        this.filterPJ();
       }
     });
   }
-
+ngOnInit() {
+  this.filtroForm = this.formBuilder.group({
+    id: [''],
+    //tipoPessoa: [this.data.tipoPessoa],
+    dataCadastro: [null],
+    nomeRazaoSocial: [''],
+    cpfCnpj: [''],
+    rgIe: [''],
+    dataNascimento: [null],
+    dataInicial:[null],
+    dataFinal:[null],
+    status: [true],
+  });
+}
   loadDataTable() {
       this.httpService.getData().subscribe(data => {
           this.data = data;
@@ -95,4 +117,14 @@ export class TableComponent {
       this.dataSource.sort = this.sort;
     });
   }
+  filterPJ() {
+    console.log('TipoPessoa PJ definido')
+    this.tipoPessoaFilter = TipoPessoa.PJ
+  }
+  filterPF() {
+    console.log('TipoPessoa PF definido')
+    this.tipoPessoaFilter = TipoPessoa.PF;
+  }
+
+  protected readonly TipoPessoa = TipoPessoa;
 }
