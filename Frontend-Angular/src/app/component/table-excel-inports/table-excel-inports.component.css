@@ -1,0 +1,42 @@
+* {
+  font-size: 1.00243em;
+  overflow: hidden;
+}
+.panel-heading{
+  font-size:150%;
+}
+.form-content {
+  padding: 10px;
+}
+.header-space {
+  flex: 1 1 auto;
+  font-size: 20px;
+}
+.dialog-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #212129;
+  color: #ECEBE9;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+}
+table {
+  max-width: 680px;
+  justify-content: space-between;
+  border-collapse: collapse;
+}
+td {
+  width: 340px;
+  white-space: nowrap;
+}
+.td-spacer {
+  text-align: right;
+}
+mat-card {
+  font-size: 1.004em;
+  margin-top: 10px;
+  text-align: center;
+  margin-bottom: 15px;
+}

@@ -1,0 +1,73 @@
+<fieldset >
+  <div class="panel panel-primary" style=" border: 1px solid rgba(23, 23, 23, 0.66); ">
+    <div class="dialog-title">
+      <span class="header-space">Detalhamento Monitorador</span>
+      <a (click)="fecharModal()" style="cursor: pointer;"><i class="bi bi-x-circle-fill" matTooltip="Fechar Modal"></i></a>
+    </div>
+
+    <div class="panel-body">
+      <div class="form-group form-content">
+        <div class="mat-elevation-z8 table-data"  style="border: 1px solid rgba(23, 23, 23, 0.66);">
+          <table mat-table  matSort [dataSource]="dataSource" >
+
+
+            <ng-container matColumnDef="tipoPessoa">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Tipo</th>
+              <td mat-cell *matCellDef="let row">
+                {{ row.tipoPessoa === 'PF' ? 'Física' : 'Jurídica' }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="nomeRazaoSocial">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Nome / Razão Social</th>
+              <td mat-cell *matCellDef="let row">{{ row.nomeRazaoSocial }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="cpfCnpj">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>CPF / CNPJ</th>
+              <td mat-cell *matCellDef="let row">{{ row.cpfCnpj }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="rgIe">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>RG / I.E</th>
+              <td mat-cell *matCellDef="let row">{{ row.rgIe }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="telefone">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Telefone</th>
+              <td mat-cell *matCellDef="let row">{{ row.telefone }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+              <td mat-cell *matCellDef="let row">{{ row.email }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="dataNascimento">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Data Nascimento</th>
+              <td mat-cell *matCellDef="let row">{{ row.dataNascimento | date:'dd/MM/yyyy' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="menus">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Menus</th>
+              <td mat-cell *matCellDef="let row">
+                <a mat-button (click)="openDialogDelete(row)"  matTooltip="Excluir"><i class="bi bi-trash menu-icon"></i></a>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            <!-- Mensagem quando não existe o dado buscado no Filtro-->
+            <tr *matNoDataRow style="text-align: center">
+              <td class="mat-cell" colspan="10" > <strong style="font-size: 16px">Nenhum dado encontrado na tabela.</strong></td>
+            </tr>
+          </table>
+
+          <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select Page of Monitoradores"></mat-paginator>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</fieldset>

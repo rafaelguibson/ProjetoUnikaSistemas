@@ -16,6 +16,7 @@ import { DeleteConfirmComponent } from './component/delete-confirm/delete-confir
 import {NgxMaskDirective, NgxMaskPipe, provideNgxMask} from "ngx-mask";
 import { UploadDialogComponent } from './component/upload-dialog/upload-dialog.component';
 import { EditDialogComponent } from './component/edit-dialog/edit-dialog.component';
+import { TableExcelInportsComponent } from './component/table-excel-inports/table-excel-inports.component';
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import { EditDialogComponent } from './component/edit-dialog/edit-dialog.compone
     DeleteConfirmComponent,
     UploadDialogComponent,
     EditDialogComponent,
+    TableExcelInportsComponent,
 
   ],
   imports: [

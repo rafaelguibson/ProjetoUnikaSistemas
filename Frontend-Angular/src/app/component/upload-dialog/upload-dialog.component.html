@@ -33,14 +33,26 @@
 
 
   </div>
-  <div *ngIf="file">
+  <div *ngIf="file" class="central-div" style="margin: 10px">
     <section class="file-info">
       <strong>Detalhes do Arquivo:</strong>
       <ul>
-        <li><strong>Nome:</strong> {{ getFileNameWithoutExtension(file.name) }}</li>
-        <li><strong>Tipo:</strong> *{{ getFileExtension(file.name) }}</li>
-        <li><strong>Tamanho:</strong> {{ getFileSizeInMB(file.size) }} <strong>MBytes</strong></li>
-        <li><strong>Status:
+        <li><i class="bi bi-arrow-right-short"></i><strong>Nome:</strong> {{ getFileNameWithoutExtension(file.name) }}</li>
+        <li><i class="bi bi-arrow-right-short"></i><strong>Tipo:</strong> *{{ getFileExtension(file.name) }}</li>
+        <li><i class="bi bi-arrow-right-short"></i><strong>Tamanho:</strong> {{ getFileSizeInMB(file.size) }} <strong>MBytes</strong></li>
+        <li><i class="bi bi-arrow-right-short"></i><strong>Status:
+          <div *ngIf="file" class="progress" style="max-width: ">
+            <div
+              class="progress-bar progress-bar-info progress-bar-striped"
+              role="progressbar"
+              attr.aria-valuenow="{{ progress }}"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              [ngStyle]="{ width: progress + '%' }"
+            >
+              {{ progress }}%
+            </div>
+          </div>
           <section [ngSwitch]="status">
             <span *ngSwitchCase="'uploading'">⏳ Importando...</span>
             <span *ngSwitchCase="'success'">✅ Concluido!</span>
@@ -50,13 +62,10 @@
         </strong></li>
       </ul>
     </section>
-
-    <div class="central-div">
-      <button (click)="onUpload()" class="btn btn-dark">Carregar Arquivo&nbsp;&nbsp;<i class="bi bi-upload"></i>
-      </button>
-    </div>
-
-
+  </div>
+  <div class="central-div" *ngIf="file">
+    <button (click)="onUpload()" class="btn btn-dark" *ngIf="showBtnUpload">Carregar Arquivo&nbsp;&nbsp;<i class="bi bi-upload"></i></button>
+    <button (click)="openDialogExcelImport()" class="btn btn-primary" *ngIf="showBtnDialog">Vizualizar Dados Carregados&nbsp;&nbsp;<i class="bi bi-upload"></i></button>
   </div>
 </div>
 

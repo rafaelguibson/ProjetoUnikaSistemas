@@ -1,9 +1,11 @@
 import {Component, Inject, Input} from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import { MonitoradorHttpClientService } from '../../service/monitorador-http-client.service';
 import { Monitorador } from '../../model/monitorador';
-import {finalize, Subscription, throwError} from "rxjs";
-import {HttpEventType} from "@angular/common/http";
+import {finalize, Observable, Subscription, throwError} from "rxjs";
+import {HttpEventType, HttpResponse} from "@angular/common/http";
+import {DialogComponent} from "../dialog/dialog.component";
+import {TableExcelInportsComponent} from "../table-excel-inports/table-excel-inports.component";
 
 @Component({
   selector: 'app-upload-dialog',
@@ -17,22 +19,29 @@ export class UploadDialogComponent {
   fileName = '';
   showFeedBackPanel:boolean = false;
   errorMensagem!: string;
-  
+  progress = 0;
+  message = '';
+  showBtnUpload:boolean = true;
+  showBtnDialog:boolean = false;
+  fileInfos!: Observable<any>;
   constructor(
+    public dialog:MatDialog,
     public dialogRef: MatDialogRef<UploadDialogComponent>,
     private httpService: MonitoradorHttpClientService,
   ) {}
   // On file Select
   onChange(event: any) {
     this.file = event?.target?.files[0];
-
+    this.fileName = this.file!.name;
+    this.showFeedBackPanel = false;
     if (this.file) {
       this.status = "initial";
     }
-    this.dialogRef.updateSize('300px','350px')
+    this.dialogRef.updateSize('300px','500px')
   }
 
   onUpload() {
+    this.progress = 0;
     if (this.file) {
       const allowedExtensions = ['xls', 'xlsx'];
       const fileExtension = this.getFileExtension(this.file.name);
@@ -48,8 +57,16 @@ export class UploadDialogComponent {
       this.httpService.uploadFile(this.file).subscribe(
         (response) => {
           // Handle successful response
-          console.log(response);
+          this.monitoradores = response.body;
           this.status = 'success';
+          this.showBtnUpload = !this.showBtnUpload;
+          this.showBtnDialog = !this.showBtnDialog
+          if (response.type === HttpEventType.UploadProgress) {
+            this.progress = Math.round(100 * response.loaded / response.total);
+          } else if (response instanceof HttpResponse) {
+            this.message = response.body.message;
+
+          }
         },
         (error) => {
           // Handle error
@@ -79,14 +96,22 @@ export class UploadDialogComponent {
   showFeedbackMessage(msg:string){
     this.errorMensagem = msg;
     this.showFeedBackPanel = true;
-    this.dialogRef.updateSize('300px','420px')
+    this.dialogRef.updateSize('300px','520px')
   }
   fecharModal() {
     this.dialogRef.close();
   }
 
   closeFeedbackPanel() {
-    this.dialogRef.updateSize('300px','350px')
+    this.dialogRef.updateSize('300px','450px')
     this.showFeedBackPanel = false;
+  }
+
+  openDialogExcelImport() {
+    this.dialog.open(TableExcelInportsComponent, {
+      height: '900px',
+      width: '1600px',
+      data: { monitoradores: this.monitoradores }, // Pass the monitoradores array as data
+    });
   }
 }

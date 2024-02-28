@@ -54,7 +54,11 @@ export class MonitoradorHttpClientService {
     const headers = new HttpHeaders();
     headers.append('Content-Type', 'multipart/form-data');
 
-    return this.http.post<any>(`${this.baseUrl}/upload`, formData, { headers });
+    return this.http.post<any>(`${this.baseUrl}/upload`, formData, {
+      headers,
+      reportProgress: true,
+      responseType: 'json',
+      observe: 'events',});
   }
   buscarCep(cep: string): Observable<Endereco> {
     console.log(cep)
