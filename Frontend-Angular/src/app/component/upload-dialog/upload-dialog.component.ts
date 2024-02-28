@@ -59,8 +59,7 @@ export class UploadDialogComponent {
           // Handle successful response
           this.monitoradores = response.body;
           this.status = 'success';
-          this.showBtnUpload = !this.showBtnUpload;
-          this.showBtnDialog = !this.showBtnDialog
+
           if (response.type === HttpEventType.UploadProgress) {
             this.progress = Math.round(100 * response.loaded / response.total);
           } else if (response instanceof HttpResponse) {
@@ -74,6 +73,8 @@ export class UploadDialogComponent {
           this.status = 'fail';
         }
       );
+      this.showBtnUpload = !this.showBtnUpload;
+      this.showBtnDialog = !this.showBtnDialog
     }
   }
   // Método para converter o tamanho do arquivo de bytes para megabytes

@@ -29,10 +29,8 @@ public class ReportService {
     public byte[] exportReport(List<Monitorador> monitoradores){
         byte[] bytes = null;
 
-
-
         try {
-            File file = ResourceUtils.getFile("src/main/resources/relatorio-monitorador.jasper");
+            File file = ResourceUtils.getFile("src/main/resources/templates/relatorio.jasper");
             JasperPrint jasperPrint;
             try {
                 jasperPrint = JasperFillManager.fillReport(file.getAbsolutePath(), null, dataSource.getConnection());

@@ -2,7 +2,7 @@ package backend.service;
 
 import backend.entitie.Monitorador;
 import net.sf.jasperreports.engine.*;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
@@ -18,7 +18,6 @@ import java.util.*;
 @Service
 public class ReportService {
 
-    private Map<String, Object> params = new HashMap<>();
     @Autowired
     private DataSource dataSource;
 

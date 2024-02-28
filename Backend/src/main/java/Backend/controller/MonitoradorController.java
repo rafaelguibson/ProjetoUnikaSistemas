@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.sql.SQLException;
 import java.util.*;
 
 @RestController
@@ -114,7 +115,7 @@ public class MonitoradorController {
     }
 
     @GetMapping(value = "/export/report")
-    public ResponseEntity<byte[]> pdf() throws JRException {
+    public ResponseEntity<byte[]> pdf() throws JRException{
         byte[] file = monitoradorService.exportReport();
 
         HttpHeaders headers = new HttpHeaders();
