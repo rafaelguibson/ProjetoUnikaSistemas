@@ -15,6 +15,9 @@ export class UploadDialogComponent {
   file: File | null = null; // Variable to store file
   monitoradores: Monitorador[] = [];
   fileName = '';
+  showFeedBackPanel:boolean = false;
+  errorMensagem!: string;
+  
   constructor(
     public dialogRef: MatDialogRef<UploadDialogComponent>,
     private httpService: MonitoradorHttpClientService,
@@ -30,8 +33,18 @@ export class UploadDialogComponent {
   }
 
   onUpload() {
-console.log(this.file)
     if (this.file) {
+      const allowedExtensions = ['xls', 'xlsx'];
+      const fileExtension = this.getFileExtension(this.file.name);
+      if (this.file.size > 20971520) {
+        this.showFeedbackMessage('Tamanho máximo de arquivo 20MB.');
+
+        return;
+      }
+      if (!allowedExtensions.includes(fileExtension)) {
+        this.showFeedbackMessage('Somente arquivos de Excel suportados. (.xls ou .xlsx)');
+        return;
+      }
       this.httpService.uploadFile(this.file).subscribe(
         (response) => {
           // Handle successful response
@@ -47,6 +60,7 @@ console.log(this.file)
     }
   }
   // Método para converter o tamanho do arquivo de bytes para megabytes
+
   getFileSizeInMB(sizeInBytes: number): string {
     const sizeInMB = sizeInBytes / (1024 * 1024);
     return sizeInMB.toFixed(5) ;
@@ -62,7 +76,17 @@ console.log(this.file)
     }
     return ''; // Sem extensão
   }
+  showFeedbackMessage(msg:string){
+    this.errorMensagem = msg;
+    this.showFeedBackPanel = true;
+    this.dialogRef.updateSize('300px','420px')
+  }
   fecharModal() {
     this.dialogRef.close();
+  }
+
+  closeFeedbackPanel() {
+    this.dialogRef.updateSize('300px','350px')
+    this.showFeedBackPanel = false;
   }
 }

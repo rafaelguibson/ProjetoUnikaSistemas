@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -134,6 +135,10 @@ public class MonitoradorController {
     @ExceptionHandler(NomeRazaoSocialInvalidaException.class)
     public ResponseEntity<String> handleNomeRazaoSocialInvalida(NomeRazaoSocialInvalidaException e) {
         return ResponseEntity.badRequest().body(e.getMessage());
+    }
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<String> handleMaxUploadSizeExceededException(MaxUploadSizeExceededException e) {
+        return ResponseEntity.badRequest().body("Tamanho máximo de arquivo 20MB.");
     }
 
     @ExceptionHandler(RegistroDuplicadoException.class)

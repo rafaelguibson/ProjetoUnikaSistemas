@@ -5,6 +5,7 @@ import Backend.entitie.Monitorador;
 import Backend.enums.TipoPessoa;
 import Backend.exceptions.CampoObrigatorioException;
 import Backend.exceptions.DataNascimentoException;
+import Backend.exceptions.FileSizeException;
 import Backend.exceptions.RegistroDuplicadoException;
 import Backend.repository.EnderecoRepository;
 import Backend.repository.MonitoradorRepository;
@@ -246,6 +247,9 @@ public class MonitoradorService {
     }
 
     public List<Monitorador> gerarLista(MultipartFile fis) throws IOException {
+        if(fis.getSize()  > 20971520 ) {
+            throw new FileSizeException(fis.getName());
+        }
         return excelService.gerarLista(fis);
     }
 }
