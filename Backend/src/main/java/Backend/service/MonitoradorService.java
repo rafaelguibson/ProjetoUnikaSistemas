@@ -17,6 +17,7 @@ import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -244,7 +245,7 @@ public class MonitoradorService {
         return reportService.exportReport(getAllMonitoradores());
     }
 
-    public List<Monitorador> gerarLista(FileInputStream fis) throws IOException {
+    public List<Monitorador> gerarLista(MultipartFile fis) throws IOException {
         return excelService.gerarLista(fis);
     }
 }

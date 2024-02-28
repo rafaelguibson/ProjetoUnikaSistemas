@@ -1,34 +1,53 @@
 
-  <div class="panel panel-primary" style=" border: 1px solid rgba(23, 23, 23, 0.66); ">
+  <div class="panel panel-primary" style=" border: none ">
     <div class="dialog-title">
-      <span class="header-space">Detalhamento Monitorador</span>
+      <span class="header-space">Importar do Arquivo Excel</span>
       <a (click)="fecharModal()" style="cursor: pointer;"><i class="bi bi-x-circle-fill" matTooltip="Fechar Modal"></i></a>
     </div>
 
-    <div>
-      <h2>Single File Upload</h2>
+    <div class="central-div" style="padding: 10px">
+      <div class="central-div" style=" width: 80%;padding: 10px; border: 1px solid black; border-radius: 9px;display: block">
+        <input type="file" class="file-input"
+               (change)="onChange($event)" #fileUpload>
 
-      <input type="file" class="file-input" (change)="onChange($event)" #fileUpload />
+        <div class="file-upload">
 
-      <div *ngIf="file">
-        <section class="file-info">
-          File details:
-          <ul>
-            <li>Name: {{file.name}}</li>
-            <li>Type: {{file.type}}</li>
-            <li>Size: {{file.size}} bytes</li>
-          </ul>
-        </section>
+          {{fileName || "Selecione um arquivo..."}}
 
-        <button (click)="onUpload()">Upload the file</button>
+          <button class="btn btn-dark upload-btn"
+                  (click)="fileUpload.click()" style="border-radius: 50%">
+            <mat-icon>attach_file</mat-icon>
+          </button>
 
-        <section [ngSwitch]="status">
-          <p *ngSwitchCase="'uploading'">⏳ Uploading...</p>
-          <p *ngSwitchCase="'success'">✅ Done!</p>
-          <p *ngSwitchCase="'fail'">❌ Error!</p>
-          <p *ngSwitchDefault>😶 Waiting to upload...</p>
-        </section>
+        </div>
+
       </div>
+
+
+
+
+    </div>
+    <div *ngIf="file">
+      <section class="file-info">
+        <strong>Detalhes do Arquivo:</strong>
+        <ul>
+          <li><strong>Nome:</strong> {{getFileNameWithoutExtension(file.name)}}</li>
+          <li><strong>Tipo:</strong> *{{getFileExtension(file.name)}}</li>
+          <li><strong>Tamanho:</strong> {{getFileSizeInMB(file.size)}} <strong>MBytes</strong> </li>
+          <li><strong>Status:  <section [ngSwitch]="status">
+            <span *ngSwitchCase="'uploading'">⏳ Importando...</span>
+            <span *ngSwitchCase="'success'">✅ Concluido!</span>
+            <span *ngSwitchCase="'fail'">❌ Falha!</span>
+            <span *ngSwitchDefault>😶 Aguardando Upload...</span>
+          </section></strong></li>
+        </ul>
+      </section>
+
+     <div class="central-div">
+       <button (click)="onUpload()" class="btn btn-dark">Carregar Arquivo&nbsp;&nbsp;<i class="bi bi-upload"></i></button>
+     </div>
+
+
     </div>
   </div>
 

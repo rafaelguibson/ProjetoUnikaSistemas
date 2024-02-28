@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.*;
 import java.util.*;
 
@@ -124,22 +126,9 @@ public class MonitoradorController {
     }
 
     @PostMapping("/upload")
-    public List<Monitorador> uploadFile(@RequestBody byte[] fileBytes) throws IOException {
-        // Especifique o caminho onde deseja salvar o arquivo
-        String filePath = "src/main/resources/upload.xlsx";
-
-        // Crie um FileOutputStream para escrever os bytes no arquivo
-        try (FileOutputStream fos = new FileOutputStream(filePath)) {
-            fos.write(fileBytes);
-        } catch (IOException e) {
-            e.printStackTrace();
-            // Trate o erro adequadamente
-            return null;
-        }
-
-        FileInputStream fis = new FileInputStream(filePath);
-
-        return monitoradorService.gerarLista(fis);
+    public ResponseEntity<List<Monitorador>> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
+        List<Monitorador> monitoradores = monitoradorService.gerarLista(file);
+        return ResponseEntity.ok(monitoradores);
     }
 
     @ExceptionHandler(NomeRazaoSocialInvalidaException.class)

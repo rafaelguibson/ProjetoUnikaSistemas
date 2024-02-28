@@ -65,8 +65,8 @@ export class MenuBarComponent {
   importFromExcel() {
     this.dialog.open(UploadDialogComponent,
       {
-        height: '295px',
-        width: '800px',
+        height: '150px',
+        width: '300px',
       });
   }
   visualizarPF() {

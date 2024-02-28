@@ -6,6 +6,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
@@ -141,10 +142,10 @@ public class ExcelService {
         }
     }
 
-    public List<Monitorador> gerarLista(FileInputStream file) throws IOException {
+    public List<Monitorador> gerarLista(MultipartFile file) throws IOException {
         List<Monitorador> monitoradores = new ArrayList<>();
-
-        try (Workbook workbook = new XSSFWorkbook(file)) {
+        Workbook workbook = WorkbookFactory.create(file.getInputStream());
+        try (workbook) {
             Sheet sheet = workbook.getSheetAt(0); // Supondo que a planilha desejada está na primeira aba
 
             Iterator<Row> rowIterator = sheet.iterator();
@@ -172,7 +173,7 @@ public class ExcelService {
 
     private Monitorador criarMonitoradorDaLinha(Row row) {
         try {
-            Cell cellTipoPessoa = row.getCell(1); // Coluna do Tipo Pessoa
+            Cell cellTipoPessoa = row.getCell(0); // Coluna do Tipo Pessoa
 
             String tipoPessoa = cellTipoPessoa.getStringCellValue().toLowerCase(); // Converter para minúsculas para comparar
 
@@ -181,21 +182,21 @@ public class ExcelService {
             // Verificar o tipo de pessoa e preencher os campos apropriados
             if ("física".equalsIgnoreCase(tipoPessoa)) {
                 monitorador.setTipoPessoa(TipoPessoa.PF);
-                monitorador.setNomeRazaoSocial(row.getCell(3).getStringCellValue()); // Nome
-                monitorador.setCpfCnpj(row.getCell(2).getStringCellValue()); // CPF
-                monitorador.setRgIe(row.getCell(6).getStringCellValue()); // RG
-                monitorador.setTelefone(row.getCell(4).getStringCellValue()); // Telefone
-                monitorador.setEmail(row.getCell(5).getStringCellValue()); // Email
-                monitorador.setDataNascimento(new Date()); // Data de Nascimento
-                monitorador.setStatus("Ativo".equals(row.getCell(8).getStringCellValue().toUpperCase())); // Status
+                monitorador.setNomeRazaoSocial(row.getCell(2).getStringCellValue()); // Nome
+                monitorador.setCpfCnpj(row.getCell(1).getStringCellValue()); // CPF
+                monitorador.setRgIe(row.getCell(5).getStringCellValue()); // RG
+                monitorador.setTelefone(row.getCell(3).getStringCellValue()); // Telefone
+                monitorador.setEmail(row.getCell(4).getStringCellValue()); // Email
+                monitorador.setDataNascimento(new Date(row.getCell(6).getStringCellValue())); // Data de Nascimento
+                monitorador.setStatus("Ativo".equals(row.getCell(7).getStringCellValue().toUpperCase())); // Status
             } else if ("jurídica".equalsIgnoreCase(tipoPessoa)) {
                 monitorador.setTipoPessoa(TipoPessoa.PJ);
-                monitorador.setNomeRazaoSocial(row.getCell(3).getStringCellValue()); //Razão Social
-                monitorador.setCpfCnpj(row.getCell(2).getStringCellValue()); //CNPJ
-                monitorador.setTelefone(row.getCell(4).getStringCellValue()); // Telefone
-                monitorador.setEmail(row.getCell(5).getStringCellValue()); // Email
-                monitorador.setRgIe(row.getCell(6).getStringCellValue()); // Inscrição Estadual
-                monitorador.setStatus("Ativo".equals(row.getCell(8).getStringCellValue().toUpperCase())); // Status
+                monitorador.setNomeRazaoSocial(row.getCell(2).getStringCellValue()); //Razão Social
+                monitorador.setCpfCnpj(row.getCell(1).getStringCellValue()); //CNPJ
+                monitorador.setTelefone(row.getCell(3).getStringCellValue()); // Telefone
+                monitorador.setEmail(row.getCell(4).getStringCellValue()); // Email
+                monitorador.setRgIe(row.getCell(5).getStringCellValue()); // Inscrição Estadual
+                monitorador.setStatus("Ativo".equals(row.getCell(7).getStringCellValue().toUpperCase())); // Status
             } else {
                 // Trate casos em que o tipo de pessoa não é reconhecido
                 return null;

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpResponse} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Monitorador } from "../model/monitorador";
 import {Endereco} from "../model/endereco";
@@ -47,10 +47,14 @@ export class MonitoradorHttpClientService {
     return this.http.post<Monitorador[]>(url, filtro);
   }
 
-  uploadFile(fileBytes: Uint8Array): Observable<Monitorador[]> {
-    const url = `${this.baseUrl}/upload`;
+  uploadFile(file: File): Observable<any> {
+    const formData: FormData = new FormData();
+    formData.append('file', file);
 
-    return this.http.post<Monitorador[]>(url, fileBytes);
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', 'multipart/form-data');
+
+    return this.http.post<any>(`${this.baseUrl}/upload`, formData, { headers });
   }
   buscarCep(cep: string): Observable<Endereco> {
     console.log(cep)
