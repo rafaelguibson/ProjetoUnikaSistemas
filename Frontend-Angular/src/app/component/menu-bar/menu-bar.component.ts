@@ -62,6 +62,12 @@ export class MenuBarComponent {
       document.body.removeChild(downloadLink);
     });
   }
+  exportToPDF() {
+    this.monitoradorService.downloadFile().subscribe(response => {
+      const filename = 'relatorio-monitoradores.pdf'; // Defina o nome do arquivo desejado
+      this.downloadFile(response, filename);
+    });
+  }
   importFromExcel() {
     this.dialog.open(UploadDialogComponent,
       {

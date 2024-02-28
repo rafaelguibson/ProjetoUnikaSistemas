@@ -60,6 +60,13 @@ export class MonitoradorHttpClientService {
       responseType: 'json',
       observe: 'events',});
   }
+  private downloadFile(data: any, filename: string) {
+    const blob = new Blob([data], { type: 'application/pdf' });
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = filename;
+    link.click();
+  }
   buscarCep(cep: string): Observable<Endereco> {
     console.log(cep)
     const url = `https://viacep.com.br/ws/${cep}/json/`;

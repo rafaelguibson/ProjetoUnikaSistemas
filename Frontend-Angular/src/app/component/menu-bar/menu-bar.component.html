@@ -64,7 +64,7 @@
       </mat-list-item>
       <div *ngIf="!toggle_report_menu">
         <ul style="background: rgba(239,237,234,0.87)">
-          <li><a mat-list-item href="#"><i class="bi bi-filetype-pdf header-icon custom-bold-icon"></i><span
+          <li><a mat-list-item (click)="()"><i class="bi bi-filetype-pdf header-icon custom-bold-icon"></i><span
             class="header-text">Exportar - PDF</span></a></li>
           <li><a mat-list-item><i class="bi bi-filetype-xlsx header-icon custom-bold-icon"></i><span
             class="header-text" (click)="exportToExcel()"> Exportar - XLSX</span></a></li>
