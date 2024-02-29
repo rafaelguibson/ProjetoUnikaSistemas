@@ -37,7 +37,7 @@ export class UploadDialogComponent {
     if (this.file) {
       this.status = "initial";
     }
-    this.dialogRef.updateSize('300px','500px')
+    this.dialogRef.updateSize('400px','350px')
   }
 
   onUpload() {
@@ -97,14 +97,14 @@ export class UploadDialogComponent {
   showFeedbackMessage(msg:string){
     this.errorMensagem = msg;
     this.showFeedBackPanel = true;
-    this.dialogRef.updateSize('300px','520px')
+    this.dialogRef.updateSize('400px','450px')
   }
   fecharModal() {
     this.dialogRef.close();
   }
 
   closeFeedbackPanel() {
-    this.dialogRef.updateSize('300px','450px')
+    this.dialogRef.updateSize('400px','350px')
     this.showFeedBackPanel = false;
   }
 

@@ -63,16 +63,28 @@ export class MenuBarComponent {
     });
   }
   exportToPDF() {
-    this.monitoradorService.downloadFile().subscribe(response => {
-      const filename = 'relatorio-monitoradores.pdf'; // Defina o nome do arquivo desejado
-      this.downloadFile(response, filename);
-    });
+    this.monitoradorService.getMonitoradorPDF().subscribe(
+      (resposta: Blob) => {
+        this.gerarPDF(resposta);
+        console.log('Exportado com sucesso', resposta);
+      },
+      (error) => {
+        console.error('Erro ao exportar PDF: ', error);
+      }
+    );
+
+  }
+  private gerarPDF(blob: Blob) {
+    const file = new Blob([blob], { type: 'application/pdf' });
+    const fileURL = URL.createObjectURL(file);
+
+    window.open(fileURL, '_blank');
   }
   importFromExcel() {
     this.dialog.open(UploadDialogComponent,
       {
         height: '150px',
-        width: '300px',
+        width: '400px',
       });
   }
   visualizarPF() {

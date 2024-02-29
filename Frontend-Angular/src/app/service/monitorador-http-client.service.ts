@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {catchError, Observable, throwError} from 'rxjs';
 import { Monitorador } from "../model/monitorador";
 import {Endereco} from "../model/endereco";
 
@@ -29,8 +29,15 @@ export class MonitoradorHttpClientService {
   saveMonitorador(monitorador: Monitorador): Observable<Monitorador> {
     return this.http.post<Monitorador>(this.baseUrl, monitorador);
   }
+  saveAllMonitoradores(monitoradores: Monitorador[]): Observable<any> {
+    const url = `${this.baseUrl}/saveAll`;
 
-
+    return this.http.post(url, monitoradores, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    });
+  }
 
   updateMonitorador(id: number, monitorador: Monitorador): Observable<Monitorador> {
     const url = `${this.baseUrl}/${id}`;
@@ -60,12 +67,14 @@ export class MonitoradorHttpClientService {
       responseType: 'json',
       observe: 'events',});
   }
-  private downloadFile(data: any, filename: string) {
-    const blob = new Blob([data], { type: 'application/pdf' });
-    const link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.download = filename;
-    link.click();
+  getMonitoradorPDF(): Observable<Blob> {
+    return this.http.get(`${this.baseUrl}/export/report`, { responseType: 'blob' })
+      .pipe(
+        catchError((error) => {
+          console.error('Erro na solicitação getMonitorador:', error);
+          return throwError(error);
+        })
+      );
   }
   buscarCep(cep: string): Observable<Endereco> {
     console.log(cep)

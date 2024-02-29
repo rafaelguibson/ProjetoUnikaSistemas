@@ -11,28 +11,16 @@
     <button type="button" class="close" data-dismiss="alert" (click)="closeFeedbackPanel()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
     <strong>{{errorMensagem}}</strong>
   </div>
-  <div class="central-div" style="padding: 10px">
+  <div class="central-div" style="padding-top: 20px; padding-right: 10px; padding-left: 10px">
 
-    <div class="central-div"
-         style=" width: 80%;padding: 10px; border: 1px solid black; border-radius: 9px;display: block">
-      <input type="file" class="file-input"
-             (change)="onChange($event)" #fileUpload>
 
-      <div class="file-upload">
-
-        {{ fileName || "Selecione um arquivo..." }}
-
-        <button class="btn btn-dark upload-btn"
-                (click)="fileUpload.click()" style="border-radius: 50%">
-          <mat-icon>attach_file</mat-icon>
-        </button>
-
-      </div>
-
-    </div>
+    <input class="form-control form-control-lg" id="formFileLg" type="file" (change)="onChange($event)" #fileUpload/>
 
 
   </div>
+
+
+
   <div *ngIf="file" class="central-div" style="margin: 10px">
     <section class="file-info">
       <strong>Detalhes do Arquivo:</strong>
